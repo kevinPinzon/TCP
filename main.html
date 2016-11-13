@@ -82,23 +82,36 @@ if (typeof btoa == 'undefined') {
     }
 }
 	</script>
+	<link href=https://necolas.github.io/normalize.css/5.0.0/normalize.css rel="stylesheet" type="text/css" />
 
+	<link href=https://cdn.muicss.com/mui-0.9.4/css/mui.min.css rel="stylesheet" type="text/css" />
+	<script src=https://cdn.muicss.com/mui-0.9.4/js/mui.min.js></script>
   <script src="src/draw/fsm.js"></script>
   <script src="src/elements/link.js"></script>
   <script src="src/elements/node.js"></script>
   <script src="src/elements/self_link.js"></script>
   <script src="src/elements/start_link.js"></script>
   <script src="src/elements/temporary_link.js"></script>
+	<script src="src/lenguajesRegulares/dfa.js"></script>
+
 
 </head>
-<body>
+<body style="background-color:#E2FAEE;">
 	<h1>Finite State Machine Designer</h1>
-	<canvas id="canvas" width="800" height="600">
-		<span class="error">Your browser does not support<br>the HTML5 &lt;canvas&gt; element</span>
-	</canvas>
+	<div class="mui--z1">
+		<canvas id="canvas" width="800" height="600">
+			<span class="error">Your browser does not support<br>the HTML5 &lt;canvas&gt; element</span>
+		</canvas>
+	</div>
+
 	<div>
-		<p class="center">Export as: <a href="javascript:saveAsPNG()">PNG</a> | <a href="javascript:saveAsSVG()">SVG</a> | <a href="javascript:saveAsLaTeX()">LaTeX</a></p>
-		<textarea id="output"></textarea>
+		<form>
+		  <div class="mui-textfield">
+		    <input id="inputCadena" type="text" placeholder="Digita una cadena de caracteres">
+		  </div>
+		</form>
+		<button class="mui-btn mui-btn--large mui-btn--primary" id="btnprobarCadenaDFA" >probar cadena</button>
+		<br><br><br><br>
 		<p>The big white box above is the FSM designer.&nbsp; Here's how to use it:</p>
 		<ul>
 			<li><b>Add a state:</b> double-click on the canvas</li>
@@ -112,6 +125,5 @@ if (typeof btoa == 'undefined') {
 		</ul>
 		<p>This was made in HTML5 and JavaScript using the canvas element.</p>
 	</div>
-	<p>Created by <a href="http://madebyevan.com/">Evan Wallace</a> in 2010</p>
 </body>
 </html>
