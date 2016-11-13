@@ -48,7 +48,9 @@ function drawText(c, originalText, x, y, angleOrNull, isSelected) {
 	text = convertLatexShortcuts(originalText);
 	c.font = '20px "Times New Roman", serif';
 	var width = c.measureText(text).width;
-
+	if (text != "") {
+		getState(text);
+	}
 	// center the text
 	x -= width / 2;
 
@@ -160,6 +162,9 @@ function snapNode(node) {
 }
 
 window.onload = function() {
+// dfa----------------------------
+document.getElementById("btnprobarCadenaDFA").onclick = function() {myFunction()};
+
 	canvas = document.getElementById('canvas');
 //	restoreBackup();
 	draw();
