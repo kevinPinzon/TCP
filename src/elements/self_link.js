@@ -3,7 +3,6 @@ function SelfLink(node, mouse) {
 	this.anchorAngle = 0;
 	this.mouseOffsetAngle = 0;
 	this.text = '';
-
 	if(mouse) {
 		this.setAnchorPoint(mouse.x, mouse.y);
 	}

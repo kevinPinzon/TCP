@@ -3,7 +3,7 @@ function StartLink(node, start) {
 	this.deltaX = 0;
 	this.deltaY = 0;
 	this.text = '';
-
+	getInitialState(node);
 	if(start) {
 		this.setAnchorPoint(start.x, start.y);
 	}
@@ -49,6 +49,8 @@ StartLink.prototype.draw = function(c) {
 
 	// draw the head of the arrow
 	drawArrow(c, stuff.endX, stuff.endY, Math.atan2(-this.deltaY, -this.deltaX));
+	// console.log("incial");
+	// console.log("text: "+this.text);
 };
 
 StartLink.prototype.containsPoint = function(x, y) {

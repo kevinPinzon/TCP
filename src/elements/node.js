@@ -33,6 +33,9 @@ Node.prototype.draw = function(c) {
 		c.beginPath();
 		c.arc(this.x, this.y, nodeRadius - 6, 0, 2 * Math.PI, false);
 		c.stroke();
+		if (this.text!="") {
+			getFinalState(this.text);
+		}		
 	}
 };
 
