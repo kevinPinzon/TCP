@@ -100,11 +100,17 @@ Link.prototype.draw = function(c) {
 		var textX = stuff.circleX + stuff.circleRadius * Math.cos(textAngle);
 		var textY = stuff.circleY + stuff.circleRadius * Math.sin(textAngle);
 		drawText(c, this.text, textX, textY, textAngle, selectedObject == this);
+		if (this.text != "") {
+			getAlfabeto(this.text);
+		}
 	} else {
 		var textX = (stuff.startX + stuff.endX) / 2;
 		var textY = (stuff.startY + stuff.endY) / 2;
 		var textAngle = Math.atan2(stuff.endX - stuff.startX, stuff.startY - stuff.endY);
 		drawText(c, this.text, textX, textY, textAngle + this.lineAngleAdjust, selectedObject == this);
+		if (this.text != "") {
+			getAlfabeto(this.text);
+		}
 	}
 };
 
