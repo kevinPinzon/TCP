@@ -48,9 +48,6 @@ function drawText(c, originalText, x, y, angleOrNull, isSelected) {
 	text = convertLatexShortcuts(originalText);
 	c.font = '20px "Times New Roman", serif';
 	var width = c.measureText(text).width;
-	if (text != "") {
-		getState(text);
-	}
 	// center the text
 	x -= width / 2;
 
