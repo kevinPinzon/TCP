@@ -3,10 +3,14 @@ function Link(a, b) {
 	this.nodeB = b;
 	this.text = '';
 	this.lineAngleAdjust = 0; // value to add to textAngle when link is straight line
-
 	// make anchor point relative to the locations of nodeA and nodeB
 	this.parallelPart = 0.5; // percentage from nodeA to nodeB
 	this.perpendicularPart = 0; // pixels from line between nodeA and nodeB
+
+	console.log("nodo a: "+a.text);
+	console.log("nodo b: "+b.text);
+	console.log("texto: "+this.text);
+	llenarDelta(a,this.text,b);
 }
 
 Link.prototype.getAnchorPoint = function() {

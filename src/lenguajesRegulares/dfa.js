@@ -2,8 +2,11 @@
   var alfabeto = new Array();
   var estadoInicial;
   var estadosFinales = new Array();
+  var delta = new Array();
+  var deltaT;
+  var insertar;
 
-  function myFunction() {
+  function probarDFA() {
     var cadenaEntrante = document.getElementById("inputCadena").value;
 
     for (var i = 0; i < estados.length; i++)
@@ -34,7 +37,7 @@
   }
 
   function getState(Newstate) {
-    var insertar=true;
+    insertar=true;
     if (estados.length == 0)
       estados[0]=Newstate;
     for (var i = 0; i < estados.length; i++) {
@@ -57,14 +60,46 @@
       alfabeto[alfabeto.length]=Newsymbol;
   }
 
-  function getFinalState(Finalstate) {
-    var insertar=true;
+  function getFinalState(finalState) {
+    insertar=true;
     if (estadosFinales.length == 0)
-      estadosFinales[0]=Finalstate;
+      estadosFinales[0]=finalState;
     for (var i = 0; i < estadosFinales.length; i++) {
-      if (estadosFinales[i]==Finalstate || ""==Finalstate)
+      if (estadosFinales[i]==finalState || ""==finalState)
         insertar=false;
     }
     if (insertar)
-      estadosFinales[estadosFinales.length]=Finalstate;
+      estadosFinales[estadosFinales.length]=finalState;
+  }
+
+  function llenarDelta(initialState,symbol,finalState) {
+    if (initialState.txt == "" || symbol == "" || finalState.txt == "") {
+      console.log("no inserta..");
+    }
+    else {
+      console.log("entro en llenarDelta else..");
+      deltaT = new Delta(initialState,symbol,finalState);
+      insertar=true;
+      for (var i = 0; i < delta.length; i++) {
+        if (comparadorDeObjetos(deltaT,delta[i]))
+          insertar=false;
+      }
+      if (insertar) {
+          delta.push(deltaT);
+          console.log("elemento insertado");
+      }
+      else {
+        console.log("elemento NO insertado");
+      }
+    }
+  }
+
+  function getNextState(initialState,symbol) {
+
+  }
+
+  function comparadorDeObjetos(obj1,obj2) {
+    if (JSON.stringify(obj1) === JSON.stringify(obj2))
+      return true;
+    return false;
   }

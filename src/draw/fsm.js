@@ -160,7 +160,7 @@ function snapNode(node) {
 
 window.onload = function() {
 // dfa----------------------------
-document.getElementById("btnprobarCadenaDFA").onclick = function() {myFunction()};
+document.getElementById("btnprobarCadenaDFA").onclick = function() {probarDFA()};
 
 	canvas = document.getElementById('canvas');
 //	restoreBackup();
