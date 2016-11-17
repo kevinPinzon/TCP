@@ -36,7 +36,6 @@ StartLink.prototype.getEndPoints = function() {
 
 StartLink.prototype.draw = function(c) {
 	var stuff = this.getEndPoints();
-
 	// draw the line
 	c.beginPath();
 	c.moveTo(stuff.startX, stuff.startY);
@@ -60,5 +59,6 @@ StartLink.prototype.containsPoint = function(x, y) {
 	var length = Math.sqrt(dx*dx + dy*dy);
 	var percent = (dx * (x - stuff.startX) + dy * (y - stuff.startY)) / (length * length);
 	var distance = (dx * (y - stuff.startY) - dy * (x - stuff.startX)) / length;
+
 	return (percent > 0 && percent < 1 && Math.abs(distance) < hitTargetPadding);
 };

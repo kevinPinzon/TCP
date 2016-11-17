@@ -5,31 +5,42 @@
   var delta = new Array();
   var deltaT;
   var insertar;
+  var transicionEntrantes;
 
   function probarDFA() {
     var cadenaEntrante = document.getElementById("inputCadena").value;
 
-    for (var i = 0; i < estados.length; i++)
-      console.log("estado["+i+"]: "+estados[i]);
-
-    for (var i = 0; i < alfabeto.length; i++)
-      console.log("alfabeto["+i+"]: "+alfabeto[i]);
-
-    console.log("estado inicial: "+ estadoInicial);
-
-    for (var i = 0; i < estadosFinales.length; i++)
-      console.log("estados Finales["+i+"]: "+estadosFinales[i]);
-
     if (cadenaEntrante != "") {
       if (estados.length != 0) {
         if (alfabeto.length != 0) {
+      // IMPRESION DE LAS 5TUPLAS-----------------------------------
+          console.log("estado inicial: "+ estadoInicial);
+
+          for (var i = 0; i < estados.length; i++)
+            console.log("estado["+i+"]: "+estados[i]);
+
+          for (var i = 0; i < alfabeto.length; i++)
+            console.log("alfabeto["+i+"]: "+alfabeto[i]);
+
+          for (var i = 0; i < estadosFinales.length; i++)
+            console.log("estados Finales["+i+"]: "+estadosFinales[i]);
+
           for (var i = 0; i < delta.length; i++) {
             console.log("DELTA "+i+".............");
             console.log("estado incial: "+delta[i].getInitialState().text);
-            console.log("estado final"+delta[i].getFinalState().text);
+            console.log("estado final: "+delta[i].getFinalState().text);
             console.log("transicion: "+delta[i].getTransition());
           }
-
+      // FINAL DE IMPRESION DE LAS 5TUPLAS-----------------------------------
+            transicionEntrantes = cadenaEntrante.split("-");
+            for (var i = 0; i < transicionEntrantes.length; i++) {
+              console.log("alfabeto ingresado: "+transicionEntrantes[i]);
+            }
+            if (entradaCorrecta(transicionEntrantes)) {
+              alert("TODO BIEN")
+            }else {
+              alert("Alfabeto ingresado no reconocido");
+            }
         }else
           alert("Por favor asigne valores a las aristar");
       }else
@@ -109,4 +120,18 @@
     if (JSON.stringify(obj1) === JSON.stringify(obj2))
       return true;
     return false;
+  }
+
+  function entradaCorrecta(cadena) {
+    var reconocido;
+    for (var i = 0; i < cadena.length; i++) {
+      reconocido = false;
+      for (var j = 0; j < alfabeto.length; j++) {
+        if (alfabeto[j] == cadena[i])
+          reconocido=true;
+      }
+      if(!reconocido)
+        return false;
+    }
+    return true;
   }

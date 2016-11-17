@@ -6,10 +6,6 @@ function Link(a, b) {
 	// make anchor point relative to the locations of nodeA and nodeB
 	this.parallelPart = 0.5; // percentage from nodeA to nodeB
 	this.perpendicularPart = 0; // pixels from line between nodeA and nodeB
-
-	console.log("nodo a: "+a.text);
-	console.log("nodo b: "+b.text);
-	console.log("texto: "+this.text);
 }
 
 Link.prototype.getAnchorPoint = function() {
@@ -103,19 +99,23 @@ Link.prototype.draw = function(c) {
 		var textX = stuff.circleX + stuff.circleRadius * Math.cos(textAngle);
 		var textY = stuff.circleY + stuff.circleRadius * Math.sin(textAngle);
 		drawText(c, this.text, textX, textY, textAngle, selectedObject == this);
+
 		if (this.text != "") {
 			llenarDelta(this.nodeA,this.text,this.nodeB);
 			getAlfabeto(this.text);
 		}
+
 	} else {
 		var textX = (stuff.startX + stuff.endX) / 2;
 		var textY = (stuff.startY + stuff.endY) / 2;
 		var textAngle = Math.atan2(stuff.endX - stuff.startX, stuff.startY - stuff.endY);
 		drawText(c, this.text, textX, textY, textAngle + this.lineAngleAdjust, selectedObject == this);
+
 		if (this.text != "") {
 			getAlfabeto(this.text);
 			llenarDelta(this.nodeA,this.text,this.nodeB);
 		}
+
 	}
 };
 
