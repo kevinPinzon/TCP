@@ -10,7 +10,6 @@ function Link(a, b) {
 	console.log("nodo a: "+a.text);
 	console.log("nodo b: "+b.text);
 	console.log("texto: "+this.text);
-	llenarDelta(a,this.text,b);
 }
 
 Link.prototype.getAnchorPoint = function() {
@@ -105,6 +104,7 @@ Link.prototype.draw = function(c) {
 		var textY = stuff.circleY + stuff.circleRadius * Math.sin(textAngle);
 		drawText(c, this.text, textX, textY, textAngle, selectedObject == this);
 		if (this.text != "") {
+			llenarDelta(this.nodeA,this.text,this.nodeB);
 			getAlfabeto(this.text);
 		}
 	} else {
@@ -114,6 +114,7 @@ Link.prototype.draw = function(c) {
 		drawText(c, this.text, textX, textY, textAngle + this.lineAngleAdjust, selectedObject == this);
 		if (this.text != "") {
 			getAlfabeto(this.text);
+			llenarDelta(this.nodeA,this.text,this.nodeB);
 		}
 	}
 };

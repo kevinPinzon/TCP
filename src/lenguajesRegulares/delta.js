@@ -2,8 +2,14 @@ function Delta(initialNode,symbol,finalNode) {
 	this.initialNode = initialNode;
 	this.finalNode = finalNode;
 	this.symbol = symbol;
-  console.log("DELTA AGREGADO");
-  console.log(""+initialNode);
-  console.log(""+finalNode);
-  console.log(""+symbol);
+
+  this.getInitialState = function() {
+    return this.initialNode;
+  }
+  this.getFinalState = function() {
+    return this.finalNode;
+  }
+  this.getTransition = function() {
+    return this.symbol;
+  }
 }

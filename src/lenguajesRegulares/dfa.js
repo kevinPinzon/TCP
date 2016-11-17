@@ -23,6 +23,12 @@
     if (cadenaEntrante != "") {
       if (estados.length != 0) {
         if (alfabeto.length != 0) {
+          for (var i = 0; i < delta.length; i++) {
+            console.log("DELTA "+i+".............");
+            console.log("estado incial: "+delta[i].getInitialState().text);
+            console.log("estado final"+delta[i].getFinalState().text);
+            console.log("transicion: "+delta[i].getTransition());
+          }
 
         }else
           alert("Por favor asigne valores a las aristar");
@@ -31,6 +37,7 @@
     }else
       alert("Por favor digite una cadena");
   }
+
 
   function getInitialState(initial) {
       estadoInicial = initial.text;
@@ -45,7 +52,7 @@
         insertar=false;
     }
     if (insertar)
-      estados[estados.length]=Newstate;
+      estados.push(Newstate);
   }
 
   function getAlfabeto (Newsymbol) {
@@ -57,7 +64,7 @@
         insertar=false;
     }
     if (insertar)
-      alfabeto[alfabeto.length]=Newsymbol;
+      alfabeto.push(Newsymbol);
   }
 
   function getFinalState(finalState) {
@@ -69,15 +76,15 @@
         insertar=false;
     }
     if (insertar)
-      estadosFinales[estadosFinales.length]=finalState;
+      estadosFinales.push(finalState);
   }
 
   function llenarDelta(initialState,symbol,finalState) {
     if (initialState.txt == "" || symbol == "" || finalState.txt == "") {
-      console.log("no inserta..");
+      // console.log("no inserta..");
     }
     else {
-      console.log("entro en llenarDelta else..");
+      // console.log("entro en llenarDelta else..");
       deltaT = new Delta(initialState,symbol,finalState);
       insertar=true;
       for (var i = 0; i < delta.length; i++) {
@@ -86,10 +93,10 @@
       }
       if (insertar) {
           delta.push(deltaT);
-          console.log("elemento insertado");
+          // console.log("elemento insertado");
       }
       else {
-        console.log("elemento NO insertado");
+        // console.log("elemento NO insertado");
       }
     }
   }
