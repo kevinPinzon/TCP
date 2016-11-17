@@ -4,10 +4,10 @@ function Delta(initialNode,symbol,finalNode) {
 	this.symbol = symbol;
 
   this.getInitialState = function() {
-    return this.initialNode;
+    return this.initialNode.text;
   }
   this.getFinalState = function() {
-    return this.finalNode;
+    return this.finalNode.text;
   }
   this.getTransition = function() {
     return this.symbol;
