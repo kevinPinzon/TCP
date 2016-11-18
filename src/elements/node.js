@@ -4,6 +4,7 @@ function Node(x, y) {
 	this.mouseOffsetX = 0;
 	this.mouseOffsetY = 0;
 	this.isAcceptState = false;
+	this.isInitial=false;
 	this.text = '';
 }
 
@@ -26,7 +27,7 @@ Node.prototype.draw = function(c) {
 	// draw the text
 	drawText(c, this.text, this.x, this.y, null, selectedObject == this);
 	if (this.text != "") {
-		getState(this.text);
+		// getState(this.text);
 	}
 	// draw a double circle for an accept state
 	if(this.isAcceptState) {
@@ -34,8 +35,8 @@ Node.prototype.draw = function(c) {
 		c.arc(this.x, this.y, nodeRadius - 6, 0, 2 * Math.PI, false);
 		c.stroke();
 		if (this.text!="") {
-			getFinalState(this.text);
-		}		
+			// getFinalState(this.text);
+		}
 	}
 };
 

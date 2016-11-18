@@ -100,6 +100,7 @@ var selectedObject = null; // either a Link or a Node
 var currentLink = null; // a Link
 var movingObject = false;
 var originalClick;
+//var FirstState=null;//Estado inicial
 
 function drawUsing(c) {
 	c.clearRect(0, 0, canvas.width, canvas.height);
@@ -157,11 +158,34 @@ function snapNode(node) {
 		}
 	}
 }
+function get5tuplas() {
+	console.log("longitud de links: "+links.length);
+	console.log("longitud de nodes: "+nodes.length);
 
+	for (var i = 0; i < links.length; i++) {
+		getAlfabeto(links[i].text);
+		llenarDelta(links[i].nodeA,links[i].text,links[i].nodeB);
+	}
+	for (var i = 0; i < nodes.length; i++) {
+		console.log("nodo "+i+": "+nodes[i].text);
+		getState(nodes[i].text);
+		if (nodes[i].isAcceptState) {
+			getFinalState(nodes[i].text);
+		}
+		if (nodes[i].isInitial) {
+			getInitialState(nodes[i]);
+		}
+	}
+}
 window.onload = function() {
 // dfa----------------------------
-document.getElementById("btnprobarCadenaDFA").onclick = function() {myFunction()};
+document.getElementById("btnprobarCadenaDFA").onclick = function() {probarDFA()};
 
+document.getElementById("nodos").onclick = function() {
+	for (var i = 0; i < nodes.length; i++) {
+		console.log("nodo "+i+": "+nodes[i].text);
+	}
+};
 	canvas = document.getElementById('canvas');
 //	restoreBackup();
 	draw();
@@ -226,6 +250,8 @@ document.getElementById("btnprobarCadenaDFA").onclick = function() {myFunction()
 			if(selectedObject == null) {
 				if(targetNode != null) {
 					currentLink = new StartLink(targetNode, originalClick);
+					targetNode.isInitial=true;
+					console.log("current");
 				} else {
 					currentLink = new TemporaryLink(originalClick, mouse);
 				}
@@ -234,6 +260,8 @@ document.getElementById("btnprobarCadenaDFA").onclick = function() {myFunction()
 					currentLink = new SelfLink(selectedObject, mouse);
 				} else if(targetNode != null) {
 					currentLink = new Link(selectedObject, targetNode);
+          //FirstState = currentLink;
+						getInitialState(currentLink);
 				} else {
 					currentLink = new TemporaryLink(selectedObject.closestPointOnCircle(mouse.x, mouse.y), mouse);
 				}

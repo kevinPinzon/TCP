@@ -3,7 +3,6 @@ function Link(a, b) {
 	this.nodeB = b;
 	this.text = '';
 	this.lineAngleAdjust = 0; // value to add to textAngle when link is straight line
-
 	// make anchor point relative to the locations of nodeA and nodeB
 	this.parallelPart = 0.5; // percentage from nodeA to nodeB
 	this.perpendicularPart = 0; // pixels from line between nodeA and nodeB
@@ -100,17 +99,23 @@ Link.prototype.draw = function(c) {
 		var textX = stuff.circleX + stuff.circleRadius * Math.cos(textAngle);
 		var textY = stuff.circleY + stuff.circleRadius * Math.sin(textAngle);
 		drawText(c, this.text, textX, textY, textAngle, selectedObject == this);
-		if (this.text != "") {
-			getAlfabeto(this.text);
-		}
+
+		// if (this.text != "") {
+		// 	llenarDelta(this.nodeA,this.text,this.nodeB);
+			// getAlfabeto(this.text);
+		// }
+
 	} else {
 		var textX = (stuff.startX + stuff.endX) / 2;
 		var textY = (stuff.startY + stuff.endY) / 2;
 		var textAngle = Math.atan2(stuff.endX - stuff.startX, stuff.startY - stuff.endY);
 		drawText(c, this.text, textX, textY, textAngle + this.lineAngleAdjust, selectedObject == this);
-		if (this.text != "") {
-			getAlfabeto(this.text);
-		}
+
+		// if (this.text != "") {
+			// getAlfabeto(this.text);
+			// llenarDelta(this.nodeA,this.text,this.nodeB);
+		// }
+
 	}
 };
 
