@@ -8,12 +8,13 @@
   var transicionEntrantes;
 
   function probarDFA() {
+    get5tuplas();
     var cadenaEntrante = document.getElementById("inputCadena").value;
-
     if (cadenaEntrante != "") {
       if (estados.length != 0) {
         if (alfabeto.length != 0) {
       // IMPRESION DE LAS 5TUPLAS-----------------------------------
+          console.log("PRUEBA INICIANDO--------------------------------");
           console.log("estado inicial: "+ estadoInicial);
 
           for (var i = 0; i < estados.length; i++)
@@ -32,15 +33,25 @@
             console.log("transicion: "+delta[i].getTransition());
           }
       // FINAL DE IMPRESION DE LAS 5TUPLAS-----------------------------------
-
+            console.log("VERIFICANDO CADENA------------------------------------------------");
             transicionEntrantes = cadenaEntrante.split("-");
+
+            for (var i = 0; i < transicionEntrantes.length; i++) {
+              console.log("transicionEntrantes: "+transicionEntrantes[i]);
+            }
+
             if (entradaCorrecta(transicionEntrantes)) {
               if (existeInicial) {
                 if (estadosFinales.length > 0) {
+
                   var estadoActual = estadoInicial;
+
                   for (var i = 0; i < transicionEntrantes.length; i++) {
+                    console.log("estado actual: "+estadoActual);
                     estadoActual = getNextState(estadoActual,transicionEntrantes[i]);
+                    console.log("estado actual(despues del get): "+estadoActual);
                   }
+
                   if (verificadorDeAceptacion(estadoActual)) {
                     alert("cadena aceptada");
                   }else {
@@ -105,7 +116,7 @@
   }
 
   function llenarDelta(initialState,symbol,finalState) {
-    if (initialState.txt == "" || symbol == "" || finalState.txt == "") {
+    if (initialState == "" || symbol == "" || finalState == "") {
       // console.log("no inserta..");
     }
     else {
@@ -148,11 +159,15 @@
   }
 
   function getNextState(initialState,symbol) {
+    console.log("simbolo entrante:"+symbol);
+    console.log("estado recivido:"+initialState);
     for (var i = 0; i < delta.length; i++) {
-      if ( comparadorDeObjetos(initialState,delta[i].getInitialState().txt) && comparadorDeObjetos(symbol,delta[i].getTransition()) )
+      if ( comparadorDeObjetos(initialState,delta[i].getInitialState()) && comparadorDeObjetos(symbol,delta[i].getTransition()) ){
          return delta[i].getFinalState();
+         console.log("concidencia encontrda");
+       }
     }
-    return 0;
+    return "no encontrado";
   }
 
   function verificadorDeAceptacion(estadoActual) {

@@ -157,11 +157,31 @@ function snapNode(node) {
 		}
 	}
 }
+function get5tuplas() {
+	console.log("longitud de links: "+links.length);
+	console.log("longitud de nodes: "+nodes.length);
 
+	for (var i = 0; i < links.length; i++) {
+		getAlfabeto(links[i].text);
+		llenarDelta(links[i].nodeA,links[i].text,links[i].nodeB);
+	}
+	for (var i = 0; i < nodes.length; i++) {
+		console.log("nodo "+i+": "+nodes[i].text);
+		getState(nodes[i].text);
+		if (nodes[i].isAcceptState) {
+			getFinalState(nodes[i].text);
+		}
+	}
+}
 window.onload = function() {
 // dfa----------------------------
 document.getElementById("btnprobarCadenaDFA").onclick = function() {probarDFA()};
 
+document.getElementById("nodos").onclick = function() {
+	for (var i = 0; i < nodes.length; i++) {
+		console.log("nodo "+i+": "+nodes[i].text);
+	}
+};
 	canvas = document.getElementById('canvas');
 //	restoreBackup();
 	draw();

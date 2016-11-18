@@ -100,10 +100,10 @@ Link.prototype.draw = function(c) {
 		var textY = stuff.circleY + stuff.circleRadius * Math.sin(textAngle);
 		drawText(c, this.text, textX, textY, textAngle, selectedObject == this);
 
-		if (this.text != "") {
-			llenarDelta(this.nodeA,this.text,this.nodeB);
-			getAlfabeto(this.text);
-		}
+		// if (this.text != "") {
+		// 	llenarDelta(this.nodeA,this.text,this.nodeB);
+			// getAlfabeto(this.text);
+		// }
 
 	} else {
 		var textX = (stuff.startX + stuff.endX) / 2;
@@ -111,10 +111,10 @@ Link.prototype.draw = function(c) {
 		var textAngle = Math.atan2(stuff.endX - stuff.startX, stuff.startY - stuff.endY);
 		drawText(c, this.text, textX, textY, textAngle + this.lineAngleAdjust, selectedObject == this);
 
-		if (this.text != "") {
-			getAlfabeto(this.text);
-			llenarDelta(this.nodeA,this.text,this.nodeB);
-		}
+		// if (this.text != "") {
+			// getAlfabeto(this.text);
+			// llenarDelta(this.nodeA,this.text,this.nodeB);
+		// }
 
 	}
 };
