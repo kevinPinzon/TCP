@@ -4,6 +4,7 @@ function Node(x, y) {
 	this.mouseOffsetX = 0;
 	this.mouseOffsetY = 0;
 	this.isAcceptState = false;
+	this.isInitial=false;
 	this.text = '';
 }
 

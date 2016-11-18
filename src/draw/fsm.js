@@ -100,6 +100,7 @@ var selectedObject = null; // either a Link or a Node
 var currentLink = null; // a Link
 var movingObject = false;
 var originalClick;
+//var FirstState=null;//Estado inicial
 
 function drawUsing(c) {
 	c.clearRect(0, 0, canvas.width, canvas.height);
@@ -170,6 +171,9 @@ function get5tuplas() {
 		getState(nodes[i].text);
 		if (nodes[i].isAcceptState) {
 			getFinalState(nodes[i].text);
+		}
+		if (nodes[i].isInitial) {
+			getInitialState(nodes[i]);
 		}
 	}
 }
@@ -246,6 +250,8 @@ document.getElementById("nodos").onclick = function() {
 			if(selectedObject == null) {
 				if(targetNode != null) {
 					currentLink = new StartLink(targetNode, originalClick);
+					targetNode.isInitial=true;
+					console.log("current");
 				} else {
 					currentLink = new TemporaryLink(originalClick, mouse);
 				}
@@ -254,6 +260,8 @@ document.getElementById("nodos").onclick = function() {
 					currentLink = new SelfLink(selectedObject, mouse);
 				} else if(targetNode != null) {
 					currentLink = new Link(selectedObject, targetNode);
+          //FirstState = currentLink;
+						getInitialState(currentLink);
 				} else {
 					currentLink = new TemporaryLink(selectedObject.closestPointOnCircle(mouse.x, mouse.y), mouse);
 				}

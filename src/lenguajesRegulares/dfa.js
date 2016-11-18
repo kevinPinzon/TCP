@@ -8,6 +8,11 @@
   var transicionEntrantes;
 
   function probarDFA() {
+    estados = new Array();
+    alfabeto = new Array();
+    estadosFinales = new Array();
+    delta = new Array();
+
     get5tuplas();
     var cadenaEntrante = document.getElementById("inputCadena").value;
     if (cadenaEntrante != "") {
@@ -75,8 +80,8 @@
 
 
   function getInitialState(initial) {
-      estadoInicial = initial.text;
-      existeInicial=true;
+    estadoInicial=initial.text;
+    existeInicial=true;
   }
 
   function getState(Newstate) {

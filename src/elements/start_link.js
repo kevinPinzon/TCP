@@ -3,7 +3,6 @@ function StartLink(node, start) {
 	this.deltaX = 0;
 	this.deltaY = 0;
 	this.text = '';
-	getInitialState(node);
 	if(start) {
 		this.setAnchorPoint(start.x, start.y);
 	}
