@@ -6,6 +6,7 @@
   var deltaT;
   var insertar;
   var transicionEntrantes;
+  var foundStates = new Array();
 
   function probarNFA() {
     estados = new Array();
@@ -49,27 +50,24 @@
               if (existeInicial) {
                 if (estadosFinales.length > 0) {
 
-                  var estadoActual = estadoInicial;
+                  foundStates.push(estadoInicial);
 
                   for (var i = 0; i < transicionEntrantes.length; i++) {
                     console.log("estado actual: "+estadoActual);
-                    estadoActual = getNextState(estadoActual,transicionEntrantes[i]);
+                    getNextState(foundStates.pop(),transicionEntrantes[i]);
                     console.log("estado actual(despues del get): "+estadoActual);
                   }
-
                   if (verificadorDeAceptacion(estadoActual)) {
                     alert("cadena aceptada");
                   }else {
                     alert("cadena rechazada");
                   }
-
                 }else
                   alert("Por favor asigne estados finales");
               }else
                 alert("Por favor asigne estado incial");
             }else
               alert("Alfabeto ingresado no reconocido");
-
         }else
           alert("Por favor asigne valores a las aristar");
       }else
@@ -141,19 +139,39 @@
       // console.log("no inserta..");
     }
     else {
-      // console.log("entro en llenarDelta else..");
-      deltaT = new Delta(initialState,symbol,finalState);
-      insertar=true;
-      for (var i = 0; i < delta.length; i++) {
-        if (comparadorDeObjetos(deltaT,delta[i]))
+      if (symbol.length > 1) {
+        for (var i = 0; i < symbol.length; i++) {
+          if (symbol[i] !=',') {
+            deltaT = new Delta(initialState,symbol[i],finalState);
+            insertar=true;
+            for (var i = 0; i < delta.length; i++) {
+              if (comparadorDeObjetos(deltaT,delta[i]))
+              insertar=false;
+            }
+            if (insertar) {
+              delta.push(deltaT);
+              // console.log("elemento insertado");
+            }
+            else {
+              // console.log("elemento NO insertado");
+            }
+          }
+        }
+      }else {
+        // console.log("entro en llenarDelta else..");
+        deltaT = new Delta(initialState,symbol,finalState);
+        insertar=true;
+        for (var i = 0; i < delta.length; i++) {
+          if (comparadorDeObjetos(deltaT,delta[i]))
           insertar=false;
-      }
-      if (insertar) {
+        }
+        if (insertar) {
           delta.push(deltaT);
           // console.log("elemento insertado");
-      }
-      else {
-        // console.log("elemento NO insertado");
+        }
+        else {
+          // console.log("elemento NO insertado");
+        }
       }
     }
   }
@@ -180,15 +198,20 @@
   }
 
   function getNextState(initialState,symbol) {
+    foundStates= new Array();
     console.log("simbolo entrante:"+symbol);
     console.log("estado recivido:"+initialState);
     for (var i = 0; i < delta.length; i++) {
-      if ( comparadorDeObjetos(initialState,delta[i].getInitialState()) && comparadorDeObjetos(symbol,delta[i].getTransition()) ){
-         return delta[i].getFinalState();
-         console.log("concidencia encontrda");
-       }
+      console.log("DELTA "+i+" actual: "+delta[i].toString());
+      if ( comparadorDeObjetos(initialState,delta[i].getInitialState()) ){
+        if (comparadorDeObjetos(symbol,delta[i].getTransition())) {
+          foundStates.push(delta[i].getFinalState());
+          console.log("concidencia encontrda");
+          console.log("foundState: "+delta[i].getFinalState());
+        }
+      }
     }
-    return "no encontrado";
+    return foundStates;
   }
 
   function verificadorDeAceptacion(estadoActual) {
