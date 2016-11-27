@@ -97,15 +97,31 @@
   }
 
   function getAlfabeto (Newsymbol) {
-    var insertar=true;
-    if (alfabeto.length == 0)
-      alfabeto[0]=Newsymbol;
-    for (var i = 0; i < alfabeto.length; i++) {
-      if (alfabeto[i]==Newsymbol || ""==Newsymbol)
-        insertar=false;
+    if (Newsymbol.length > 1) {
+    for (var i = 0; i < Newsymbol.length; i++) {
+      if (Newsymbol[i] !=',') {
+        var insertar=true;
+        if (alfabeto.length == 0)
+          alfabeto[0]=Newsymbol[i];
+        for (var j = 0; j < alfabeto.length; j++) {
+          if (alfabeto[j]==Newsymbol[i] || ""==Newsymbol[i])
+            insertar=false;
+        }
+        if (insertar)
+          alfabeto.push(Newsymbol[i]);
+      }
     }
-    if (insertar)
-      alfabeto.push(Newsymbol);
+    }else{
+      var insertar=true;
+      if (alfabeto.length == 0)
+        alfabeto[0]=Newsymbol;
+      for (var i = 0; i < alfabeto.length; i++) {
+        if (alfabeto[i]==Newsymbol || ""==Newsymbol)
+          insertar=false;
+      }
+      if (insertar)
+        alfabeto.push(Newsymbol);
+    }
   }
 
   function getFinalState(finalState) {

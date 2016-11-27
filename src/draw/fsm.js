@@ -159,8 +159,6 @@ function snapNode(node) {
 	}
 }
 function get5tuplas() {
-	console.log("longitud de links: "+links.length);
-	console.log("longitud de nodes: "+nodes.length);
 
 	for (var i = 0; i < links.length; i++) {
 		getAlfabeto(links[i].text);
@@ -178,15 +176,10 @@ function get5tuplas() {
 	}
 }
 window.onload = function() {
-// dfa----------------------------
-document.getElementById("btnprobarCadenaDFA").onclick = function() {probarDFA()};
 
-document.getElementById("nodos").onclick = function() {
-	for (var i = 0; i < nodes.length; i++) {
-		console.log("nodo "+i+": "+nodes[i].text);
-	}
-};
 	canvas = document.getElementById('canvas');
+	document.getElementById("btnprobarCadenaDFA").onclick = function() {probarDFA()};
+	document.getElementById("btnprobarCadenaNFA").onclick = function() {probarNFA()};
 //	restoreBackup();
 	draw();
 
@@ -251,7 +244,6 @@ document.getElementById("nodos").onclick = function() {
 				if(targetNode != null) {
 					currentLink = new StartLink(targetNode, originalClick);
 					targetNode.isInitial=true;
-					console.log("current");
 				} else {
 					currentLink = new TemporaryLink(originalClick, mouse);
 				}
