@@ -53,8 +53,9 @@
                   foundStates.push(estadoInicial);
 
                   for (var i = 0; i < transicionEntrantes.length; i++) {
+                    var estadoActual = foundStates.shift();
                     console.log("estado actual: "+estadoActual);
-                    getNextState(foundStates.pop(),transicionEntrantes[i]);
+                    getNextState(estadoActual,transicionEntrantes[i]);
                     console.log("estado actual(despues del get): "+estadoActual);
                   }
                   if (verificadorDeAceptacion(estadoActual)) {
@@ -140,15 +141,19 @@
     }
     else {
       if (symbol.length > 1) {
-        for (var i = 0; i < symbol.length; i++) {
-          if (symbol[i] !=',') {
-            deltaT = new Delta(initialState,symbol[i],finalState);
+        for (var j = 0; j < symbol.length; j++) {
+          if (symbol[j] !=',') {
+            deltaT = new Delta(initialState,symbol[j],finalState);
             insertar=true;
             for (var i = 0; i < delta.length; i++) {
-              if (comparadorDeObjetos(deltaT,delta[i]))
-              insertar=false;
+              console.log("DELTA TRABAJANDOSE: "+deltaT.toString());
+              if (comparadorDeObjetos(deltaT,delta[i])){
+                insertar=false;
+                console.log("NO INSERTADO! "+deltaT.toString());
+              }
             }
             if (insertar) {
+              console.log("INSERTADO! "+deltaT.toString());
               delta.push(deltaT);
               // console.log("elemento insertado");
             }
@@ -218,6 +223,16 @@
     for (var i = 0; i < estadosFinales.length; i++) {
       if(comparadorDeObjetos(estadoActual,estadosFinales[i]))
         return true;
+    }
+    return false;
+  }
+
+  function esHoja(nodo){
+    for (var i = 0; i < delta.length; i++) {
+      if ( comparadorDeObjetos(delta[i].getInitialState,nodo) ) {
+        console.log(nodo+" tiene hijos| no es hoja");
+        return true;
+      }
     }
     return false;
   }

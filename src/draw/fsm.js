@@ -1,5 +1,5 @@
 var greekLetterNames = [ 'Alpha', 'Beta', 'Gamma', 'Delta', 'Epsilon', 'Zeta', 'Eta', 'Theta', 'Iota', 'Kappa', 'Lambda', 'Mu', 'Nu', 'Xi', 'Omicron', 'Pi', 'Rho', 'Sigma', 'Tau', 'Upsilon', 'Phi', 'Chi', 'Psi', 'Omega' ];
-
+var nodeTemp;
 function convertLatexShortcuts(text) {
 	// html greek characters
 	for(var i = 0; i < greekLetterNames.length; i++) {
@@ -162,6 +162,9 @@ function get5tuplas() {
 
 	for (var i = 0; i < links.length; i++) {
 		getAlfabeto(links[i].text);
+		if ( links[i] != null && links[i].nodeA == null) {
+			console.log(" symbol "+links[i].text);
+		}
 		llenarDelta(links[i].nodeA,links[i].text,links[i].nodeB);
 	}
 	for (var i = 0; i < nodes.length; i++) {
@@ -182,7 +185,6 @@ window.onload = function() {
 	document.getElementById("btnprobarCadenaNFA").onclick = function() {probarNFA()};
 //	restoreBackup();
 	draw();
-
 	canvas.onmousedown = function(e) {
 		var mouse = crossBrowserRelativeMousePos(e);
 		selectedObject = selectObject(mouse.x, mouse.y);
@@ -192,6 +194,7 @@ window.onload = function() {
 		if(selectedObject != null) {
 			if(shift && selectedObject instanceof Node) {
 				currentLink = new SelfLink(selectedObject, mouse);
+				console.log("currentLink is: "+currentLink.node.text);
 			} else {
 				movingObject = true;
 				deltaMouseX = deltaMouseY = 0;
@@ -205,7 +208,6 @@ window.onload = function() {
 		}
 
 		draw();
-
 		if(canvasHasFocus()) {
 			// disable drag-and-drop only if the canvas is already focused
 			return false;
@@ -215,7 +217,6 @@ window.onload = function() {
 			return true;
 		}
 	};
-
 	canvas.ondblclick = function(e) {
 		var mouse = crossBrowserRelativeMousePos(e);
 		selectedObject = selectObject(mouse.x, mouse.y);
