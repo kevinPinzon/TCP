@@ -6,3 +6,7 @@ function PDA(){
 	this.estado_aceptacion;
 	this.pila = new Array();
 }
+
+function ProbarCadenaPDA(){
+	
+}
