@@ -100,15 +100,31 @@
   }
 
   function getAlfabeto (Newsymbol) {
-    var insertar=true;
-    if (alfabeto.length == 0)
-      alfabeto[0]=Newsymbol;
-    for (var i = 0; i < alfabeto.length; i++) {
-      if (alfabeto[i]==Newsymbol || ""==Newsymbol)
-        insertar=false;
+    if (Newsymbol.length > 1) {
+    for (var i = 0; i < Newsymbol.length; i++) {
+      if (Newsymbol[i] !=',') {
+        var insertar=true;
+        if (alfabeto.length == 0)
+          alfabeto[0]=Newsymbol[i];
+        for (var j = 0; j < alfabeto.length; j++) {
+          if (alfabeto[j]==Newsymbol[i] || ""==Newsymbol[i])
+            insertar=false;
+        }
+        if (insertar)
+          alfabeto.push(Newsymbol[i]);
+      }
     }
-    if (insertar)
-      alfabeto.push(Newsymbol);
+    }else{
+      var insertar=true;
+      if (alfabeto.length == 0)
+        alfabeto[0]=Newsymbol;
+      for (var i = 0; i < alfabeto.length; i++) {
+        if (alfabeto[i]==Newsymbol || ""==Newsymbol)
+          insertar=false;
+      }
+      if (insertar)
+        alfabeto.push(Newsymbol);
+    }
   }
 
   function getFinalState(finalState) {
@@ -128,19 +144,43 @@
       // console.log("no inserta..");
     }
     else {
-      // console.log("entro en llenarDelta else..");
-      deltaT = new Delta(initialState,symbol,finalState);
-      insertar=true;
-      for (var i = 0; i < delta.length; i++) {
-        if (comparadorDeObjetos(deltaT,delta[i]))
+      if (symbol.length > 1) {
+        for (var j = 0; j < symbol.length; j++) {
+          if (symbol[j] !=',') {
+            deltaT = new Delta(initialState,symbol[j],finalState);
+            insertar=true;
+            for (var i = 0; i < delta.length; i++) {
+              console.log("DELTA TRABAJANDOSE: "+deltaT.toString());
+              if (comparadorDeObjetos(deltaT,delta[i])){
+                insertar=false;
+                console.log("NO INSERTADO! "+deltaT.toString());
+              }
+            }
+            if (insertar) {
+              console.log("INSERTADO! "+deltaT.toString());
+              delta.push(deltaT);
+              // console.log("elemento insertado");
+            }
+            else {
+              // console.log("elemento NO insertado");
+            }
+          }
+        }
+      }else {
+        // console.log("entro en llenarDelta else..");
+        deltaT = new Delta(initialState,symbol,finalState);
+        insertar=true;
+        for (var i = 0; i < delta.length; i++) {
+          if (comparadorDeObjetos(deltaT,delta[i]))
           insertar=false;
-      }
-      if (insertar) {
+        }
+        if (insertar) {
           delta.push(deltaT);
           // console.log("elemento insertado");
-      }
-      else {
-        // console.log("elemento NO insertado");
+        }
+        else {
+          // console.log("elemento NO insertado");
+        }
       }
     }
   }
