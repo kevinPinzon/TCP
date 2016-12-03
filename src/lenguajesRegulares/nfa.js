@@ -7,7 +7,8 @@
   var insertar;
   var transicionEntrantes;
   var foundStates = new Array();
-  
+  var cont = 0;
+  var matrix = []; 
 
   function probarNFA() {
     estados = new Array();
