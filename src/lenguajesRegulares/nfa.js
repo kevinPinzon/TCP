@@ -6,11 +6,10 @@
   var deltaT;
   var insertar;
   var transicionEntrantes;
-  var cont = 0;
-  var matrix = [];
+  var foundStates = new Array();
+  
 
-
-  function probarDFA() {
+  function probarNFA() {
     estados = new Array();
     alfabeto = new Array();
     estadosFinales = new Array();
@@ -25,10 +24,8 @@
           console.log("PRUEBA INICIANDO--------------------------------");
           console.log("estado inicial: "+ estadoInicial);
 
-          for (var i = 0; i < estados.length; i++){
+          for (var i = 0; i < estados.length; i++)
             console.log("estado["+i+"]: "+estados[i]);
-	    cont++;
-	  }
 
           for (var i = 0; i < alfabeto.length; i++)
             console.log("alfabeto["+i+"]: "+alfabeto[i]);
@@ -43,11 +40,11 @@
             console.log("transicion: "+delta[i].getTransition());
           }
       // FINAL DE IMPRESION DE LAS 5TUPLAS-----------------------------------
-		console.log("cont"+cont);
+	    	console.log("cont"+cont);
 		for(var i=0; i<cont; i++) {
    			matrix[i] = [];
     			for(var j=0; j<cont; j++) {
-    	  		  matrix[i][j] = 999999;
+      			  matrix[i][j] = 999999;
     			}
 		}
 		console.log("IMPRIMIENDO MATRIZ");
@@ -78,7 +75,6 @@
 			}
 			console.log("\n");
 		}
-
             console.log("VERIFICANDO CADENA------------------------------------------------");
             transicionEntrantes = cadenaEntrante.split("-");
 
@@ -90,27 +86,25 @@
               if (existeInicial) {
                 if (estadosFinales.length > 0) {
 
-                  var estadoActual = estadoInicial;
+                  foundStates.push(estadoInicial);
 
                   for (var i = 0; i < transicionEntrantes.length; i++) {
+                    var estadoActual = foundStates.shift();
                     console.log("estado actual: "+estadoActual);
-                    estadoActual = getNextState(estadoActual,transicionEntrantes[i]);
+                    getNextState(estadoActual,transicionEntrantes[i]);
                     console.log("estado actual(despues del get): "+estadoActual);
                   }
-
                   if (verificadorDeAceptacion(estadoActual)) {
                     alert("cadena aceptada");
                   }else {
                     alert("cadena rechazada");
                   }
-
                 }else
                   alert("Por favor asigne estados finales");
               }else
                 alert("Por favor asigne estado incial");
             }else
               alert("Alfabeto ingresado no reconocido");
-
         }else
           alert("Por favor asigne valores a las aristar");
       }else
@@ -138,15 +132,31 @@
   }
 
   function getAlfabeto (Newsymbol) {
-    var insertar=true;
-    if (alfabeto.length == 0)
-      alfabeto[0]=Newsymbol;
-    for (var i = 0; i < alfabeto.length; i++) {
-      if (alfabeto[i]==Newsymbol || ""==Newsymbol)
-        insertar=false;
+    if (Newsymbol.length > 1) {
+    for (var i = 0; i < Newsymbol.length; i++) {
+      if (Newsymbol[i] !=',') {
+        var insertar=true;
+        if (alfabeto.length == 0)
+          alfabeto[0]=Newsymbol[i];
+        for (var j = 0; j < alfabeto.length; j++) {
+          if (alfabeto[j]==Newsymbol[i] || ""==Newsymbol[i])
+            insertar=false;
+        }
+        if (insertar)
+          alfabeto.push(Newsymbol[i]);
+      }
     }
-    if (insertar)
-      alfabeto.push(Newsymbol);
+    }else{
+      var insertar=true;
+      if (alfabeto.length == 0)
+        alfabeto[0]=Newsymbol;
+      for (var i = 0; i < alfabeto.length; i++) {
+        if (alfabeto[i]==Newsymbol || ""==Newsymbol)
+          insertar=false;
+      }
+      if (insertar)
+        alfabeto.push(Newsymbol);
+    }
   }
 
   function getFinalState(finalState) {
@@ -166,19 +176,43 @@
       // console.log("no inserta..");
     }
     else {
-      // console.log("entro en llenarDelta else..");
-      deltaT = new Delta(initialState,symbol,finalState);
-      insertar=true;
-      for (var i = 0; i < delta.length; i++) {
-        if (comparadorDeObjetos(deltaT,delta[i]))
+      if (symbol.length > 1) {
+        for (var j = 0; j < symbol.length; j++) {
+          if (symbol[j] !=',') {
+            deltaT = new Delta(initialState,symbol[j],finalState);
+            insertar=true;
+            for (var i = 0; i < delta.length; i++) {
+              console.log("DELTA TRABAJANDOSE: "+deltaT.toString());
+              if (comparadorDeObjetos(deltaT,delta[i])){
+                insertar=false;
+                console.log("NO INSERTADO! "+deltaT.toString());
+              }
+            }
+            if (insertar) {
+              console.log("INSERTADO! "+deltaT.toString());
+              delta.push(deltaT);
+              // console.log("elemento insertado");
+            }
+            else {
+              // console.log("elemento NO insertado");
+            }
+          }
+        }
+      }else {
+        // console.log("entro en llenarDelta else..");
+        deltaT = new Delta(initialState,symbol,finalState);
+        insertar=true;
+        for (var i = 0; i < delta.length; i++) {
+          if (comparadorDeObjetos(deltaT,delta[i]))
           insertar=false;
-      }
-      if (insertar) {
+        }
+        if (insertar) {
           delta.push(deltaT);
           // console.log("elemento insertado");
-      }
-      else {
-        // console.log("elemento NO insertado");
+        }
+        else {
+          // console.log("elemento NO insertado");
+        }
       }
     }
   }
@@ -205,21 +239,36 @@
   }
 
   function getNextState(initialState,symbol) {
+    foundStates= new Array();
     console.log("simbolo entrante:"+symbol);
     console.log("estado recivido:"+initialState);
     for (var i = 0; i < delta.length; i++) {
-      if ( comparadorDeObjetos(initialState,delta[i].getInitialState()) && comparadorDeObjetos(symbol,delta[i].getTransition()) ){
-         return delta[i].getFinalState();
-         console.log("concidencia encontrda");
-       }
+      console.log("DELTA "+i+" actual: "+delta[i].toString());
+      if ( comparadorDeObjetos(initialState,delta[i].getInitialState()) ){
+        if (comparadorDeObjetos(symbol,delta[i].getTransition())) {
+          foundStates.push(delta[i].getFinalState());
+          console.log("concidencia encontrda");
+          console.log("foundState: "+delta[i].getFinalState());
+        }
+      }
     }
-    return "no encontrado";
+    return foundStates;
   }
 
   function verificadorDeAceptacion(estadoActual) {
     for (var i = 0; i < estadosFinales.length; i++) {
       if(comparadorDeObjetos(estadoActual,estadosFinales[i]))
         return true;
+    }
+    return false;
+  }
+
+  function esHoja(nodo){
+    for (var i = 0; i < delta.length; i++) {
+      if ( comparadorDeObjetos(delta[i].getInitialState,nodo) ) {
+        console.log(nodo+" tiene hijos| no es hoja");
+        return true;
+      }
     }
     return false;
   }
