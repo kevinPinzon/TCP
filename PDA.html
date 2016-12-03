@@ -76,14 +76,14 @@
 			<link href=https://necolas.github.io/normalize.css/5.0.0/normalize.css rel="stylesheet" type="text/css" />
 			<link href=https://cdn.muicss.com/mui-0.9.4/css/mui.min.css rel="stylesheet" type="text/css" />
 
-			<script src="src/draw/fsm.js"></script>	
+			<script src="src/draw/fsm_pda.js"></script>	
 			<script src="src/draw/math.js"></script>
 			<script src="src/elements/link.js"></script>
 			<script src="src/elements/node.js"></script>
 			<script src="src/elements/self_link.js"></script>
 			<script src="src/elements/start_link.js"></script>
 			<script src="src/elements/temporary_link.js"></script>
-			<script src="src/lenguajesRegulares/dfa.js"></script>
+			<script src="src/lenguajesRegulares/pda.js"></script>
 			<script src="src/lenguajesRegulares/delta.js"></script>
 
 	</head>
@@ -101,7 +101,10 @@
 				<input id="inputCadena" type="text" placeholder="Digita una cadena de caracteres">
 			  </div>
 			</form>
-			<button class="mui-btn mui-btn--large mui-btn--primary" id="btnprobarCadenaDFA" onclick = "ProbarCadenaPDA()">probar cadena</button>
+			<button class="mui-btn mui-btn--large mui-btn--primary" id="btnprobarCadenaPDA" onclick = "ProbarCadenaPDA()">probar cadena</button>
+			<script>
+				document.getElementById("btnprobarCadenaPDA").onclick = function() {ProbarCadenaPDA()};
+			</script>
 			<br><br><br><br>
 			<p>The big white box above is the FSM designer.&nbsp; Here's how to use it:</p>
 			<ul>
