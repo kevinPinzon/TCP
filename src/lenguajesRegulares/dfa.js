@@ -6,9 +6,6 @@
   var deltaT;
   var insertar;
   var transicionEntrantes;
-  var cont = 0;
-  var matrix = [];
-
 
   function probarDFA() {
     estados = new Array();
@@ -22,7 +19,7 @@
       if (estados.length != 0) {
         if (alfabeto.length != 0) {
       // IMPRESION DE LAS 5TUPLAS-----------------------------------
-          console.log("PRUEBA INICIANDO--------------------------------");
+          console.log("PRUEBA INICIANDO DFA--------------------------------");
           console.log("estado inicial: "+ estadoInicial);
 
           for (var i = 0; i < estados.length; i++){
@@ -43,41 +40,6 @@
             console.log("transicion: "+delta[i].getTransition());
           }
       // FINAL DE IMPRESION DE LAS 5TUPLAS-----------------------------------
-		console.log("cont"+cont);
-		for(var i=0; i<cont; i++) {
-   			matrix[i] = [];
-    			for(var j=0; j<cont; j++) {
-    	  		  matrix[i][j] = 999999;
-    			}
-		}
-		console.log("IMPRIMIENDO MATRIZ");
-		for(var i = 0; i < cont; i++){
-			for(var j=0; j<cont; j++){
-				console.log("["+matrix[i][j]+"]");
-				console.log("que putas aqui");
-			}
-			console.log("\n");
-		}	
-
-		for(var i = 0; i < delta.length; i ++){
-			for(var j = 0; j < cont; j++){
-        			if (comparadorDeObjetos(estados[j],delta[i].getInitialState())){
-					for(var k = 0; k < cont; k++){
-						if(comparadorDeObjetos(estados[k], delta[i].getFinalState())){
-							matrix[j][k] = delta[i].getTransition();
-						}
-					}
-				}
-			}
-		}
-		console.log("IMPRIMIENDO MATRIZ");
-		for(var i = 0; i < cont; i++){
-			for(var j=0; j<cont; j++){
-				console.log("["+matrix[i][j]+"]");
-				console.log("Matriz Con Transiciones");
-			}
-			console.log("\n");
-		}
 
             console.log("VERIFICANDO CADENA------------------------------------------------");
             transicionEntrantes = cadenaEntrante.split("-");

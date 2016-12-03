@@ -8,7 +8,7 @@
   var transicionEntrantes;
   var foundStates = new Array();
   var cont = 0;
-  var matrix = []; 
+  var matrix = [];
 
   function probarNFA() {
     estados = new Array();
@@ -55,7 +55,7 @@
 				console.log("que putas aqui");
 			}
 			console.log("\n");
-		}	
+		}
 
 		for(var i = 0; i < delta.length; i ++){
 			for(var j = 0; j < cont; j++){
@@ -92,7 +92,7 @@
                   for (var i = 0; i < transicionEntrantes.length; i++) {
                     var estadoActual = foundStates.shift();
                     console.log("estado actual: "+estadoActual);
-                    getNextState(estadoActual,transicionEntrantes[i]);
+                    getNextStateNFA(estadoActual,transicionEntrantes[i]);
                     console.log("estado actual(despues del get): "+estadoActual);
                   }
                   if (verificadorDeAceptacion(estadoActual)) {
@@ -239,7 +239,7 @@
     return true;
   }
 
-  function getNextState(initialState,symbol) {
+  function getNextStateNFA(initialState,symbol) {
     foundStates= new Array();
     console.log("simbolo entrante:"+symbol);
     console.log("estado recivido:"+initialState);
