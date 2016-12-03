@@ -1,5 +1,5 @@
 var greekLetterNames = [ 'Alpha', 'Beta', 'Gamma', 'Delta', 'Epsilon', 'Zeta', 'Eta', 'Theta', 'Iota', 'Kappa', 'Lambda', 'Mu', 'Nu', 'Xi', 'Omicron', 'Pi', 'Rho', 'Sigma', 'Tau', 'Upsilon', 'Phi', 'Chi', 'Psi', 'Omega' ];
-
+var nodeTemp;
 function convertLatexShortcuts(text) {
 	// html greek characters
 	for(var i = 0; i < greekLetterNames.length; i++) {
@@ -159,11 +159,12 @@ function snapNode(node) {
 	}
 }
 function get5tuplas() {
-	console.log("longitud de links: "+links.length);
-	console.log("longitud de nodes: "+nodes.length);
 
 	for (var i = 0; i < links.length; i++) {
 		getAlfabeto(links[i].text);
+		if ( links[i] != null && links[i].nodeA == null) {
+			console.log(" symbol "+links[i].text);
+		}
 		llenarDelta(links[i].nodeA,links[i].text,links[i].nodeB);
 	}
 	for (var i = 0; i < nodes.length; i++) {
@@ -178,18 +179,12 @@ function get5tuplas() {
 	}
 }
 window.onload = function() {
-// dfa----------------------------
-document.getElementById("btnprobarCadenaDFA").onclick = function() {probarDFA()};
 
-document.getElementById("nodos").onclick = function() {
-	for (var i = 0; i < nodes.length; i++) {
-		console.log("nodo "+i+": "+nodes[i].text);
-	}
-};
 	canvas = document.getElementById('canvas');
+	document.getElementById("btnprobarCadenaDFA").onclick = function() {probarDFA()};
+	document.getElementById("btnprobarCadenaNFA").onclick = function() {probarNFA()};
 //	restoreBackup();
 	draw();
-
 	canvas.onmousedown = function(e) {
 		var mouse = crossBrowserRelativeMousePos(e);
 		selectedObject = selectObject(mouse.x, mouse.y);
@@ -199,6 +194,7 @@ document.getElementById("nodos").onclick = function() {
 		if(selectedObject != null) {
 			if(shift && selectedObject instanceof Node) {
 				currentLink = new SelfLink(selectedObject, mouse);
+				console.log("currentLink is: "+currentLink.node.text);
 			} else {
 				movingObject = true;
 				deltaMouseX = deltaMouseY = 0;
@@ -212,7 +208,6 @@ document.getElementById("nodos").onclick = function() {
 		}
 
 		draw();
-
 		if(canvasHasFocus()) {
 			// disable drag-and-drop only if the canvas is already focused
 			return false;
@@ -222,7 +217,6 @@ document.getElementById("nodos").onclick = function() {
 			return true;
 		}
 	};
-
 	canvas.ondblclick = function(e) {
 		var mouse = crossBrowserRelativeMousePos(e);
 		selectedObject = selectObject(mouse.x, mouse.y);
