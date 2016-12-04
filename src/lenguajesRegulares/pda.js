@@ -6,7 +6,7 @@ var estadosFinales = new Array();
 var pila = [];
 var pilavacia = '$';
 var transiciones = new Array();
-var paths = new Array();
+var paths = [];
 var input = '';
 
 function ProbarCadenaPDA(){
@@ -18,8 +18,8 @@ function ProbarCadenaPDA(){
 	estadosFinales = getFinalStates();
 	input = document.getElementById("inputCadena").value;
 	pila = [];
-	paths = new Array();
-	console.log("IGUAL? "+ truefalse);
+	paths = Paths();
+	console.log(paths);
 	console.log("Alfabeto "+ alfabeto);
 	console.log("Estado Incial "+ estadoInicial);
 	console.log("Estado Final "+ estadosFinales);
@@ -52,21 +52,76 @@ function stackAction(pop,push){
 
 function Paths(){
 	var stateANDtransition = [];
-	var newpath = new Array(); 
-	var currentState = '';
-	var transicionToNextState = '';
-	var cantEstados = estados.length;
-	var cantTrans = transiciones.length;
+	var visitedStates = [];
+	var cantVisitedStates = 0;
+	var nextStates = [];
+	var cantNextStates = 1;
+	var modifiedStateANDTransition = [];
+	var hayInicial = false;
 	//empieza por el estado INICIAL
 	for (var i = 0; i < estados.length; i++) {
 		if(estados[i].text == estadoInicial){
-			currentState = estados[i].text;
+			hayInicial = true;
+			nextStates[0] = estados[i].text;
 			break;
 		}
 	}
-	for (var i = 0; i < transiciones.length; i++) {
-		if(transiciones[i].nodeA.text == currentState)
+
+	var cantStateANDTransition = 0;
+	while(cantStateANDTransition < transiciones.length && hayInicial == true){
+		//for para moverse entre los diferentes estados posibles
+		for (var i = 0; i < cantNextStates; i++) {
+			visitedStates[cantVisitedStates] = nextStates[i];
+			//For para recorrer todas las transiciones
+			for (var j = 0; j < transiciones.length; j++) {
+				//IF para ver si es LINK
+				if(transiciones[j] instanceof Link){
+					//IF para ver si el nodo izquierdo es igual al estado en el que estamos
+					if(transiciones[j].nodeA.text == nextStates[i]){
+						//se revisa si el nodo derecho ya esta dentro de los estados visitados
+						var truefalse = false;
+						for (var k = 0; k < visitedStates.length; k++) {
+							if(visitedStates[k] == transiciones[j].nodeB.text){
+								truefalse = true;
+								break;
+							}
+						}
+						//IF para ingresar un estado siguiente o no
+						if(truefalse == false){
+							nextStates[cantNextStates] = transiciones[j].nodeB.text;
+							cantNextStates++;
+						}
+						stateANDtransition[cantStateANDTransition] = nextStates[i]+""+transiciones[j].text[0]+""+transiciones[j].text[2]+""+transiciones[j].text[4]+""+transiciones[j].nodeB.text;
+						cantStateANDTransition++;
+					}
+				//ELSE IF para ver si es SELFLINK
+				}else if(transiciones[j] instanceof SelfLink){
+					if(transiciones[j].node.text == nextStates[i]){
+						//se revisa si el nodo derecho ya esta dentro de los estados visitados
+						var truefalse = false;
+						for (var k = 0; k < visitedStates.length; k++) {
+							if(visitedStates[k] == transiciones[j].node.text){
+								truefalse = true;
+								break;
+							}
+						}
+						//IF para ingresar un estado siguiente o no
+						if(truefalse == false){
+							nextStates[cantNextStates] = transiciones[j].node.text;
+							cantNextStates++;
+						}
+						stateANDtransition[cantStateANDTransition] = nextStates[i]+""+transiciones[j].text[0]+""+transiciones[j].text[2]+""+transiciones[j].text[4]+""+transiciones[j].node.text;
+						cantStateANDTransition++;
+					}
+				}
+			}
+			cantVisitedStates++;
+		}
 	}
+	for (var i = 0; i < (stateANDtransition.length/2); i++) {
+		modifiedStateANDTransition[i] = stateANDtransition[i];
+	}
+	return modifiedStateANDTransition;
 }
 
 function getAlfabeto(){
