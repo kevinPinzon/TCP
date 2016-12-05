@@ -24,7 +24,6 @@
 
           for (var i = 0; i < estados.length; i++){
             console.log("estado["+i+"]: "+estados[i]);
-	    cont++;
 	  }
 
           for (var i = 0; i < alfabeto.length; i++)

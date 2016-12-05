@@ -166,9 +166,9 @@ function get5tuplas() {
 	}
 	for (var i = 0; i < nodes.length; i++) {
 		console.log("nodo "+i+": "+nodes[i].text);
-		getState(nodes[i].text);
+		getState(nodes[i]);
 		if (nodes[i].isAcceptState) {
-			getFinalState(nodes[i].text);
+			getFinalState(nodes[i]);
 		}
 		if (nodes[i].isInitial) {
 			getInitialState(nodes[i]);
