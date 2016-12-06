@@ -53,11 +53,15 @@
                   var terminar=true;
                   var temporal=0;
                   console.log("total transicionEntrantes: "+transicionEntrantes.length);
+
+                  for (var i = 0; i < estados.length; i++) {
+                    estados[i].quitarMarca();
+                  }
+
                   do {
 
-                    if (transicionEntrantes.length >= contadorSimbolos) {
                       console.log("estado actual: "+estadoActual.text);
-                      if(esHoja(estadoActual) && transicionEntrantes.length != contadorSimbolos){
+                      if( (esHoja(estadoActual) )&& (transicionEntrantes.length > contadorSimbolos) ){
                         console.log("entro al if de esHoja(estadoActual) && transicionEntrantes.length != contadorSimbolos");
                         for (var i = 0; i < estados.length; i++) {
                           if (comparadorDeObjetos(estados[i],estadoActual)) {
@@ -66,8 +70,7 @@
                         }
                         estadoActual=estadoInicial;
                         contadorSimbolos=0;
-                      }
-                      if(esHoja(estadoActual) && transicionEntrantes.length == contadorSimbolos){
+                      }else if(esHoja(estadoActual) && transicionEntrantes.length == contadorSimbolos){
                         console.log("entro al if de esHoja(estadoActual) && transicionEntrantes.length == contadorSimbolos");
                         if (verificadorDeAceptacion(estadoActual)) {
                           alert("cadena aceptada");
@@ -83,6 +86,18 @@
                           contadorSimbolos=0;
                         }
                       }
+
+
+                      if (transicionEntrantes.length <= contadorSimbolos) {
+                        console.log("se acabaron las transiciones");
+                        terminar=false;
+                        contadorSimbolos=transicionEntrantes+1;
+                        if (verificadorDeAceptacion(estadoActual)) {
+                          alert("Cadena aceptada");
+                        }else {
+                          alert("Cadena rechazada");
+                        }
+                      }
                       if (terminar) {
                         estadoActual=getNextStateNFA(estadoActual,transicionEntrantes[contadorSimbolos]);
                         if (estadoActual!=null) {
@@ -90,32 +105,29 @@
                         }
                         contadorSimbolos++;
                       }else {
-                        temporal=5;
-                        contadorSimbolos=transicionEntrantes.length+1;
+                        terminar=false;
+                        temporal=10;
                       }
                       if (estadoActual == null) {
                         estadoActual=estadoInicial;
                         contadorSimbolos=0;
                       }
-                      var nodosMarcados=false;
-                      for (var i = 0; i < estados.length; i++) {
-                          if (!estados[i].marcado) {
-                            nodosMarcados=true;
-                            console.log("existe nodo sin marcar..");
-                          }
-                      }
-                      if (!nodosMarcados) {
-                        alert("Cadena rechazada");
-                        terminar=false;
-                      }
+
                       console.log("vuelta: "+temporal++);
-                    }else {
-                      console.log("se acabaron las transiciones");
-                      alert("Cadena rechazada");
-                      terminar=false;
-                      contadorSimbolos=transicionEntrantes+1;
-                    }
-                  } while (temporal<3);
+
+
+                  } while (temporal<10);
+
+
+
+
+
+
+
+
+
+
+
                   console.log("fuera del do");
                 }else
                   alert("Por favor asigne estados finales");
@@ -260,20 +272,23 @@
     console.log("simbolo entrante:"+symbol);
     console.log("estado recivido:"+initialState.text);
     var coincidencia=false;
+    var noHayPaso=true;
     for (var i = 0; i < delta.length; i++) {
       console.log("DELTA "+i+" actual: "+delta[i].toString());
-      if ( comparadorDeObjetos(initialState,delta[i].getInitialState()) && comparadorDeObjetos(symbol,delta[i].getTransition()) ) {
-        console.log("coincidencia encontrada");
-        coincidencia=true;
-        for (var j = 0; j < estados.length; j++) {
-          if (comparadorDeObjetos(estados[j],delta[i].getFinalState())) {
-            console.log("estado final encontrado: "+estados[j].text);
-            if (!estados[j].marcado) {
-              console.log("estado enviado");
-              // estados[j].marcar();
-              return estados[j];
-            }
+      if ( comparadorDeObjetos(initialState,delta[i].getInitialState()) ) {
+        if ( comparadorDeObjetos(symbol,delta[i].getTransition()) ) {
+          console.log("coincidencia encontrada");
+          coincidencia=true;
+          for (var j = 0; j < estados.length; j++) {
+            if (comparadorDeObjetos(estados[j],delta[i].getFinalState())) {
+              console.log("estado final encontrado: "+estados[j].text);
+              if (!estados[j].marcado) {
+                console.log("estado enviado");
+                // estados[j].marcar();
+                return estados[j];
+              }
 
+            }
           }
         }
       }
@@ -305,7 +320,7 @@
   function esHoja(nodo){
     for (var i = 0; i < delta.length; i++) {
       if ( comparadorDeObjetos(delta[i].getInitialState(),nodo) ) {
-        console.log(nodo.text+" tiene hijos| no es hoja");
+        console.log(nodo.text+" NO es hoja");
         return false;
       }
     }
