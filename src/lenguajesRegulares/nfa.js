@@ -51,18 +51,17 @@
                   estadoActual=estadoInicial;
                   var contadorSimbolos=0;
                   var terminar=true;
-                  var temporal=0;
                   console.log("total transicionEntrantes: "+transicionEntrantes.length);
 
                   for (var i = 0; i < estados.length; i++) {
                     estados[i].quitarMarca();
                   }
-
+                  var temporal=0;
                   do {
 
                       console.log("estado actual: "+estadoActual.text);
                       if( (esHoja(estadoActual) )&& (transicionEntrantes.length > contadorSimbolos) ){
-                        console.log("entro al if de esHoja(estadoActual) && transicionEntrantes.length != contadorSimbolos");
+                        console.log("llego a una hoja && faltan simbolos");
                         for (var i = 0; i < estados.length; i++) {
                           if (comparadorDeObjetos(estados[i],estadoActual)) {
                               estados[i].marcar();
@@ -87,18 +86,20 @@
                         }
                       }
 
+                      if ( transicionEntrantes.length == contadorSimbolos && (verificadorDeAceptacion(estadoActual)) ) {
+                          alert("Cadena aceptada");
+                          terminar=false;
+                          contadorSimbolos=transicionEntrantes+1;
+                      }
 
-                      if (transicionEntrantes.length <= contadorSimbolos) {
+                      if (transicionEntrantes.length == contadorSimbolos && ((estadosMarcados()+1) == estados.length) ) {
                         console.log("se acabaron las transiciones");
                         terminar=false;
                         contadorSimbolos=transicionEntrantes+1;
-                        if (verificadorDeAceptacion(estadoActual)) {
-                          alert("Cadena aceptada");
-                        }else {
-                          alert("Cadena rechazada");
-                        }
+                        alert("Cadena rechazada");
                       }
-                      if (terminar) {
+
+                      if (terminar ) {
                         estadoActual=getNextStateNFA(estadoActual,transicionEntrantes[contadorSimbolos]);
                         if (estadoActual!=null) {
                           console.log("estado actual(despues del get): "+estadoActual.text);
@@ -106,29 +107,16 @@
                         contadorSimbolos++;
                       }else {
                         terminar=false;
-                        temporal=10;
                       }
                       if (estadoActual == null) {
                         estadoActual=estadoInicial;
                         contadorSimbolos=0;
                       }
-
-                      console.log("vuelta: "+temporal++);
-
-
-                  } while (temporal<10);
-
-
-
-
-
-
-
-
-
-
-
-                  console.log("fuera del do");
+                      temporal++;
+                      if (temporal >15) {
+                        terminar=false;
+                      }
+                  } while (terminar);
                 }else
                   alert("Por favor asigne estados finales");
               }else
@@ -246,8 +234,6 @@
       }
     }
   }
-
-
   function comparadorDeObjetos(obj1,obj2) {
     if (JSON.stringify(obj1) === JSON.stringify(obj2))
       return true;
@@ -273,25 +259,31 @@
     console.log("estado recivido:"+initialState.text);
     var coincidencia=false;
     var noHayPaso=true;
+    var foundState=null;
     for (var i = 0; i < delta.length; i++) {
       console.log("DELTA "+i+" actual: "+delta[i].toString());
       if ( comparadorDeObjetos(initialState,delta[i].getInitialState()) ) {
         if ( comparadorDeObjetos(symbol,delta[i].getTransition()) ) {
+
           console.log("coincidencia encontrada");
           coincidencia=true;
           for (var j = 0; j < estados.length; j++) {
             if (comparadorDeObjetos(estados[j],delta[i].getFinalState())) {
               console.log("estado final encontrado: "+estados[j].text);
               if (!estados[j].marcado) {
+                estados[j].marcar();
                 console.log("estado enviado");
-                // estados[j].marcar();
-                return estados[j];
+                foundState= estados[j];
+              }else if (estados[j].marcado && (!esHoja(delta[i].getFinalState())) ) {
+                  estados[j].quitarMarca();
               }
-
             }
           }
         }
       }
+    }
+    if (foundState != null) {
+      return foundState;
     }
     if (coincidencia) {
       console.log("nodo sin transiciones disponibles");
@@ -324,5 +316,18 @@
         return false;
       }
     }
+    console.log(nodo.text+"es hoja");
     return true;
+  }
+
+  function estadosMarcados(){
+    var marcados=0;
+    for (var i = 0; i < estados.length; i++) {
+      if (estados[i].marcado) {
+        console.log(estados[i].text+" esta marcado");
+        marcados++;
+      }
+    }
+    console.log("total marcados: "+marcados);
+    return marcados;
   }
