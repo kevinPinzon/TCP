@@ -21,8 +21,9 @@ function ProbarCadenaPDA(){
 	pila = [];
 	paths = Paths();
 	paths = OrderNormalPaths();
+	console.log(paths);
 	pathsTOaccept = buildPathsToAccept();
-	console.log(pathsTOaccept);
+	console.log(pathsTOaccept)
 	if(RecorrerCadena() == true){
 		console.log("La cadena es aceptada");
 	}else{
@@ -38,12 +39,12 @@ function RecorrerCadena(){
 	console.log("ENTRO A RECORRER "+input);
 	var IsAccepted = false;
 	var currentState = '';
-	var StackFAIL = false;
-	var InputFAIL = false;
 	//Matriz de todos los posibles caminos para un estado final
 	console.log("pahts2accept "+pathsTOaccept.length);
 	for (var i = 0; i < pathsTOaccept.length; i++) {
 		currentState =  estadoInicial;
+		var StackFAIL = false;
+		var InputFAIL = false;
 		clearPila();
 		var contInput = 0;
 		for (var j = 0; j < pathsTOaccept[i].length; j++) {
@@ -162,7 +163,7 @@ function buildPathsToAccept(){
 						contcurrent_accepted_path++;
 						if(ReachedFinalState(currentState) == true){
 							reachedFinalstate = true;
-							break;
+							
 						}
 					}
 				}else{
@@ -171,14 +172,14 @@ function buildPathsToAccept(){
 							current_accepted_path[contcurrent_accepted_path] = (paths[i])[0]+"   "+(paths[i])[0];
 							currentState = (paths[i])[4];
 							contcurrent_accepted_path++;
-							break;
+							
 					}else{
 						current_accepted_path[contcurrent_accepted_path] = paths[i];
 						currentState = (paths[i])[4];
 						contcurrent_accepted_path++;
 						if(ReachedFinalState(currentState) == true){
 							reachedFinalstate = true;
-							break;
+							
 						}
 					} 
 				}
@@ -246,6 +247,8 @@ function ContadorCaminosHaciaEstadosFinales(){
 	var contador = 0;
 	for (var i = 0; i < estadosFinales.length; i++) {
 		for (var j = 0; j < paths.length; j++) {
+			console.log((paths[j])[4]);
+			console.log(j);
 		 	if((paths[j])[4] == estadosFinales[i]){
 		 		contador++;
 		 	}
@@ -286,17 +289,18 @@ function OrderNormalPaths(){
 			}
 		}
 	}
+	console.log(temppaths);
 	currentState = estadoInicial;
 	var posIntercambio = 0;
 	var temppath = '';
 	for(var i = 0; i < temppaths.length; i++){
 		if((temppaths[i])[0] == currentState){
-			posIntercambio++;
 			if((temppaths[i])[0] == (temppaths[i])[4]){
 				temppath = temppaths[i-posIntercambio];
 				temppaths[i-posIntercambio] = temppaths[i];
 				temppaths[i] = temppath;
 			}
+			posIntercambio++;
 		}else{
 			currentState = (temppaths[i])[0];
 			posIntercambio = 0;
