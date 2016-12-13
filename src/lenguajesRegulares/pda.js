@@ -44,24 +44,25 @@ function RecorrerCadena(){
 	for (var i = 0; i < pathsTOaccept.length; i++) {
 		currentState =  estadoInicial;
 		var StackFAIL = false;
-		var InputFAIL = false;
 		clearPila();
 		var contInput = 0;
 		for (var j = 0; j < pathsTOaccept[i].length; j++) {
 			if(((pathsTOaccept[i])[j])[0] == currentState){
 				console.log("CURRENT PATH "+((pathsTOaccept[i])[j]));
 				console.log("CURRENT STATE "+currentState);
+				console.log("CURRENT PATH INPUT "+((pathsTOaccept[i])[j])[1]);
+				console.log("INPUT PUTSIDE "+input[contInput]);
 				if(((pathsTOaccept[i])[j])[1] == input[contInput]){
 					if(stackAction(((pathsTOaccept[i])[j])[2],((pathsTOaccept[i])[j])[3]) == true){
 						console.log("PILA");
 						console.log(pila);
-						console.log("INPUT "+input[contInput])
-						contInput++;
+						console.log("INPUT "+input[contInput])	
 						console.log("INPUT AFTER "+input[contInput])
 						console.log("CURRENT STATE INSIDE IF "+currentState);
-						if(currentState == ((pathsTOaccept[i])[j])[4] && input[contInput] == ((pathsTOaccept[i])[j])[1]){
+						if(currentState == ((pathsTOaccept[i])[j])[4] && input[contInput+1] == ((pathsTOaccept[i])[j])[1]){
 							j--;
 						}
+						contInput++;
 						currentState = ((pathsTOaccept[i])[j])[4];
 					}else{
 						StackFAIL = true;
@@ -74,13 +75,12 @@ function RecorrerCadena(){
 					}else{
 						StackFAIL = true;
 					}
-				}else{
-					InputFAIL = true;
 				}
 				console.log("NEXT STATE "+currentState);
 			}
-			if(StackFAIL == true || InputFAIL == true){
+			if(StackFAIL == true){
 				console.log("ETNRO A FALI");
+				console.log(StackFAIL)
 				break;
 			}
 		}
@@ -162,8 +162,7 @@ function buildPathsToAccept(){
 						currentState = (paths[i])[4];	
 						contcurrent_accepted_path++;
 						if(ReachedFinalState(currentState) == true){
-							reachedFinalstate = true;
-							
+							reachedFinalstate = true;		
 						}
 					}
 				}else{
@@ -192,6 +191,9 @@ function buildPathsToAccept(){
 			}
 		}
 		if(reachedFinalstate == true){
+			if(ReachedFinalState(currentState) == true){
+				current_accepted_path = CheckSelfLinksinFinal(current_accepted_path,currentState);
+			}
 			for (var j = 0; j < current_accepted_path.length; j++) {
 				pathsToaccept[rowAcceptedPath][j] = current_accepted_path[j];		
 			}
@@ -200,6 +202,17 @@ function buildPathsToAccept(){
 		currentState = initialState;
 	}
 	return pathsToaccept;
+}
+
+function CheckSelfLinksinFinal(Recievedcurrent_accepted_path,RecievedcurrentState){
+	var lengthOfcurrent_accepted_path = Recievedcurrent_accepted_path.length;
+	for (var i = 0; i < paths.length; i++) {
+		if((paths[i])[0] == RecievedcurrentState && (paths[i])[4] == RecievedcurrentState){
+			Recievedcurrent_accepted_path[lengthOfcurrent_accepted_path] = paths[i];
+			lengthOfcurrent_accepted_path++;
+		}
+	}
+	return Recievedcurrent_accepted_path;
 }
 
 function PathCheck(receivedpathsToaccept, receivedpath){
@@ -247,9 +260,7 @@ function ContadorCaminosHaciaEstadosFinales(){
 	var contador = 0;
 	for (var i = 0; i < estadosFinales.length; i++) {
 		for (var j = 0; j < paths.length; j++) {
-			console.log((paths[j])[4]);
-			console.log(j);
-		 	if((paths[j])[4] == estadosFinales[i]){
+		 	if((paths[j])[4] == estadosFinales[i] && (paths[j])[4] != (paths[j])[0]){
 		 		contador++;
 		 	}
 		}
