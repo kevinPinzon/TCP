@@ -25,8 +25,10 @@ function ProbarCadenaPDA(){
 	pathsTOaccept = buildPathsToAccept();
 	console.log(pathsTOaccept)
 	if(RecorrerCadena() == true){
+		window.confirm("La cadena es aceptada");
 		console.log("La cadena es aceptada");
 	}else{
+		window.confirm("La cadena es RECHAZADA");
 		console.log("La cadena es rechazada");
 	}
 	console.log(paths);
