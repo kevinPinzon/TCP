@@ -1,7 +1,6 @@
 var estados = new Array();
 var alfabeto = [];
 var estadoInicial = '';
-var existeInicial = false;
 var estadosFinales = new Array();
 var pila = [];
 var pilavacia;
@@ -9,32 +8,72 @@ var transiciones = new Array();
 var pathsTOaccept = [[]];
 var paths = [];
 var input = '';
+var hayInicial = false;
 
 function ProbarCadenaPDA(){
+	var valEstados = true;
+	var valTransiciones = true;
+	var valEstadoInicial = true;
+	var valEstadosFinales = true;
 	estados = nodes;
-	transiciones = links;
-	alfabeto = getAlfabeto();
-	estadoInicial = getIntialState();
-	existeInicial = false;
-	estadosFinales = getFinalStates();
-	input = document.getElementById("inputCadena").value;
-	pila = [];
-	paths = Paths();
-	paths = OrderNormalPaths();
-	console.log(paths);
-	pathsTOaccept = buildPathsToAccept();
-	console.log(pathsTOaccept)
-	if(RecorrerCadena() == true){
-		window.confirm("La cadena es aceptada");
-		console.log("La cadena es aceptada");
-	}else{
-		window.confirm("La cadena es RECHAZADA");
-		console.log("La cadena es rechazada");
+	for (var i = 0; i < estados.length; i++) {
+		if(estados[i].text.length > 1 || estados[i].text == ' ' ||estados[i].text == ''){
+			valEstados = false;
+			window.alert("Los estados deben de contener almenos 1 caracter y no estar vacios");
+			break;
+		}
 	}
-	console.log(paths);
-	console.log("Alfabeto "+ alfabeto);
-	console.log("Estado Incial "+ estadoInicial);
-	console.log("Estado Final "+ estadosFinales);
+	if(estados.length == 0){
+		window.alert("No hay Estados");
+		valEstados = false;
+	}
+	if(valEstados == true){
+		transiciones = links;
+		if(links.length == 0){
+			window.alert("No hay transiciones");
+			valTransiciones =  false;
+		}
+		if(valTransiciones == true){
+			alfabeto = getAlfabeto();
+			estadoInicial = getIntialState();
+			if(hayInicial == false){
+				window.alert("No hay Estado Inicial");
+				valEstadoInicial = false;
+			}
+			if(valEstadoInicial == true){
+				estadosFinales = getFinalStates();
+				if(estadosFinales.length == 0){
+					window.alert("No hay Estados Finales");
+					valEstadosFinales = false;
+				}
+				if(valEstadosFinales == true){
+					input = document.getElementById("inputCadena").value;
+					pila = [];
+					console.log("Va a Build el Path")
+					paths = Paths();
+					console.log("BUILDED")
+					if(paths != null){
+						console.log("Va a ordenar")
+						paths = OrderNormalPaths();
+						console.log(paths);
+						pathsTOaccept = buildPathsToAccept();
+						console.log(pathsTOaccept)
+						if(RecorrerCadena() == true){
+							window.confirm("La cadena es aceptada");
+							console.log("La cadena es aceptada");
+						}else{
+							window.confirm("La cadena es RECHAZADA");
+							console.log("La cadena es rechazada");
+						}
+						console.log(paths);
+						console.log("Alfabeto "+ alfabeto);
+						console.log("Estado Incial "+ estadoInicial);
+						console.log("Estado Final "+ estadosFinales);
+					}
+				}
+			}
+		}
+	}
 }
 
 function RecorrerCadena(){
@@ -54,6 +93,7 @@ function RecorrerCadena(){
 				console.log("CURRENT STATE "+currentState);
 				console.log("CURRENT PATH INPUT "+((pathsTOaccept[i])[j])[1]);
 				console.log("INPUT PUTSIDE "+input[contInput]);
+				console.log("QUE HAY PILA ")
 				if(((pathsTOaccept[i])[j])[1] == input[contInput]){
 					if(stackAction(((pathsTOaccept[i])[j])[2],((pathsTOaccept[i])[j])[3]) == true){
 						console.log("PILA");
@@ -151,7 +191,6 @@ function buildPathsToAccept(){
 		}
 	}
 	var rowAcceptedPath = 0;
-	console.log(paths);
 	while(rowAcceptedPath < contador){
 		var current_accepted_path = [];
 		var contcurrent_accepted_path = 0;
@@ -302,18 +341,17 @@ function OrderNormalPaths(){
 			}
 		}
 	}
-	console.log(temppaths);
 	currentState = estadoInicial;
 	var posIntercambio = 0;
 	var temppath = '';
 	for(var i = 0; i < temppaths.length; i++){
 		if((temppaths[i])[0] == currentState){
+			posIntercambio++;
 			if((temppaths[i])[0] == (temppaths[i])[4]){
 				temppath = temppaths[i-posIntercambio];
 				temppaths[i-posIntercambio] = temppaths[i];
 				temppaths[i] = temppath;
 			}
-			posIntercambio++;
 		}else{
 			currentState = (temppaths[i])[0];
 			posIntercambio = 0;
@@ -347,7 +385,9 @@ function Paths(){
 	var cantNextStates = 1;
 	var modifiedStateANDTransition = [];
 	var hayInicial = false;
+	var valTransicionCorrecta = true;
 	//empieza por el estado INICIAL
+	console.log("ESTADO INCI "+estadoInicial);
 	for (var i = 0; i < estados.length; i++) {
 		if(estados[i].text == estadoInicial){
 			hayInicial = true;
@@ -356,61 +396,75 @@ function Paths(){
 		}
 	}
 
-	var cantStateANDTransition = 0;
-	while(cantStateANDTransition < transiciones.length && hayInicial == true){
-		//for para moverse entre los diferentes estados posibles
-		for (var i = 0; i < cantNextStates; i++) {
-			visitedStates[cantVisitedStates] = nextStates[i];
-			//For para recorrer todas las transiciones
-			for (var j = 0; j < transiciones.length; j++) {
-				//IF para ver si es LINK
-				if(transiciones[j] instanceof Link){
-					//IF para ver si el nodo izquierdo es igual al estado en el que estamos
-					if(transiciones[j].nodeA.text == nextStates[i]){
-						//se revisa si el nodo derecho ya esta dentro de los estados visitados
-						var truefalse = false;
-						for (var k = 0; k < visitedStates.length; k++) {
-							if(visitedStates[k] == transiciones[j].nodeB.text){
-								truefalse = true;
-								break;
-							}
-						}
-						//IF para ingresar un estado siguiente o no
-						if(truefalse == false){
-							nextStates[cantNextStates] = transiciones[j].nodeB.text;
-							cantNextStates++;
-						}
-						stateANDtransition[cantStateANDTransition] = nextStates[i]+""+transiciones[j].text[0]+""+transiciones[j].text[2]+""+transiciones[j].text[4]+""+transiciones[j].nodeB.text;
-						cantStateANDTransition++;
-					}
-				//ELSE IF para ver si es SELFLINK
-				}else if(transiciones[j] instanceof SelfLink){
-					if(transiciones[j].node.text == nextStates[i]){
-						//se revisa si el nodo derecho ya esta dentro de los estados visitados
-						var truefalse = false;
-						for (var k = 0; k < visitedStates.length; k++) {
-							if(visitedStates[k] == transiciones[j].node.text){
-								truefalse = true;
-								break;
-							}
-						}
-						//IF para ingresar un estado siguiente o no
-						if(truefalse == false){
-							nextStates[cantNextStates] = transiciones[j].node.text;
-							cantNextStates++;
-						}
-						stateANDtransition[cantStateANDTransition] = nextStates[i]+""+transiciones[j].text[0]+""+transiciones[j].text[2]+""+transiciones[j].text[4]+""+transiciones[j].node.text;
-						cantStateANDTransition++;
-					}
-				}
-			}
-			cantVisitedStates++;
+	for (var i = 0; i < transiciones.length; i++) {
+		if(transiciones[i].text.length != 5 && transiciones[i] instanceof Link){
+			valTransicionCorrecta = false;
+			break;
 		}
 	}
-	for (var i = 0; i < (stateANDtransition.length/2); i++) {
-		modifiedStateANDTransition[i] = stateANDtransition[i];
+
+	if(valTransicionCorrecta == true){
+		var cantStateANDTransition = 0;
+		while(cantStateANDTransition < transiciones.length && hayInicial == true){
+			//for para moverse entre los diferentes estados posibles
+			for (var i = 0; i < cantNextStates; i++) {
+				visitedStates[cantVisitedStates] = nextStates[i];
+				//For para recorrer todas las transiciones
+				for (var j = 0; j < transiciones.length; j++) {
+					//IF para ver si es LINK
+					if(transiciones[j] instanceof Link){
+						//IF para ver si el nodo izquierdo es igual al estado en el que estamos
+						if(transiciones[j].nodeA.text == nextStates[i]){
+							//se revisa si el nodo derecho ya esta dentro de los estados visitados
+							var truefalse = false;
+							for (var k = 0; k < visitedStates.length; k++) {
+								if(visitedStates[k] == transiciones[j].nodeB.text){
+									truefalse = true;
+									break;
+								}
+							}
+							//IF para ingresar un estado siguiente o no
+							if(truefalse == false){
+								nextStates[cantNextStates] = transiciones[j].nodeB.text;
+								cantNextStates++;
+							}
+							stateANDtransition[cantStateANDTransition] = nextStates[i]+""+transiciones[j].text[0]+""+transiciones[j].text[2]+""+transiciones[j].text[4]+""+transiciones[j].nodeB.text;
+							cantStateANDTransition++;
+						}
+					//ELSE IF para ver si es SELFLINK
+					}else if(transiciones[j] instanceof SelfLink){
+						if(transiciones[j].node.text == nextStates[i]){
+							//se revisa si el nodo derecho ya esta dentro de los estados visitados
+							var truefalse = false;
+							for (var k = 0; k < visitedStates.length; k++) {
+								if(visitedStates[k] == transiciones[j].node.text){
+									truefalse = true;
+									break;
+								}
+							}
+							//IF para ingresar un estado siguiente o no
+							if(truefalse == false){
+								nextStates[cantNextStates] = transiciones[j].node.text;
+								cantNextStates++;
+							}
+							stateANDtransition[cantStateANDTransition] = nextStates[i]+""+transiciones[j].text[0]+""+transiciones[j].text[2]+""+transiciones[j].text[4]+""+transiciones[j].node.text;
+							cantStateANDTransition++;
+						}
+					}
+				}
+				cantVisitedStates++;
+			}
+		}
+		for (var i = 0; i < (stateANDtransition.length/2); i++) {
+			modifiedStateANDTransition[i] = stateANDtransition[i];
+		}
+		console.log("MOD AND TRANS");
+		console.log(modifiedStateANDTransition);
+		return modifiedStateANDTransition;
+	}else{
+		window.alert("Posee una o mas trancisiones incorrectas, estas deben de ser escritas de esta manera \"1,0,0\" input,pop,push y para transiciones epsilon dejar espacio en blanco \"1, ,0\"");
+		return null;
 	}
-	return modifiedStateANDTransition;
 }
 
 function getAlfabeto(){
@@ -439,12 +493,25 @@ function getAlfabeto(){
 
 function getIntialState(){
 	var newestadoInicial;
+	var contEntrada = 0;
+	console.log("Entra Inicial")
 	for (var i = 0; i < nodes.length; i++) {
-		if(nodes[i].isInitial == true){
+		if(nodes[i].isInitial == true && contEntrada == 0){
+			contEntrada++;
 			newestadoInicial = nodes[i].text;
+			console.log("SI HAY");
+			hayInicial = true;
 		}
 	}
-	return newestadoInicial;
+	console.log("INCIAL "+hayInicial);
+	if(contEntrada > 1){
+		hayInicial = false;
+		window.alert("No puede existir mas de un estado Inicial");
+		return null;
+	}else{
+		return newestadoInicial;
+	}
+	
 }
 
 function getFinalStates(){
