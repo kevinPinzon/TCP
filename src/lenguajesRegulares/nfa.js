@@ -77,45 +77,69 @@ function RecorrerCadena(){
   console.log("ENTRO A RECORRER "+input);
   var IsAccepted = false;
   var currentState = '';
+  
   //Matriz de todos los posibles caminos para un estado final
   console.log("pahts2accept "+pathsTOaccept.length);
-  for (var i = 0; i < pathsTOaccept.length; i++) {
-    currentState =  estadoInicial;
-    var StackFAIL = false;
-    var contInput = 0;
-    for (var j = 0; j < pathsTOaccept[i].length; j++) {
-      if(((pathsTOaccept[i])[j])[0] == currentState){
-        console.log("CURRENT PATH "+((pathsTOaccept[i])[j]));
-        console.log("CURRENT STATE "+currentState);
-        console.log("CURRENT PATH INPUT "+((pathsTOaccept[i])[j])[1]);
-        console.log("INPUT PUTSIDE "+input[contInput]);
-        console.log("QUE HAY PILA ")
-        if(((pathsTOaccept[i])[j])[1] == input[contInput]){
-          console.log("INPUT "+input[contInput])  
-          console.log("INPUT AFTER "+input[contInput])
-          console.log("CURRENT STATE INSIDE IF "+currentState);
-          if(currentState == ((pathsTOaccept[i])[j])[2] && input[contInput+1] == ((pathsTOaccept[i])[j])[1]){
-            j--;
+  var pathTry = 0;
+  while(pathTry < pathsTOaccept.length && IsAccepted == false){
+    currentState = estadoInicial;
+    var Fail =  false;
+    var InputCont = 0;
+    while(InputCont <= input.length && Fail == false){
+      console.log("WHILE INPUt CONT");
+      console.log(InputCont);
+      console.log("CUrrent State");
+      console.log(currentState);
+      var contErr = 0;
+      var CambioDeEstado = false;
+      for (var i = 0; i < pathsTOaccept[pathTry].length; i++) {
+        if(((pathsTOaccept[pathTry])[i])[0] == currentState && ((pathsTOaccept[pathTry])[i])[1] == input[InputCont]){
+          console.log("ACTUAL PATH");
+          console.log(((pathsTOaccept[pathTry])[i]));
+            currentState = ((pathsTOaccept[pathTry])[i])[2];
+            CambioDeEstado = true;
+            InputCont++;
+            break;
+        }else if(((pathsTOaccept[pathTry])[i])[0] == currentState && ((pathsTOaccept[pathTry])[i])[1] == ' '){
+          console.log("ACTUAL PATH EPSILOOOON");
+          console.log(((pathsTOaccept[pathTry])[i]));
+          if(((pathsTOaccept[pathTry])[i])[2] == estadoInicial && ReachedFinalState(((pathsTOaccept[pathTry])[i])[2]) == true){
+            if(input.length == 1 && input[0] == ' '){
+              IsAccepted  = true; 
+              break;
+            }else{
+              Fail = true;
+              break;
+            }
+          }else{
+            currentState = ((pathsTOaccept[pathTry])[i])[2];
+            CambioDeEstado = true;
+            break;
           }
-          contInput++;
-          currentState = ((pathsTOaccept[i])[j])[2];
-        }else if(((pathsTOaccept[i])[j])[1] == ' '){
-          currentState = ((pathsTOaccept[i])[j])[2];  
+        }else{
+          contErr++;
         }
-        console.log("NEXT STATE "+currentState);
+        if(CambioDeEstado == true){
+          break;
+        }
+      }
+      if(contErr >= pathsTOaccept[pathTry].length){
+        console.log("Entro SUPER FAIL")
+        Fail =  true;
+        break;
       }
     }
-    //IF que verifica si ya se recorrio toda la cadena, la pila quedo vacia y si el estado alcanzado es de aceptación
-    console.log("STATE FINAL "+currentState);
-    console.log("CONT "+contInput);
-    console.log("INPUT L "+input.length);
-    if(contInput == input.length && ReachedFinalState(currentState) == true){
+    console.log(InputCont)
+    console.log(currentState)
+    console.log(ReachedFinalState(currentState))
+    if(InputCont == input.length&& ReachedFinalState(currentState) == true){
       IsAccepted = true;
       break;
     }
+    pathTry++;
   }
-  
   return IsAccepted;
+
 }
 
 function buildPathsToAccept(){
