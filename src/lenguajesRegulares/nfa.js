@@ -27,8 +27,8 @@ function ProbarCadenaNFA(){
   }
   if(valEstados == true){
     transiciones = links;
-    if(links.length == 0){
-      window.alert("No hay transiciones");
+    if(links.length < 2){
+      window.alert("La cantidad de transiciones no es adecuada");
       valTransiciones =  false;
     }
     if(valTransiciones == true){
@@ -82,7 +82,6 @@ function RecorrerCadena(){
   for (var i = 0; i < pathsTOaccept.length; i++) {
     currentState =  estadoInicial;
     var StackFAIL = false;
-    clearPila();
     var contInput = 0;
     for (var j = 0; j < pathsTOaccept[i].length; j++) {
       if(((pathsTOaccept[i])[j])[0] == currentState){
@@ -95,13 +94,13 @@ function RecorrerCadena(){
           console.log("INPUT "+input[contInput])  
           console.log("INPUT AFTER "+input[contInput])
           console.log("CURRENT STATE INSIDE IF "+currentState);
-          if(currentState == ((pathsTOaccept[i])[j])[4] && input[contInput+1] == ((pathsTOaccept[i])[j])[1]){
+          if(currentState == ((pathsTOaccept[i])[j])[2] && input[contInput+1] == ((pathsTOaccept[i])[j])[1]){
             j--;
           }
           contInput++;
-          currentState = ((pathsTOaccept[i])[j])[4];
+          currentState = ((pathsTOaccept[i])[j])[2];
         }else if(((pathsTOaccept[i])[j])[1] == ' '){
-          currentState = ((pathsTOaccept[i])[j])[4];  
+          currentState = ((pathsTOaccept[i])[j])[2];  
         }
         console.log("NEXT STATE "+currentState);
       }
@@ -145,7 +144,7 @@ function buildPathsToAccept(){
         if(rowAcceptedPath > 0){
           if(PathCheck(pathsToaccept,paths[i]) == true){
             current_accepted_path[contcurrent_accepted_path] = paths[i];
-            currentState = (paths[i])[4]; 
+            currentState = (paths[i])[2]; 
             contcurrent_accepted_path++;
             if(ReachedFinalState(currentState) == true){
               reachedFinalstate = true;   
@@ -155,12 +154,12 @@ function buildPathsToAccept(){
           if(ReachedFinalState(currentState) == true){
               reachedFinalstate = true;
               current_accepted_path[contcurrent_accepted_path] = (paths[i])[0]+"   "+(paths[i])[0];
-              currentState = (paths[i])[4];
+              currentState = (paths[i])[2];
               contcurrent_accepted_path++;
               
           }else{
             current_accepted_path[contcurrent_accepted_path] = paths[i];
-            currentState = (paths[i])[4];
+            currentState = (paths[i])[2];
             contcurrent_accepted_path++;
             if(ReachedFinalState(currentState) == true){
               reachedFinalstate = true;
@@ -193,7 +192,7 @@ function buildPathsToAccept(){
 function CheckSelfLinksinFinal(Recievedcurrent_accepted_path,RecievedcurrentState){
   var lengthOfcurrent_accepted_path = Recievedcurrent_accepted_path.length;
   for (var i = 0; i < paths.length; i++) {
-    if((paths[i])[0] == RecievedcurrentState && (paths[i])[4] == RecievedcurrentState){
+    if((paths[i])[0] == RecievedcurrentState && (paths[i])[2] == RecievedcurrentState){
       Recievedcurrent_accepted_path[lengthOfcurrent_accepted_path] = paths[i];
       lengthOfcurrent_accepted_path++;
     }
@@ -246,7 +245,7 @@ function ContadorCaminosHaciaEstadosFinales(){
   var contador = 0;
   for (var i = 0; i < estadosFinales.length; i++) {
     for (var j = 0; j < paths.length; j++) {
-      if((paths[j])[4] == estadosFinales[i] && (paths[j])[4] != (paths[j])[0]){
+      if((paths[j])[2] == estadosFinales[i] && (paths[j])[2] != (paths[j])[0]){
         contador++;
       }
     }
@@ -291,16 +290,40 @@ function OrderNormalPaths(){
   var temppath = '';
   for(var i = 0; i < temppaths.length; i++){
     if((temppaths[i])[0] == currentState){
-      posIntercambio++;
-      if((temppaths[i])[0] == (temppaths[i])[4]){
+      
+      if((temppaths[i])[0] == (temppaths[i])[2]){
         temppath = temppaths[i-posIntercambio];
         temppaths[i-posIntercambio] = temppaths[i];
         temppaths[i] = temppath;
       }
+      posIntercambio++;
     }else{
       currentState = (temppaths[i])[0];
       posIntercambio = 0;
-      if((temppaths[i])[0] == (temppaths[i])[4]){
+      if((temppaths[i])[0] == (temppaths[i])[2]){
+        temppath = temppaths[i-posIntercambio];
+        temppaths[i-posIntercambio] = temppaths[i];
+        temppaths[i] = temppath;
+      }
+    }
+  }
+
+  currentState = estadoInicial;
+  posIntercambio = 0;
+  temppath = '';
+  for(var i = 0; i < temppaths.length; i++){
+    if((temppaths[i])[0] == currentState){
+      posIntercambio++;
+      if((temppaths[i])[0] == (temppaths[i])[2] && temppaths[i-posIntercambio] != null){
+        temppath = temppaths[i-posIntercambio];
+        temppaths[i-posIntercambio] = temppaths[i];
+        temppaths[i] = temppath;
+      }
+      
+    }else{
+      currentState = (temppaths[i])[0];
+      posIntercambio = 0;
+      if((temppaths[i])[0] == (temppaths[i])[2] && temppaths[i-posIntercambio] != null){
         temppath = temppaths[i-posIntercambio];
         temppaths[i-posIntercambio] = temppaths[i];
         temppaths[i] = temppath;
@@ -342,7 +365,7 @@ function Paths(){
   }
 
   for (var i = 0; i < transiciones.length; i++) {
-    if(transiciones[i].text.length != 5 && transiciones[i] instanceof Link){
+    if(transiciones[i].text.length != 1 && transiciones[i] instanceof Link){
       valTransicionCorrecta = false;
       break;
     }
@@ -373,7 +396,7 @@ function Paths(){
                 nextStates[cantNextStates] = transiciones[j].nodeB.text;
                 cantNextStates++;
               }
-              stateANDtransition[cantStateANDTransition] = nextStates[i]+""+transiciones[j].text[0]+""+transiciones[j].text[2]+""+transiciones[j].text[4]+""+transiciones[j].nodeB.text;
+              stateANDtransition[cantStateANDTransition] = nextStates[i]+""+transiciones[j].text[0]+""+transiciones[j].nodeB.text;
               cantStateANDTransition++;
             }
           //ELSE IF para ver si es SELFLINK
@@ -392,7 +415,7 @@ function Paths(){
                 nextStates[cantNextStates] = transiciones[j].node.text;
                 cantNextStates++;
               }
-              stateANDtransition[cantStateANDTransition] = nextStates[i]+""+transiciones[j].text[0]+""+transiciones[j].text[2]+""+transiciones[j].text[4]+""+transiciones[j].node.text;
+              stateANDtransition[cantStateANDTransition] = nextStates[i]+""+transiciones[j].text[0]+""+transiciones[j].node.text;
               cantStateANDTransition++;
             }
           }
@@ -407,8 +430,7 @@ function Paths(){
     console.log(modifiedStateANDTransition);
     return modifiedStateANDTransition;
   }else{
-    window.alert("Posee una o mas trancisiones incorrectas, estas deben de ser escritas de esta manera \"1,0,0\" input,pop,push y para transiciones epsilon dejar espacio en blanco \"1, ,0\"");
-    return null;
+    window.alert("Posee una o mas trancisiones incorrectas, estas deben de contener solamente un caracter");
   }
 }
 
