@@ -1,8 +1,7 @@
-function Delta(initialNode,symbol,finalNode,rejectNode) {
+function Delta(initialNode,symbol,finalNode) {
 	this.initialNode = initialNode;
 	this.finalNode = finalNode;
 	this.symbol = symbol;
-	this.rejectNode = rejectNode;
 
   this.getInitialState = function() {
     return this.initialNode.text;

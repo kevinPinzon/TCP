@@ -58,28 +58,29 @@
 		cadenaEntrante[i]=='y'||cadenaEntrante[i]=='z'){
 			console.log("contEstados"+contEstados);
 			if(cadenaEntrante[i+1]=='*'){
-				delta.push(new Delta((contEstados).toString(),' ',contEstados+1));
+				delta.push(new DeltaRegex(contEstados,' ',contEstados+1));
 				contEstados++;
-				delta.push(new Delta((contEstados).toString(),cadenaEntrante[i],contEstados+1));
-				delta.push(new Delta((contEstados).toString(),' ',contEstados+1));
+				delta.push(new DeltaRegex(contEstados,cadenaEntrante[i],contEstados+1));
+				delta.push(new DeltaRegex(contEstados+1,' ',contEstados));
 				contEstados++;
-				delta.push(new Delta((contEstados).toString(),' ',contEstados+1));
+				delta.push(new DeltaRegex(contEstados,' ',contEstados+1));
 				contEstados++;
-				delta.push(new Delta((contEstados-3).toString(),' ',contEstados));
+				delta.push(new DeltaRegex(contEstados-3,' ',contEstados));
+				i++;
 			}
 			else if(cadenaEntrante[i+1]=='|'){
-				delta.push(new Delta(contEstados,cadenaEntrante[i],contEstados+1));
-				delta.push(new Delta(contEstados,cadenaEntrante[i+2],contEstados+1));
+				delta.push(new DeltaRegex(contEstados,cadenaEntrante[i],contEstados+1));
+				delta.push(new DeltaRegex(contEstados,cadenaEntrante[i+2],contEstados+1));
 				contEstados++;
 				i=i+2;
 			}
 			else{
-				delta.push(new Delta(contEstados,cadenaEntrante[i],contEstados+1));
+				delta.push(new DeltaRegex(contEstados,cadenaEntrante[i],contEstados+1));
 				contEstados++;
 			}
 		}
 		else{
-			delta.push(new Delta(contEstados,' ',contEstados+1));
+			delta.push(new DeltaRegex(contEstados,' ',contEstados+1));
 			contEstados++;
 		}
 	}
