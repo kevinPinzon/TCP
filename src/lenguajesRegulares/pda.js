@@ -80,63 +80,75 @@ function RecorrerCadena(){
 	console.log("ENTRO A RECORRER "+input);
 	var IsAccepted = false;
 	var currentState = '';
+	
 	//Matriz de todos los posibles caminos para un estado final
 	console.log("pahts2accept "+pathsTOaccept.length);
-	for (var i = 0; i < pathsTOaccept.length; i++) {
-		currentState =  estadoInicial;
-		var StackFAIL = false;
+	var pathTry = 0;
+	while(pathTry < pathsTOaccept.length && IsAccepted == false){
+		currentState = estadoInicial;
+		var Fail =  false;
+		var InputCont = 0;
 		clearPila();
-		var contInput = 0;
-		for (var j = 0; j < pathsTOaccept[i].length; j++) {
-			if(((pathsTOaccept[i])[j])[0] == currentState){
-				console.log("CURRENT PATH "+((pathsTOaccept[i])[j]));
-				console.log("CURRENT STATE "+currentState);
-				console.log("CURRENT PATH INPUT "+((pathsTOaccept[i])[j])[1]);
-				console.log("INPUT PUTSIDE "+input[contInput]);
-				console.log("QUE HAY PILA ")
-				if(((pathsTOaccept[i])[j])[1] == input[contInput]){
-					if(stackAction(((pathsTOaccept[i])[j])[2],((pathsTOaccept[i])[j])[3]) == true){
-						console.log("PILA");
-						console.log(pila);
-						console.log("INPUT "+input[contInput])	
-						console.log("INPUT AFTER "+input[contInput])
-						console.log("CURRENT STATE INSIDE IF "+currentState);
-						if(currentState == ((pathsTOaccept[i])[j])[4] && input[contInput+1] == ((pathsTOaccept[i])[j])[1]){
-							j--;
+		while(InputCont <= input.length && Fail == false){
+			console.log("WHILE INPUt CONT");
+			console.log(InputCont);
+			console.log("CUrrent State");
+			console.log(currentState);
+			var contErr = 0;
+			var CambioDeEstado = false;
+			for (var i = 0; i < pathsTOaccept[pathTry].length; i++) {
+				if(((pathsTOaccept[pathTry])[i])[0] == currentState && ((pathsTOaccept[pathTry])[i])[1] == input[InputCont]){
+					console.log("ACTUAL PATH");
+					console.log(((pathsTOaccept[pathTry])[i]));
+					if(stackAction(((pathsTOaccept[pathTry])[i])[2],((pathsTOaccept[pathTry])[i])[3]) == true){
+						currentState = ((pathsTOaccept[pathTry])[i])[4];
+						CambioDeEstado = true;
+						InputCont++;
+						break;
+					}else{
+						console.log("ENTRO FAIL")
+						Fail = true;
+					}
+				}else if(((pathsTOaccept[pathTry])[i])[0] == currentState && ((pathsTOaccept[pathTry])[i])[1] == ' '){
+					console.log("ACTUAL PATH EPSILOOOON");
+					console.log(((pathsTOaccept[pathTry])[i]));
+					stackAction(((pathsTOaccept[pathTry])[i])[2],((pathsTOaccept[pathTry])[i])[3])
+					if(((pathsTOaccept[pathTry])[i])[4] == estadoInicial && ReachedFinalState(((pathsTOaccept[pathTry])[i])[4]) == true){
+						if(input.length == 1 && input[0] == ' '){
+							IsAccepted	= true; 
+							break;
+						}else{
+							Fail = true;
+							break;
 						}
-						contInput++;
-						currentState = ((pathsTOaccept[i])[j])[4];
 					}else{
-						StackFAIL = true;
+						currentState = ((pathsTOaccept[pathTry])[i])[4];
+						CambioDeEstado = true;
+						break;
 					}
-				}else if(((pathsTOaccept[i])[j])[1] == ' '){
-					if(stackAction(((pathsTOaccept[i])[j])[2],((pathsTOaccept[i])[j])[3]) == true){
-						console.log("PILA");
-						console.log(pila);
-						currentState = ((pathsTOaccept[i])[j])[4];
-					}else{
-						StackFAIL = true;
-					}
+				}else{
+					contErr++;
 				}
-				console.log("NEXT STATE "+currentState);
+				if(CambioDeEstado == true){
+					break;
+				}
 			}
-			if(StackFAIL == true){
-				console.log("ETNRO A FALI");
-				console.log(StackFAIL)
+			if(contErr >= pathsTOaccept[pathTry].length){
+				console.log("Entro SUPER FAIL")
+				Fail =  true;
 				break;
 			}
 		}
-		//IF que verifica si ya se recorrio toda la cadena, la pila quedo vacia y si el estado alcanzado es de aceptación
-		console.log("STATE FINAL "+currentState);
-		console.log("CONT "+contInput);
-		console.log("INPUT L "+input.length);
-		console.log("PILA L "+pila.length);
-		if(pila.length == 0 && contInput == input.length && ReachedFinalState(currentState) == true){
+		console.log(InputCont)
+		console.log(pila.length)
+		console.log(currentState)
+		console.log(ReachedFinalState(currentState))
+		if(InputCont == input.length && pila.length == 0 && ReachedFinalState(currentState) == true){
 			IsAccepted = true;
 			break;
 		}
+		pathTry++;
 	}
-	
 	return IsAccepted;
 }
 
@@ -341,23 +353,22 @@ function OrderNormalPaths(){
 			}
 		}
 	}
+	console.log("TEMP PATHS");
+	console.log(temppaths);
 	currentState = estadoInicial;
-	var posIntercambio = 0;
 	var temppath = '';
 	for(var i = 0; i < temppaths.length; i++){
 		if((temppaths[i])[0] == currentState){
-			posIntercambio++;
-			if((temppaths[i])[0] == (temppaths[i])[4]){
-				temppath = temppaths[i-posIntercambio];
-				temppaths[i-posIntercambio] = temppaths[i];
+			if((temppaths[i])[0] == (temppaths[i])[4] && i > 0 && (temppaths[i-1])[0] == (temppaths[i])[0]){
+				temppath = temppaths[i-1];
+				temppaths[i-1] = temppaths[i];
 				temppaths[i] = temppath;
 			}
 		}else{
 			currentState = (temppaths[i])[0];
-			posIntercambio = 0;
-			if((temppaths[i])[0] == (temppaths[i])[4]){
-				temppath = temppaths[i-posIntercambio];
-				temppaths[i-posIntercambio] = temppaths[i];
+			if((temppaths[i])[0] == (temppaths[i])[4] && i > 0 && (temppaths[i-1])[0] == (temppaths[i])[0]){
+				temppath = temppaths[i-1];
+				temppaths[i-1] = temppaths[i];
 				temppaths[i] = temppath;
 			}
 		}
