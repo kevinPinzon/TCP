@@ -183,7 +183,7 @@ function get5tuplas() {
 }
 window.onload = function() {
 // dfa----------------------------
-document.getElementById("btnprobarCadenaDFA").onclick = function() {probarDFA()};
+document.getElementById("toNFA").onclick = function() {toNFA()};
 
 document.getElementById("nodos").onclick = function() {
 	for (var i = 0; i < nodes.length; i++) {

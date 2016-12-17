@@ -1,4 +1,5 @@
   var estados = new Array();
+  var transiciones = new Array();
   var alfabeto = new Array();
   var estadoInicial,existeInicial=false;
   var estadosFinales = new Array();
@@ -6,17 +7,23 @@
   var deltaT;
   var insertar;
   var transicionEntrantes;
+  var contEstados = 0;
+  var contTransiciones=0;
+  var contDeltas = 0;
 
-  function probarDFA() {
+  function toNFA() {
     estados = new Array();
     alfabeto = new Array();
     estadosFinales = new Array();
     delta = new Array();
+    transiciones = new Array();
 
-    get5tuplas();
-    var cadenaEntrante = document.getElementById("inputCadena").value;
-    if (cadenaEntrante != "") {
-      if (estados.length != 0) {
+    //get5tuplas();
+    var cadenaEntrante = document.getElementById("regex").value;
+    //estados[0]=contEstados;
+    //contEstados++;
+  //  if (cadenaEntrante != "") {
+     /* if (estados.length != 0) {
         if (alfabeto.length != 0) {
       // IMPRESION DE LAS 5TUPLAS-----------------------------------
           console.log("PRUEBA INICIANDO--------------------------------");
@@ -37,11 +44,56 @@
             console.log("estado final: "+delta[i].getFinalState());
             console.log("transicion: "+delta[i].getTransition());
           }
+*/
       // FINAL DE IMPRESION DE LAS 5TUPLAS-----------------------------------
-            console.log("VERIFICANDO CADENA------------------------------------------------");
-            transicionEntrantes = cadenaEntrante.split("-");
+            console.log("AGARRANDO ESTADOS Y TRANSICIONES------------------------------------------------");
+            //transicionEntrantes = cadenaEntrante.split("-");
 
-            for (var i = 0; i < transicionEntrantes.length; i++) {
+	for(var i = 0; i < cadenaEntrante.length; i++){
+		if(cadenaEntrante[i]=='a'||cadenaEntrante[i]=='b'||cadenaEntrante[i]=='c'||cadenaEntrante[i]=='d'||
+		cadenaEntrante[i]=='e'||cadenaEntrante[i]=='f'||cadenaEntrante[i]=='g'||cadenaEntrante[i]=='h'||cadenaEntrante[i]=='i'||
+		cadenaEntrante[i]=='j'||cadenaEntrante[i]=='k'||cadenaEntrante[i]=='l'||cadenaEntrante[i]=='m'||cadenaEntrante[i]=='n'||
+		cadenaEntrante[i]=='o'||cadenaEntrante[i]=='p'||cadenaEntrante[i]=='q'||cadenaEntrante[i]=='r'||cadenaEntrante[i]=='s'||
+		cadenaEntrante[i]=='t'||cadenaEntrante[i]=='u'||cadenaEntrante[i]=='v'||cadenaEntrante[i]=='w'||cadenaEntrante[i]=='x'||
+		cadenaEntrante[i]=='y'||cadenaEntrante[i]=='z'){
+			console.log("contEstados"+contEstados);
+			if(cadenaEntrante[i+1]=='*'){
+				delta.push(new Delta((contEstados).toString(),' ',contEstados+1));
+				contEstados++;
+				delta.push(new Delta((contEstados).toString(),cadenaEntrante[i],contEstados+1));
+				delta.push(new Delta((contEstados).toString(),' ',contEstados+1));
+				contEstados++;
+				delta.push(new Delta((contEstados).toString(),' ',contEstados+1));
+				contEstados++;
+				delta.push(new Delta((contEstados-3).toString(),' ',contEstados));
+			}
+			else if(cadenaEntrante[i+1]=='|'){
+				delta.push(new Delta(contEstados,cadenaEntrante[i],contEstados+1));
+				delta.push(new Delta(contEstados,cadenaEntrante[i+2],contEstados+1));
+				contEstados++;
+				i=i+2;
+			}
+			else{
+				delta.push(new Delta(contEstados,cadenaEntrante[i],contEstados+1));
+				contEstados++;
+			}
+		}
+		else{
+			delta.push(new Delta(contEstados,' ',contEstados+1));
+			contEstados++;
+		}
+	}
+	console.log("contEstadosFinal"+contEstados);
+console.log("MOSTRANDO DELTA");
+          for (var i = 0; i < delta.length; i++) {
+            console.log("DELTA "+i+".............");
+            console.log("estado incial: "+delta[i].getInitialState());
+            console.log("estado final: "+delta[i].getFinalState());
+            console.log("transicion: "+delta[i].getTransition());
+          }
+      //deltaT = new Delta(initialState,symbol,finalState);
+
+ /*           for (var i = 0; i < transicionEntrantes.length; i++) {
               console.log("transicionEntrantes: "+transicionEntrantes[i]);
             }
 
@@ -76,6 +128,7 @@
         alert("Por favor asigne estados a los nodos");
     }else
       alert("Por favor digite una cadena");
+*/
   }
 
 

@@ -6,18 +6,8 @@ function Node(x, y) {
 	this.isAcceptState = false;
 	this.isInitial=false;
 	this.text = '';
-	this.marcado=false;
+	this.isRejectState = false;
 }
-
-Node.prototype.marcar = function() {
-	console.log("marcando a "+ this.text);
-	this.marcado=true;
-};
-
-Node.prototype.quitarMarca = function() {
-	console.log("desmarcando a "+ this.text);
-	this.marcado=false;
-};
 
 Node.prototype.setMouseStart = function(x, y) {
 	this.mouseOffsetX = this.x - x;
@@ -46,6 +36,15 @@ Node.prototype.draw = function(c) {
 		c.arc(this.x, this.y, nodeRadius - 6, 0, 2 * Math.PI, false);
 		c.stroke();
 		if (this.text!="") {
+			// getFinalState(this.text);
+		}
+	}
+	if(this.isRejectState) {
+		c.beginPath();
+		c.arc(this.x, this.y, nodeRadius - 6, 0, 2 * Math.PI, false);
+		c.arc(this.x, this.y, nodeRadius - 12, 0, 2 * Math.PI, false);
+		c.stroke();
+		if (this.text!="X") {
 			// getFinalState(this.text);
 		}
 	}

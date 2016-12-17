@@ -6,11 +6,14 @@
   var deltaT;
   var insertar;
   var transicionEntrantes;
+  var estadosRechazos = new Array();
+  
 
-  function probarDFA() {
+  function probarTuring() {
     estados = new Array();
     alfabeto = new Array();
     estadosFinales = new Array();
+    estadosRechazos = new Array();
     delta = new Array();
 
     get5tuplas();
@@ -18,7 +21,7 @@
     if (cadenaEntrante != "") {
       if (estados.length != 0) {
         if (alfabeto.length != 0) {
-      // IMPRESION DE LAS 5TUPLAS-----------------------------------
+      // IMPRESION DE LAS 7TUPLAS-----------------------------------
           console.log("PRUEBA INICIANDO--------------------------------");
           console.log("estado inicial: "+ estadoInicial);
 
@@ -30,6 +33,8 @@
 
           for (var i = 0; i < estadosFinales.length; i++)
             console.log("estados Finales["+i+"]: "+estadosFinales[i]);
+	  for (var i = 0; i < estadosRechazos.length; i++)
+	    console.log("estados Rechazos["+i+"]: "+estadosRechazos[i]);
 
           for (var i = 0; i < delta.length; i++) {
             console.log("DELTA "+i+".............");
@@ -37,7 +42,7 @@
             console.log("estado final: "+delta[i].getFinalState());
             console.log("transicion: "+delta[i].getTransition());
           }
-      // FINAL DE IMPRESION DE LAS 5TUPLAS-----------------------------------
+      // FINAL DE IMPRESION DE LAS 7TUPLAS-----------------------------------
             console.log("VERIFICANDO CADENA------------------------------------------------");
             transicionEntrantes = cadenaEntrante.split("-");
 
@@ -118,6 +123,18 @@
     }
     if (insertar)
       estadosFinales.push(finalState);
+  }
+
+  function getRejectState(rejectState) {
+    insertar=true;
+    if (estadosRechazos.length == 0)
+      estadosRechazos[0]=rejectState;
+    for (var i = 0; i < estadosRechazos.length; i++) {
+      if (estadosRechazos[i]==rejectState || ""==rejectState)
+        insertar=false;
+    }
+    if (insertar)
+      estadosRechazos.push(rejectState);
   }
 
   function llenarDelta(initialState,symbol,finalState) {
