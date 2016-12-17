@@ -47,7 +47,7 @@ function ProbarCadenaNFA(){
         if(valEstadosFinales == true){
           input = document.getElementById("inputCadena").value;
           console.log("Va a Build el Path")
-          paths = Paths();
+          paths = CreacionPath();
           console.log("BUILDED")
           if(paths != null){
             console.log("Va a ordenar")
@@ -369,7 +369,7 @@ function ReachedFinalState(recievedState){
   return reachedFinal;
 }
 
-function Paths(){
+function CreacionPath(){
   var stateANDtransition = [];
   var visitedStates = [];
   var cantVisitedStates = 0;
@@ -389,69 +389,29 @@ function Paths(){
   }
 
   for (var i = 0; i < transiciones.length; i++) {
-    if(transiciones[i].text.length != 1 && transiciones[i] instanceof Link){
-      valTransicionCorrecta = false;
+    if(transiciones[i].text.length != 1){
+      if(transiciones[i] instanceof Link || transiciones[i] instanceof SelfLink ){
+        valTransicionCorrecta = false;
+      }
       break;
     }
   }
-
+  console.log("CANT TRANS PATH");
+  console.log(transiciones.length);
   if(valTransicionCorrecta == true){
-    var cantStateANDTransition = 0;
-    while(cantStateANDTransition < transiciones.length && hayInicial == true){
-      //for para moverse entre los diferentes estados posibles
-      for (var i = 0; i < cantNextStates; i++) {
-        visitedStates[cantVisitedStates] = nextStates[i];
-        //For para recorrer todas las transiciones
-        for (var j = 0; j < transiciones.length; j++) {
-          //IF para ver si es LINK
-          if(transiciones[j] instanceof Link){
-            //IF para ver si el nodo izquierdo es igual al estado en el que estamos
-            if(transiciones[j].nodeA.text == nextStates[i]){
-              //se revisa si el nodo derecho ya esta dentro de los estados visitados
-              var truefalse = false;
-              for (var k = 0; k < visitedStates.length; k++) {
-                if(visitedStates[k] == transiciones[j].nodeB.text){
-                  truefalse = true;
-                  break;
-                }
-              }
-              //IF para ingresar un estado siguiente o no
-              if(truefalse == false){
-                nextStates[cantNextStates] = transiciones[j].nodeB.text;
-                cantNextStates++;
-              }
-              stateANDtransition[cantStateANDTransition] = nextStates[i]+""+transiciones[j].text[0]+""+transiciones[j].nodeB.text;
-              cantStateANDTransition++;
-            }
-          //ELSE IF para ver si es SELFLINK
-          }else if(transiciones[j] instanceof SelfLink){
-            if(transiciones[j].node.text == nextStates[i]){
-              //se revisa si el nodo derecho ya esta dentro de los estados visitados
-              var truefalse = false;
-              for (var k = 0; k < visitedStates.length; k++) {
-                if(visitedStates[k] == transiciones[j].node.text){
-                  truefalse = true;
-                  break;
-                }
-              }
-              //IF para ingresar un estado siguiente o no
-              if(truefalse == false){
-                nextStates[cantNextStates] = transiciones[j].node.text;
-                cantNextStates++;
-              }
-              stateANDtransition[cantStateANDTransition] = nextStates[i]+""+transiciones[j].text[0]+""+transiciones[j].node.text;
-              cantStateANDTransition++;
-            }
-          }
-        }
-        cantVisitedStates++;
+    var pos = 0;
+    for (var i = 0; i < transiciones.length; i++) {
+      if(transiciones[i] instanceof Link){
+        modifiedStateANDTransition[pos] = transiciones[i].nodeA.text+""+transiciones[i].text[0]+""+transiciones[i].nodeB.text;
+        pos++;
+      }else if(transiciones[i] instanceof SelfLink){
+        modifiedStateANDTransition[pos] = transiciones[i].node.text+""+transiciones[i].text[0]+""+transiciones[i].node.text;
+        pos++;
       }
+      
     }
-    for (var i = 0; i < (stateANDtransition.length/2); i++) {
-      modifiedStateANDTransition[i] = stateANDtransition[i];
-    }
-    console.log("MOD AND TRANS");
-    console.log(modifiedStateANDTransition);
+    console.log("MOD SHIT")
+    console.log(modifiedStateANDTransition)
     return modifiedStateANDTransition;
   }else{
     window.alert("Posee una o mas trancisiones incorrectas, estas deben de contener solamente un caracter");
