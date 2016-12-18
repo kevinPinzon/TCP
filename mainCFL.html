@@ -28,7 +28,8 @@
   	<link href=https://necolas.github.io/normalize.css/5.0.0/normalize.css rel="stylesheet" type="text/css" />
   	<link href=https://cdn.muicss.com/mui-0.9.4/css/mui.min.css rel="stylesheet" type="text/css" />
   	<script src=https://cdn.muicss.com/mui-0.9.4/js/mui.min.js></script>
-    <script src="src/lenguajesRegulares/dfa.js"></script>
+    <script src="src/CFL/cfg.js"></script>
+    <script src="src/CFL/ejecutor.js"></script>
   </head>
   <body style="background-color:#E2FAEE;">
   	<h1>Context Free Language</h1>
@@ -52,12 +53,14 @@
         <h2>Manual de usuario</h2>
         <li><b>No digite espacios</b></li>
         <li><b>El simbolo ε se representa con la letra</b> e </li>
+        <li>El simbolo <b>e</b>|<b>E</b> no puede usarse como simbolo no terminal ni terminal </li>
+        <li>Ejemplo como definir <b>(V) variables no terminales:</b> S,T</li>
+        <li>Ejemplo como definir <b>(E) variables terminales:</b> 0,1</li>
+        <li>Ejemplo 2 como definir <b>(E) variables terminales:</b> a,b</li>
         <li>Ejemplo como definir <b>(R) reglas:</b> S->aSb|SS|e</li>
         <li>Ejemplo 2 como definir <b>(R)reglas:</b> S->aT,T->a|b</li>
-        <li><b>Para separar cada regla use:</b> |</li>
-        <li>Ejemplo como definir <b>(V) variables no terminales:</b> proximamente...</li>
-        <li>Ejemplo como definir <b>(E) variables terminales:</b> proximamente...</li>
-        <li>Ejemplo como definir <b>(S) variable inicial:</b> proximamente...</li>
+        <li>Para separar cada regla use: <b>|</b></li>
+        <li>Ejemplo como definir <b>(S) variable inicial:</b> S</li>
         <br>
       </ul>
       <br>
