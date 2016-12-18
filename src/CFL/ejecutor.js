@@ -2,6 +2,7 @@ var gramatica = new Cfg();
 var contador = 0;
 window.onload = function() {
   document.getElementById("btnRegla").onclick = function() {addRegla()};
+  document.getElementById("btnProbarCFG").onclick = function() {probarCFG()};
 }
 
 function addRegla(){
@@ -15,4 +16,20 @@ function addRegla(){
   }
   gramatica.setReglas();
   contador++;
+}
+
+function probarCFG(){
+  var inputCadena = document.getElementById("inputCadena").value;
+  if (inputCadena != "") {
+    for (var i = 0; i < inputCadena.length; i++) {
+for (var i = 0; i < gramatica.getTerminales().length; i++) {
+  gramatica.getTerminales()[i]
+}
+      if (inputCadena[i] == ) {
+
+      }
+    }
+  }else {
+    swal("Input vacio", "Ingrese una cadena", "warning");
+  }
 }
