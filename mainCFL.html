@@ -35,21 +35,33 @@
   	<div class="mui--z1">
     	<form>
   		  <div class="mui-textfield">
-  		    <input id="inputReglas" type="text" placeholder="Digita las reglas de la gramatica">
+          <input id="inputV" type="text" placeholder="(V) Digite variables no terminales">
           <br>
-          <input id="inputCadena" type="text" placeholder="Digita cadena a evaluar">
+          <input id="inputE" type="text" placeholder="(E) Digite variables terminales">
+          <br>
+    	    <input id="inputR" type="text" placeholder="(R) Digite reglas de la gramatica">
+          <br>
+          <input id="inputS" type="text" placeholder="(S) Digite variable inicial">
+          <br><br><br>
+          <input id="inputCadena" type="text" placeholder="Digite cadena a evaluar">
     	  </div>
   	  </form>
   		<button class="mui-btn mui-btn--large mui-btn--primary" id="btnProbarCFG" >Probar cadena</button>
       <ul>
         <br>
         <h2>Manual de usuario</h2>
-        <li><b>Ejemplo de como definir reglas:</b> S->aSb|SS|e</li>
-        <li><b>Ejemplo 2 de como definir reglas:</b> S->aT,T->a|b</li>
-        <li><b>Para separar cada regla use:</b> |</li>
         <li><b>No digite espacios</b></li>
-        <li><b>EL simbolo ε se representa con la letra</b> e </li>
+        <li><b>El simbolo ε se representa con la letra</b> e </li>
+        <li>Ejemplo como definir <b>(R) reglas:</b> S->aSb|SS|e</li>
+        <li>Ejemplo 2 como definir <b>(R)reglas:</b> S->aT,T->a|b</li>
+        <li><b>Para separar cada regla use:</b> |</li>
+        <li>Ejemplo como definir <b>(V) variables no terminales:</b> proximamente...</li>
+        <li>Ejemplo como definir <b>(E) variables terminales:</b> proximamente...</li>
+        <li>Ejemplo como definir <b>(S) variable inicial:</b> proximamente...</li>
+        <br>
       </ul>
+      <br>
     </div>
+    <br><br><br><br><br><br><br>
   </body>
 </html>
