@@ -162,16 +162,13 @@ function get5tuplas() {
 
 	for (var i = 0; i < links.length; i++) {
 		getAlfabeto(links[i].text);
-		if ( links[i] != null && links[i].nodeA == null) {
-			console.log(" symbol "+links[i].text);
-		}
 		llenarDelta(links[i].nodeA,links[i].text,links[i].nodeB);
 	}
 	for (var i = 0; i < nodes.length; i++) {
 		console.log("nodo "+i+": "+nodes[i].text);
-		getState(nodes[i].text);
+		getState(nodes[i]);
 		if (nodes[i].isAcceptState) {
-			getFinalState(nodes[i].text);
+			getFinalState(nodes[i]);
 		}
 		if (nodes[i].isInitial) {
 			getInitialState(nodes[i]);
@@ -194,7 +191,6 @@ window.onload = function() {
 		if(selectedObject != null) {
 			if(shift && selectedObject instanceof Node) {
 				currentLink = new SelfLink(selectedObject, mouse);
-				console.log("currentLink is: "+currentLink.node.text);
 			} else {
 				movingObject = true;
 				deltaMouseX = deltaMouseY = 0;
@@ -245,7 +241,6 @@ window.onload = function() {
 				if(targetNode != null) {
 					currentLink = new StartLink(targetNode, originalClick);
 					targetNode.isInitial=true;
-					console.log("current");
 				} else {
 					currentLink = new TemporaryLink(originalClick, mouse);
 				}

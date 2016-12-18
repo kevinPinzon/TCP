@@ -6,9 +6,6 @@
   var deltaT;
   var insertar;
   var transicionEntrantes;
-  var cont = 0;
-  var matrix = [];
-
 
   function probarDFA() {
     estados = new Array();
@@ -22,12 +19,11 @@
       if (estados.length != 0) {
         if (alfabeto.length != 0) {
       // IMPRESION DE LAS 5TUPLAS-----------------------------------
-          console.log("PRUEBA INICIANDO--------------------------------");
+          console.log("PRUEBA INICIANDO DFA--------------------------------");
           console.log("estado inicial: "+ estadoInicial);
 
           for (var i = 0; i < estados.length; i++){
             console.log("estado["+i+"]: "+estados[i]);
-	    cont++;
 	  }
 
           for (var i = 0; i < alfabeto.length; i++)
@@ -43,41 +39,6 @@
             console.log("transicion: "+delta[i].getTransition());
           }
       // FINAL DE IMPRESION DE LAS 5TUPLAS-----------------------------------
-		console.log("cont"+cont);
-		for(var i=0; i<cont; i++) {
-   			matrix[i] = [];
-    			for(var j=0; j<cont; j++) {
-    	  		  matrix[i][j] = 999999;
-    			}
-		}
-		console.log("IMPRIMIENDO MATRIZ");
-		for(var i = 0; i < cont; i++){
-			for(var j=0; j<cont; j++){
-				console.log("["+matrix[i][j]+"]");
-				console.log("que putas aqui");
-			}
-			console.log("\n");
-		}	
-
-		for(var i = 0; i < delta.length; i ++){
-			for(var j = 0; j < cont; j++){
-        			if (comparadorDeObjetos(estados[j],delta[i].getInitialState())){
-					for(var k = 0; k < cont; k++){
-						if(comparadorDeObjetos(estados[k], delta[i].getFinalState())){
-							matrix[j][k] = delta[i].getTransition();
-						}
-					}
-				}
-			}
-		}
-		console.log("IMPRIMIENDO MATRIZ");
-		for(var i = 0; i < cont; i++){
-			for(var j=0; j<cont; j++){
-				console.log("["+matrix[i][j]+"]");
-				console.log("Matriz Con Transiciones");
-			}
-			console.log("\n");
-		}
 
             console.log("VERIFICANDO CADENA------------------------------------------------");
             transicionEntrantes = cadenaEntrante.split("-");
@@ -138,15 +99,31 @@
   }
 
   function getAlfabeto (Newsymbol) {
-    var insertar=true;
-    if (alfabeto.length == 0)
-      alfabeto[0]=Newsymbol;
-    for (var i = 0; i < alfabeto.length; i++) {
-      if (alfabeto[i]==Newsymbol || ""==Newsymbol)
-        insertar=false;
+    if (Newsymbol.length > 1) {
+    for (var i = 0; i < Newsymbol.length; i++) {
+      if (Newsymbol[i] !=',') {
+        var insertar=true;
+        if (alfabeto.length == 0)
+          alfabeto[0]=Newsymbol[i];
+        for (var j = 0; j < alfabeto.length; j++) {
+          if (alfabeto[j]==Newsymbol[i] || ""==Newsymbol[i])
+            insertar=false;
+        }
+        if (insertar)
+          alfabeto.push(Newsymbol[i]);
+      }
     }
-    if (insertar)
-      alfabeto.push(Newsymbol);
+    }else{
+      var insertar=true;
+      if (alfabeto.length == 0)
+        alfabeto[0]=Newsymbol;
+      for (var i = 0; i < alfabeto.length; i++) {
+        if (alfabeto[i]==Newsymbol || ""==Newsymbol)
+          insertar=false;
+      }
+      if (insertar)
+        alfabeto.push(Newsymbol);
+    }
   }
 
   function getFinalState(finalState) {
@@ -166,19 +143,43 @@
       // console.log("no inserta..");
     }
     else {
-      // console.log("entro en llenarDelta else..");
-      deltaT = new Delta(initialState,symbol,finalState);
-      insertar=true;
-      for (var i = 0; i < delta.length; i++) {
-        if (comparadorDeObjetos(deltaT,delta[i]))
+      if (symbol.length > 1) {
+        for (var j = 0; j < symbol.length; j++) {
+          if (symbol[j] !=',') {
+            deltaT = new Delta(initialState,symbol[j],finalState);
+            insertar=true;
+            for (var i = 0; i < delta.length; i++) {
+              console.log("DELTA TRABAJANDOSE: "+deltaT.toString());
+              if (comparadorDeObjetos(deltaT,delta[i])){
+                insertar=false;
+                console.log("NO INSERTADO! "+deltaT.toString());
+              }
+            }
+            if (insertar) {
+              console.log("INSERTADO! "+deltaT.toString());
+              delta.push(deltaT);
+              // console.log("elemento insertado");
+            }
+            else {
+              // console.log("elemento NO insertado");
+            }
+          }
+        }
+      }else {
+        // console.log("entro en llenarDelta else..");
+        deltaT = new Delta(initialState,symbol,finalState);
+        insertar=true;
+        for (var i = 0; i < delta.length; i++) {
+          if (comparadorDeObjetos(deltaT,delta[i]))
           insertar=false;
-      }
-      if (insertar) {
+        }
+        if (insertar) {
           delta.push(deltaT);
           // console.log("elemento insertado");
-      }
-      else {
-        // console.log("elemento NO insertado");
+        }
+        else {
+          // console.log("elemento NO insertado");
+        }
       }
     }
   }

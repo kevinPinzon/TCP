@@ -6,7 +6,18 @@ function Node(x, y) {
 	this.isAcceptState = false;
 	this.isInitial=false;
 	this.text = '';
+	this.marcado=false;
 }
+
+Node.prototype.marcar = function() {
+	console.log("marcando a "+ this.text);
+	this.marcado=true;
+};
+
+Node.prototype.quitarMarca = function() {
+	console.log("desmarcando a "+ this.text);
+	this.marcado=false;
+};
 
 Node.prototype.setMouseStart = function(x, y) {
 	this.mouseOffsetX = this.x - x;
