@@ -29,38 +29,38 @@
   	<link href=https://cdn.muicss.com/mui-0.9.4/css/mui.min.css rel="stylesheet" type="text/css" />
   	<script src=https://cdn.muicss.com/mui-0.9.4/js/mui.min.js></script>
     <script src="src/CFL/cfg.js"></script>
+    <script src="src/CFL/regla.js"></script>
     <script src="src/CFL/ejecutor.js"></script>
   </head>
   <body style="background-color:#E2FAEE;">
   	<h1>Context Free Language</h1>
   	<div class="mui--z1">
-    	<form>
   		  <div class="mui-textfield">
           <input id="inputV" type="text" placeholder="(V) Digite variables no terminales">
           <br>
           <input id="inputE" type="text" placeholder="(E) Digite variables terminales">
-          <br>
-    	    <input id="inputR" type="text" placeholder="(R) Digite reglas de la gramatica">
-          <br>
-          <input id="inputS" type="text" placeholder="(S) Digite variable inicial">
-          <br><br><br>
+          <br><br>
+          <input id="inputR" type="text" placeholder="(R) Digite reglas">
+          <button id="btnRegla" class="mui-btn mui-btn--small mui-btn--accent">Guardar regla</button>
+          <br><br>
           <input id="inputCadena" type="text" placeholder="Digite cadena a evaluar">
-    	  </div>
-  	  </form>
-  		<button class="mui-btn mui-btn--large mui-btn--primary" id="btnProbarCFG" >Probar cadena</button>
+          <button class="mui-btn mui-btn--large mui-btn--primary" id="btnProbarCFG" >Probar cadena</button>
+        </div>
       <ul>
         <br>
         <h2>Manual de usuario</h2>
         <li><b>No digite espacios</b></li>
         <li><b>El simbolo ε se representa con la letra</b> e </li>
-        <li>El simbolo <b>e</b>|<b>E</b> no puede usarse como simbolo no terminal ni terminal </li>
+        <li>El simbolo <b>e</b>|<b>E</b> no puede usarse como simbolo no terminal</li>
         <li>Ejemplo como definir <b>(V) variables no terminales:</b> S,T</li>
+        <li>Las <b>(V) variables no terminales </b> solo pueden ser letras</li>
+        <li>El primer simbolo de las variables <b>no terminales(V)</b> se guarda como la <b>(S) variable inicial</b></li>
         <li>Ejemplo como definir <b>(E) variables terminales:</b> 0,1</li>
         <li>Ejemplo 2 como definir <b>(E) variables terminales:</b> a,b</li>
-        <li>Ejemplo como definir <b>(R) reglas:</b> S->aSb|SS|e</li>
-        <li>Ejemplo 2 como definir <b>(R)reglas:</b> S->aT,T->a|b</li>
-        <li>Para separar cada regla use: <b>|</b></li>
-        <li>Ejemplo como definir <b>(S) variable inicial:</b> S</li>
+        <li>Ejemplo como definir <b>(R) reglas:</b> S>aSb</li>
+        <li>Ejemplo 2 como definir <b>(R)reglas:</b> S>Ta</li>
+        <li>Ejemplo 3 como definir <b>(R)reglas:</b> S>a</li>
+        <li>Ejemplo 4 como definir <b>(R)reglas:</b> S>e</li>
         <br>
       </ul>
       <br>
