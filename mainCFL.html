@@ -6,65 +6,76 @@
     <style>
     body {
     text-align: center;
-    background: #DFDFDF;
-    margin: 0 30px 100px 30px;
+    background: #DFDFD5 !important;
     font: 14px/18px 'Lucida Grande', 'Segoe UI', sans-serif;
     }
     h1 {
     margin-top: 100px !important;
+    margin-bottom: 100px !important;
     font: bold italic 50px Georgia, serif;
     }
     a {
     color: black;
     }
     div {
-    padding: 30px;
-    margin: 30px auto;
-    text-align: left;
-    max-width: 800px;
+    /*padding: 30px;*/
+    max-width: 600px;
     }
-
+    input {
+      text-align: center;
+      max-width: 250px;
+    }
+    li {
+    text-align: left;
+    }
     </style>
   	<link href=https://necolas.github.io/normalize.css/5.0.0/normalize.css rel="stylesheet" type="text/css" />
   	<link href=https://cdn.muicss.com/mui-0.9.4/css/mui.min.css rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="dist/sweetalert.css">
   	<script src=https://cdn.muicss.com/mui-0.9.4/js/mui.min.js></script>
+    <script src="dist/sweetalert.min.js"></script>
+
     <script src="src/CFL/cfg.js"></script>
     <script src="src/CFL/regla.js"></script>
     <script src="src/CFL/ejecutor.js"></script>
   </head>
-  <body style="background-color:#E2FAEE;">
+  <body>
   	<h1>Context Free Language</h1>
-  	<div class="mui--z1">
-  		  <div class="mui-textfield">
-          <input id="inputV" type="text" placeholder="(V) Digite variables no terminales">
+    <div class="mui-container-fluid">
+    	<div class="mui--z1">
+      <div class="mui-row">
+    		  <div class="mui-textfield mui-col-md-6 mui-col-md-offset-3">
+            <input id="inputV" type="text" placeholder="(V) Digite variables no terminales">
+            <br>
+            <input id="inputE" type="text" placeholder="(E) Digite variables terminales">
+            <br><br>
+            <input id="inputR" type="text" placeholder="(R) Digite reglas">
+            <button id="btnRegla" class="mui-btn mui-btn--small mui-btn--accent">Guardar regla</button>
+            <br><br>
+            <input id="inputCadena" type="text" placeholder="Digite cadena a evaluar">
+            <button class="mui-btn mui-btn--large mui-btn--primary" id="btnProbarCFG" >Probar cadena</button>
+          </div>
+      </div>
+        <ul>
           <br>
-          <input id="inputE" type="text" placeholder="(E) Digite variables terminales">
-          <br><br>
-          <input id="inputR" type="text" placeholder="(R) Digite reglas">
-          <button id="btnRegla" class="mui-btn mui-btn--small mui-btn--accent">Guardar regla</button>
-          <br><br>
-          <input id="inputCadena" type="text" placeholder="Digite cadena a evaluar">
-          <button class="mui-btn mui-btn--large mui-btn--primary" id="btnProbarCFG" >Probar cadena</button>
-        </div>
-      <ul>
+          <h2>Manual de usuario</h2>
+          <li><b>No digite espacios</b></li>
+          <li><b>El simbolo ε se representa con la letra</b> e </li>
+          <li>El simbolo <b>e</b> no puede usarse como simbolo no terminal</li>
+          <li>Ejemplo como definir <b>(V) variables no terminales:</b> S,T</li>
+          <li>Las <b>(V) variables no terminales </b> solo pueden ser letras</li>
+          <li>El primer simbolo de las variables <b>no terminales(V)</b> se guarda como la <b>(S) variable inicial</b></li>
+          <li>Ejemplo como definir <b>(E) variables terminales:</b> 0,1</li>
+          <li>Ejemplo 2 como definir <b>(E) variables terminales:</b> a,b</li>
+          <li>Ejemplo como definir <b>(R) reglas:</b> S>aSb</li>
+          <li>Ejemplo 2 como definir <b>(R)reglas:</b> S>Ta</li>
+          <li>Ejemplo 3 como definir <b>(R)reglas:</b> S>a</li>
+          <li>Ejemplo 4 como definir <b>(R)reglas:</b> S>e</li>
+          <br>
+        </ul>
         <br>
-        <h2>Manual de usuario</h2>
-        <li><b>No digite espacios</b></li>
-        <li><b>El simbolo ε se representa con la letra</b> e </li>
-        <li>El simbolo <b>e</b>|<b>E</b> no puede usarse como simbolo no terminal</li>
-        <li>Ejemplo como definir <b>(V) variables no terminales:</b> S,T</li>
-        <li>Las <b>(V) variables no terminales </b> solo pueden ser letras</li>
-        <li>El primer simbolo de las variables <b>no terminales(V)</b> se guarda como la <b>(S) variable inicial</b></li>
-        <li>Ejemplo como definir <b>(E) variables terminales:</b> 0,1</li>
-        <li>Ejemplo 2 como definir <b>(E) variables terminales:</b> a,b</li>
-        <li>Ejemplo como definir <b>(R) reglas:</b> S>aSb</li>
-        <li>Ejemplo 2 como definir <b>(R)reglas:</b> S>Ta</li>
-        <li>Ejemplo 3 como definir <b>(R)reglas:</b> S>a</li>
-        <li>Ejemplo 4 como definir <b>(R)reglas:</b> S>e</li>
-        <br>
-      </ul>
-      <br>
+      </div>
+      <br><br><br><br><br><br><br>
     </div>
-    <br><br><br><br><br><br><br>
   </body>
 </html>

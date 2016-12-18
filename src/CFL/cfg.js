@@ -24,10 +24,10 @@ function Cfg(noTerminales,terminales,reglas,inicial) {
           console.log(this.noTerminales[i]);
         }
       }else {
-        alert("Entada incorrecta, revise las variables no terminales");
+        swal("Entada incorrecta", "revise las variables no terminales", "warning");
       }
     }else
-      alert("Por favor digite variables no terminales");
+      swal("Entada incorrecta", "revise las variables no terminales", "warning");
   }
 
   this.setTerminales=function(){
@@ -39,7 +39,7 @@ function Cfg(noTerminales,terminales,reglas,inicial) {
       for (var i = 0; i < this.terminales.length; i++)
         console.log(this.terminales[i]);
     }else
-      alert("Por favor digite variables terminales");
+      swal("Entada incorrecta", "revise las variables terminales", "warning");
   }
 
   this.setInicial = function(){
@@ -59,7 +59,7 @@ function Cfg(noTerminales,terminales,reglas,inicial) {
             }
           }
         }else {
-          alert("formato de regla incorrecto, input vacio");
+          swal("formato de regla incorrecto", "input vacio", "warning");
         }
       }
       for (var i = 2; i < inputR.length; i++) {
@@ -73,22 +73,24 @@ function Cfg(noTerminales,terminales,reglas,inicial) {
             reglaTemporal.final += inputR[i];
           }
         }
+          if (inputR[i]=='e') {
+            reglaTemporal.final += inputR[i];
+          }
       }
       console.log( reglaTemporal.toString() );
       if ( (reglaTemporal.final != "" || reglaTemporal.final != null)
         && (reglaTemporal.inicial != "" || reglaTemporal.inicial != null ) ) {
         console.log( reglaTemporal.toString() );
         this.reglas.push(reglaTemporal);
-        console.log("Reglas guardadas:");
+        swal("Regla agregada", reglaTemporal.toString(), "success");
         for (var i = 0; i < this.reglas.length; i++) {
           console.log( this.reglas[i].toString() );
         }
       }else {
-        alert("formato de regla incorrecto, no se ha guardado");
+        swal("Regla NO agregada", "formato de regla incorrecto", "error");
       }
-
     }else {
-      alert("formato de regla incorrecto, no se ha guardado");
+      swal("Regla NO agregada", "formato de regla incorrecto", "error");
     }
 
   }
