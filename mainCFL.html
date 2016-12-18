@@ -1,0 +1,55 @@
+<!doctype html>
+<html>
+  <head>
+  	<title>Teoria de la computacion</title>
+    <meta charset="utf-8">
+    <style>
+    body {
+    text-align: center;
+    background: #DFDFDF;
+    margin: 0 30px 100px 30px;
+    font: 14px/18px 'Lucida Grande', 'Segoe UI', sans-serif;
+    }
+    h1 {
+    margin-top: 100px !important;
+    font: bold italic 50px Georgia, serif;
+    }
+    a {
+    color: black;
+    }
+    div {
+    padding: 30px;
+    margin: 30px auto;
+    text-align: left;
+    max-width: 800px;
+    }
+
+    </style>
+  	<link href=https://necolas.github.io/normalize.css/5.0.0/normalize.css rel="stylesheet" type="text/css" />
+  	<link href=https://cdn.muicss.com/mui-0.9.4/css/mui.min.css rel="stylesheet" type="text/css" />
+  	<script src=https://cdn.muicss.com/mui-0.9.4/js/mui.min.js></script>
+    <script src="src/lenguajesRegulares/dfa.js"></script>
+  </head>
+  <body style="background-color:#E2FAEE;">
+  	<h1>Context Free Language</h1>
+  	<div class="mui--z1">
+    	<form>
+  		  <div class="mui-textfield">
+  		    <input id="inputReglas" type="text" placeholder="Digita las reglas de la gramatica">
+          <br>
+          <input id="inputCadena" type="text" placeholder="Digita cadena a evaluar">
+    	  </div>
+  	  </form>
+  		<button class="mui-btn mui-btn--large mui-btn--primary" id="btnProbarCFG" >Probar cadena</button>
+      <ul>
+        <br>
+        <h2>Manual de usuario</h2>
+        <li><b>Ejemplo de como definir reglas:</b> S->aSb|SS|e</li>
+        <li><b>Ejemplo 2 de como definir reglas:</b> S->aT,T->a|b</li>
+        <li><b>Para separar cada regla use:</b> |</li>
+        <li><b>No digite espacios</b></li>
+        <li><b>EL simbolo ε se representa con la letra</b> e </li>
+      </ul>
+    </div>
+  </body>
+</html>
