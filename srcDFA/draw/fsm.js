@@ -179,7 +179,6 @@ window.onload = function() {
 
 	canvas = document.getElementById('canvas');
 	document.getElementById("btnprobarCadenaDFA").onclick = function() {probarDFA()};
-	document.getElementById("btnprobarCadenaNFA").onclick = function() {probarNFA()};
 //	restoreBackup();
 	draw();
 	canvas.onmousedown = function(e) {

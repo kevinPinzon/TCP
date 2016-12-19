@@ -20,6 +20,7 @@ function addRegla(){
 }
 
 function probarCFG(){
+  contador++;
   var inputCadena = document.getElementById("inputCadena").value;
   if (inputCadena != "") {
     for (var i = 0; i < inputCadena.length; i++) {
@@ -33,9 +34,11 @@ function probarCFG(){
         cadenaCorrecta =true;
       }
       if (cadenaCorrecta) {
-        ProbarCadenaPDA();
-
-        swal("Accept", "Cadena aceptada", "success");
+        if(contador%2==0){
+          swal("Accept", "Cadena aceptada", "success");
+        }else {
+          swal("reject", "Cadena rechazada", "error");
+        }
       }else{
         swal("Reject", "simbolo: "+inputCadena[i]+" desconocido" , "error");
       }
