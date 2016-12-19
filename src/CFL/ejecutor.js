@@ -15,6 +15,7 @@ function addRegla(){
     document.getElementById("inputE").disabled = true;
   }
   gramatica.setReglas();
+  document.getElementById("inputR").value= "";
   contador++;
 }
 
@@ -22,11 +23,21 @@ function probarCFG(){
   var inputCadena = document.getElementById("inputCadena").value;
   if (inputCadena != "") {
     for (var i = 0; i < inputCadena.length; i++) {
-for (var i = 0; i < gramatica.getTerminales().length; i++) {
-  gramatica.getTerminales()[i]
-}
-      if (inputCadena[i] == ) {
+      var cadenaCorrecta =false;
+      for (var j = 0; j < gramatica.getTerminales().length; j++) {
+        if (inputCadena[i] == gramatica.getTerminales()[j]) {
+          cadenaCorrecta =true;
+        }
+      }
+      if (inputCadena[i] =='e') {
+        cadenaCorrecta =true;
+      }
+      if (cadenaCorrecta) {
+        ProbarCadenaPDA();
 
+        swal("Accept", "Cadena aceptada", "success");
+      }else{
+        swal("Reject", "simbolo: "+inputCadena[i]+" desconocido" , "error");
       }
     }
   }else {

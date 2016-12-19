@@ -1,5 +1,5 @@
 var greekLetterNames = [ 'Alpha', 'Beta', 'Gamma', 'Delta', 'Epsilon', 'Zeta', 'Eta', 'Theta', 'Iota', 'Kappa', 'Lambda', 'Mu', 'Nu', 'Xi', 'Omicron', 'Pi', 'Rho', 'Sigma', 'Tau', 'Upsilon', 'Phi', 'Chi', 'Psi', 'Omega' ];
-var nodeTemp;
+
 function convertLatexShortcuts(text) {
 	// html greek characters
 	for(var i = 0; i < greekLetterNames.length; i++) {
@@ -159,6 +159,8 @@ function snapNode(node) {
 	}
 }
 function get5tuplas() {
+	console.log("longitud de links: "+links.length);
+	console.log("longitud de nodes: "+nodes.length);
 
 	for (var i = 0; i < links.length; i++) {
 		getAlfabeto(links[i].text);
@@ -166,22 +168,32 @@ function get5tuplas() {
 	}
 	for (var i = 0; i < nodes.length; i++) {
 		console.log("nodo "+i+": "+nodes[i].text);
-		getState(nodes[i]);
+		getState(nodes[i].text);
 		if (nodes[i].isAcceptState) {
-			getFinalState(nodes[i]);
+			getFinalState(nodes[i].text);
 		}
 		if (nodes[i].isInitial) {
 			getInitialState(nodes[i]);
 		}
+	//	if(nodes[i].isRejectState){
+	//		getRejectState(nodes[i].text);
+	//	}
+
 	}
 }
 window.onload = function() {
+// dfa----------------------------
+document.getElementById("toNFA").onclick = function() {toNFA()};
 
+document.getElementById("nodos").onclick = function() {
+	for (var i = 0; i < nodes.length; i++) {
+		console.log("nodo "+i+": "+nodes[i].text);
+	}
+};
 	canvas = document.getElementById('canvas');
-	document.getElementById("btnprobarCadenaDFA").onclick = function() {probarDFA()};
-	document.getElementById("btnprobarCadenaNFA").onclick = function() {probarNFA()};
 //	restoreBackup();
 	draw();
+
 	canvas.onmousedown = function(e) {
 		var mouse = crossBrowserRelativeMousePos(e);
 		selectedObject = selectObject(mouse.x, mouse.y);
@@ -204,6 +216,7 @@ window.onload = function() {
 		}
 
 		draw();
+
 		if(canvasHasFocus()) {
 			// disable drag-and-drop only if the canvas is already focused
 			return false;
@@ -213,6 +226,7 @@ window.onload = function() {
 			return true;
 		}
 	};
+
 	canvas.ondblclick = function(e) {
 		var mouse = crossBrowserRelativeMousePos(e);
 		selectedObject = selectObject(mouse.x, mouse.y);
@@ -241,6 +255,7 @@ window.onload = function() {
 				if(targetNode != null) {
 					currentLink = new StartLink(targetNode, originalClick);
 					targetNode.isInitial=true;
+					console.log("current");
 				} else {
 					currentLink = new TemporaryLink(originalClick, mouse);
 				}

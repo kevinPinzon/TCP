@@ -6,11 +6,14 @@
   var deltaT;
   var insertar;
   var transicionEntrantes;
+  var estadosRechazos = new Array();
+  
 
-  function probarDFA() {
+  function probarTuring() {
     estados = new Array();
     alfabeto = new Array();
     estadosFinales = new Array();
+    estadosRechazos = new Array();
     delta = new Array();
 
     get5tuplas();
@@ -18,19 +21,20 @@
     if (cadenaEntrante != "") {
       if (estados.length != 0) {
         if (alfabeto.length != 0) {
-      // IMPRESION DE LAS 5TUPLAS-----------------------------------
-          console.log("PRUEBA INICIANDO DFA--------------------------------");
+      // IMPRESION DE LAS 7TUPLAS-----------------------------------
+          console.log("PRUEBA INICIANDO--------------------------------");
           console.log("estado inicial: "+ estadoInicial);
 
-          for (var i = 0; i < estados.length; i++){
+          for (var i = 0; i < estados.length; i++)
             console.log("estado["+i+"]: "+estados[i]);
-	  }
 
           for (var i = 0; i < alfabeto.length; i++)
             console.log("alfabeto["+i+"]: "+alfabeto[i]);
 
           for (var i = 0; i < estadosFinales.length; i++)
             console.log("estados Finales["+i+"]: "+estadosFinales[i]);
+	  for (var i = 0; i < estadosRechazos.length; i++)
+	    console.log("estados Rechazos["+i+"]: "+estadosRechazos[i]);
 
           for (var i = 0; i < delta.length; i++) {
             console.log("DELTA "+i+".............");
@@ -38,8 +42,7 @@
             console.log("estado final: "+delta[i].getFinalState());
             console.log("transicion: "+delta[i].getTransition());
           }
-      // FINAL DE IMPRESION DE LAS 5TUPLAS-----------------------------------
-
+      // FINAL DE IMPRESION DE LAS 7TUPLAS-----------------------------------
             console.log("VERIFICANDO CADENA------------------------------------------------");
             transicionEntrantes = cadenaEntrante.split("-");
 
@@ -99,31 +102,15 @@
   }
 
   function getAlfabeto (Newsymbol) {
-    if (Newsymbol.length > 1) {
-    for (var i = 0; i < Newsymbol.length; i++) {
-      if (Newsymbol[i] !=',') {
-        var insertar=true;
-        if (alfabeto.length == 0)
-          alfabeto[0]=Newsymbol[i];
-        for (var j = 0; j < alfabeto.length; j++) {
-          if (alfabeto[j]==Newsymbol[i] || ""==Newsymbol[i])
-            insertar=false;
-        }
-        if (insertar)
-          alfabeto.push(Newsymbol[i]);
-      }
+    var insertar=true;
+    if (alfabeto.length == 0)
+      alfabeto[0]=Newsymbol;
+    for (var i = 0; i < alfabeto.length; i++) {
+      if (alfabeto[i]==Newsymbol || ""==Newsymbol)
+        insertar=false;
     }
-    }else{
-      var insertar=true;
-      if (alfabeto.length == 0)
-        alfabeto[0]=Newsymbol;
-      for (var i = 0; i < alfabeto.length; i++) {
-        if (alfabeto[i]==Newsymbol || ""==Newsymbol)
-          insertar=false;
-      }
-      if (insertar)
-        alfabeto.push(Newsymbol);
-    }
+    if (insertar)
+      alfabeto.push(Newsymbol);
   }
 
   function getFinalState(finalState) {
@@ -138,48 +125,36 @@
       estadosFinales.push(finalState);
   }
 
+  function getRejectState(rejectState) {
+    insertar=true;
+    if (estadosRechazos.length == 0)
+      estadosRechazos[0]=rejectState;
+    for (var i = 0; i < estadosRechazos.length; i++) {
+      if (estadosRechazos[i]==rejectState || ""==rejectState)
+        insertar=false;
+    }
+    if (insertar)
+      estadosRechazos.push(rejectState);
+  }
+
   function llenarDelta(initialState,symbol,finalState) {
     if (initialState == "" || symbol == "" || finalState == "") {
       // console.log("no inserta..");
     }
     else {
-      if (symbol.length > 1) {
-        for (var j = 0; j < symbol.length; j++) {
-          if (symbol[j] !=',') {
-            deltaT = new Delta(initialState,symbol[j],finalState);
-            insertar=true;
-            for (var i = 0; i < delta.length; i++) {
-              console.log("DELTA TRABAJANDOSE: "+deltaT.toString());
-              if (comparadorDeObjetos(deltaT,delta[i])){
-                insertar=false;
-                console.log("NO INSERTADO! "+deltaT.toString());
-              }
-            }
-            if (insertar) {
-              console.log("INSERTADO! "+deltaT.toString());
-              delta.push(deltaT);
-              // console.log("elemento insertado");
-            }
-            else {
-              // console.log("elemento NO insertado");
-            }
-          }
-        }
-      }else {
-        // console.log("entro en llenarDelta else..");
-        deltaT = new Delta(initialState,symbol,finalState);
-        insertar=true;
-        for (var i = 0; i < delta.length; i++) {
-          if (comparadorDeObjetos(deltaT,delta[i]))
+      // console.log("entro en llenarDelta else..");
+      deltaT = new Delta(initialState,symbol,finalState);
+      insertar=true;
+      for (var i = 0; i < delta.length; i++) {
+        if (comparadorDeObjetos(deltaT,delta[i]))
           insertar=false;
-        }
-        if (insertar) {
+      }
+      if (insertar) {
           delta.push(deltaT);
           // console.log("elemento insertado");
-        }
-        else {
-          // console.log("elemento NO insertado");
-        }
+      }
+      else {
+        // console.log("elemento NO insertado");
       }
     }
   }

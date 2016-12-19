@@ -5,15 +5,10 @@
 			<style>
 				body {
 					text-align: center;
-					background: #DFDFD5 !important;
+					background: #DFDFDF;
 					margin: 0 30px 100px 30px;
 					font: 14px/18px 'Lucida Grande', 'Segoe UI', sans-serif;
 				}
-				.nav{
-					font-weight: bold !important;
-					color: white !important;
-				}
-
 				h1 {
 					font: bold italic 50px Georgia, serif;
 				}
@@ -80,47 +75,20 @@
 			</script>
 			<link href=https://necolas.github.io/normalize.css/5.0.0/normalize.css rel="stylesheet" type="text/css" />
 			<link href=https://cdn.muicss.com/mui-0.9.4/css/mui.min.css rel="stylesheet" type="text/css" />
-			<link rel="stylesheet" type="text/css" href="dist/sweetalert.css">
-			<script src=https://cdn.muicss.com/mui-0.9.4/js/mui.min.js></script>
-			<script src="dist/sweetalert.min.js"></script>
-			<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-			<link rel="stylesheet" href="https://code.getmdl.io/1.2.1/material.indigo-pink.min.css">
-			<script defer src="https://code.getmdl.io/1.2.1/material.min.js"></script>
 
-			<script src="src/draw/fsm_pda.js"></script>
+			<script src="src/draw/fsm_turing.js"></script>	
 			<script src="src/draw/math.js"></script>
 			<script src="src/elements/link.js"></script>
 			<script src="src/elements/node.js"></script>
 			<script src="src/elements/self_link.js"></script>
 			<script src="src/elements/start_link.js"></script>
 			<script src="src/elements/temporary_link.js"></script>
-			<script src="src/lenguajesRegulares/nfa.js"></script>
+			<script src="src/lenguajesRegulares/turing.js"></script>
+			<script src="src/lenguajesRegulares/delta.js"></script>
 
 	</head>
-	<body>
-		<header class="mdl-layout__header mdl-layout__header--scroll mdl-color--primary">
-	   <div class="mdl-layout--large-screen-only mdl-layout__header-row">
-	   </div>
-	   <div class="mdl-layout--large-screen-only mdl-layout__header-row">
-	     <h1 class="mui--text-display2"><img src="imagenes/logo.png"/> Teoria de la computacion</h1>
-			 <div class="mui-dropdown mui-col-md-6 mui-col-md-offset-6">
-			 	<a class="mdl-layout__tab is-active nav"><img src="imagenes/piranha.png"/> T e a m__P i d a ñ a s</a>
-			 </div>
-	   </div>
-	   <div class="mdl-layout--large-screen-only mdl-layout__header-row"></div>
-	   <div class="mdl-layout__tab-bar mdl-js-ripple-effect mdl-color--primary-dark">
-	     <ul class="mui-tabs__bar">
-	      <li></li>
-	     <li><a class="nav" href="main.html" class="mdl-layout__tab is-active"><img src="imagenes/machine.png"/> DFA</a></li>
-	     <li><a class="nav" href="NFA.html" class="mdl-layout__tab is-active"><img src="imagenes/machine.png"/> NFA</a></li>
-	     <li><a class="nav" href="PDA.html" class="mdl-layout__tab is-active"><img src="imagenes/machine.png"/> PDA</a></li>
-	     <li><a class="nav" href="mainCFL.html" class="mdl-layout__tab is-active"><img src="imagenes/machine.png"/> CFL</a></li>
-	     <li><a class="nav" href="mainCFL.html" class="mdl-layout__tab is-active"><img src="imagenes/machine.png"/> TM</a></li>
-
-	   </ul>
-	  </div>
-	  </header>
-		<h1>Automata Finito No-Deterministico</h1>
+	<body style="background-color:#E2FAEE;">
+		<h1>Turing</h1>
 		<div class="mui--z1">
 			<canvas id="canvas" width="800" height="600">
 				<span class="error">Your browser does not support<br>the HTML5 &lt;canvas&gt; element</span>
@@ -133,9 +101,9 @@
 				<input id="inputCadena" type="text" placeholder="Digita una cadena de caracteres">
 			  </div>
 			</form>
-			<button class="mui-btn mui-btn--large mui-btn--primary" id="btnprobarCadenaNFA" onclick = "ProbarCadenaNFA()">probar cadena</button>
+			<button class="mui-btn mui-btn--large mui-btn--primary" id="btnprobarCadenaTuring" onclick = "ProbarCadenaTuring()">probar cadena</button>
 			<script>
-				document.getElementById("btnprobarCadenaNFA").onclick = function() {ProbarCadenaNFA()};
+				document.getElementById("btnprobarCadenaTuring").onclick = function() {ProbarCadenaTuring()};
 			</script>
 			<br><br><br><br>
 			<p>The big white box above is the FSM designer.&nbsp; Here's how to use it:</p>
@@ -146,6 +114,7 @@
 				<li><b>Delete something:</b> click it and press the delete key (not the backspace key)</li>
 			</ul><ul>
 				<li><b>Make accept state:</b> double-click on an existing state</li>
+				<li><b>Make reject state:</b> double-click on an existing accept state</li>
 				<li><b>Type numeric subscript:</b> put an underscore before the number (like "S_0")</li>
 				<li><b>Type greek letter:</b> put a backslash before it (like "\beta")</li>
 			</ul>
