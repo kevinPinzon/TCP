@@ -60,24 +60,23 @@
                   }
 
                   if (verificadorDeAceptacion(estadoActual)) {
-                    alert("cadena aceptada");
+                    swal("Cadena Aceptada", "", "success");
                   }else {
-                    alert("cadena rechazada");
+                    swal("Cadena Rechazada", "", "error");
                   }
-
                 }else
-                  alert("Por favor asigne estados finales");
+                swal("Cuidado", "Por favor asigne estados finales", "warning");
               }else
-                alert("Por favor asigne estado incial");
+              swal("Cuidado", "Por favor asigne estados inicial", "warning");
             }else
-              alert("Alfabeto ingresado no reconocido");
+            swal("Cuidado", "Alfabeto ingresado no reconocido", "warning");
 
         }else
-          alert("Por favor asigne valores a las aristar");
+          swal("Cuidado", "Por favor asigne valores a las aristar", "warning");
       }else
-        alert("Por favor asigne estados a los nodos");
+        swal("Cuidado", "Por favor asigne estados a los nodos", "warning");
     }else
-      alert("Por favor digite una cadena");
+      swal("Cuidado", "Por favor digite una cadena", "warning");
   }
 
 

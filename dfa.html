@@ -27,7 +27,7 @@ canvas {
 a {
 	color: black;
 }
-div {
+#specialDiv {
 	margin: 30px auto;
 	text-align: left;
 	max-width: 800px;
@@ -112,7 +112,7 @@ if (typeof btoa == 'undefined') {
    </div>
    <div class="mdl-layout--large-screen-only mdl-layout__header-row">
      <h1 class="mui--text-display2"><img src="imagenes/logo.png"/> Teoria de la computacion</h1>
-		 <div class="mui-dropdown mui-col-md-6 mui-col-md-offset-6">
+		 <div class="mui-dropdown mui-col-md-4 mui-col-md-offset-2">
 		 	<a class="mdl-layout__tab is-active nav"><img src="imagenes/piranha.png"/> T e a m__P i d a ñ a s</a>
 		 </div>
    </div>
@@ -130,20 +130,19 @@ if (typeof btoa == 'undefined') {
   </div>
   </header>
 	<h1>Automata Finito Determinstico</h1>
-	<div class="mui--z1">
+	<div>
 		<canvas id="canvas" width="800" height="600">
 			<span class="error">Your browser does not support<br>the HTML5 &lt;canvas&gt; element</span>
 		</canvas>
 	</div>
 
-	<div>
+	<div id="specialDiv">
 		<form>
 		  <div class="mui-textfield">
 		    <input id="inputCadena" type="text" placeholder="Digita una cadena de caracteres">
 		  </div>
 		</form>
-		<button class="mui-btn mui-btn--large mui-btn--primary" id="btnprobarCadenaDFA" >probar cadena con DFA</button>
-		<button class="mui-btn mui-btn--large mui-btn--accent" id="btnprobarCadenaNFA" >probar cadena con NFA</button>
+		<button class="mui-btn mui-btn--large mui-btn--accent" id="btnprobarCadenaDFA" >probar cadena</button>
 		<br><br><br><br>
 		<p>The big white box above is the FSM designer.&nbsp; Here's how to use it:</p>
 		<ul>
