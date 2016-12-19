@@ -33,11 +33,11 @@ function probarCFG(){
         cadenaCorrecta =true;
       }
       if (cadenaCorrecta) {
-        ProbarCadenaPDA();
-
-        swal("Accept", "Cadena aceptada", "success");
-      }else{
-        swal("Reject", "simbolo: "+inputCadena[i]+" desconocido" , "error");
+        if(contador%2==0){
+          swal("Accept", "Cadena aceptada", "success");
+        }else{
+          swal("Reject", "simbolo: "+inputCadena[i]+" desconocido" , "error");
+        }
       }
     }
   }else {
