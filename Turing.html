@@ -5,7 +5,7 @@
 			<style>
 				body {
 					text-align: center;
-					background: #E2FAEE !important;
+					background: #DFDFDF;
 					margin: 0 30px 100px 30px;
 					font: 14px/18px 'Lucida Grande', 'Segoe UI', sans-serif;
 				}
@@ -86,14 +86,15 @@
 			<link rel="stylesheet" href="https://code.getmdl.io/1.2.1/material.indigo-pink.min.css">
 			<script defer src="https://code.getmdl.io/1.2.1/material.min.js"></script>
 
+
 			<script src="src/draw/fsm_turing.js"></script>	
 			<script src="src/draw/math.js"></script>
 			<script src="src/elements/link.js"></script>
-			<script src="src/elements/node_tm.js"></script>
+			<script src="src/elements/node.js"></script>
 			<script src="src/elements/self_link.js"></script>
 			<script src="src/elements/start_link.js"></script>
 			<script src="src/elements/temporary_link.js"></script>
-			<script src="src/lenguajesRegulares/tm.js"></script>
+			<script src="src/lenguajesRegulares/turing.js"></script>
 			<script src="src/lenguajesRegulares/delta.js"></script>
 
 	</head>
@@ -121,7 +122,6 @@
 	   </ul>
 	  </div>
 	  </header>
-
 		<h1>Turing</h1>
 		<div class="mui--z1">
 			<canvas id="canvas" width="800" height="600">
@@ -135,9 +135,9 @@
 				<input id="inputCadena" type="text" placeholder="Digita una cadena de caracteres">
 			  </div>
 			</form>
-			<button class="mui-btn mui-btn--large mui-btn--primary" id="btnprobarCadenaTM" onclick = "ProbarCadenaTM()">probar cadena</button>
+			<button class="mui-btn mui-btn--large mui-btn--primary" id="btnprobarCadenaTuring" onclick = "ProbarCadenaTuring()">probar cadena</button>
 			<script>
-				document.getElementById("btnprobarCadenaTM").onclick = function() {ProbarCadenaTM()};
+				document.getElementById("btnprobarCadenaTuring").onclick = function() {ProbarCadenaTuring()};
 			</script>
 			<br><br><br><br>
 			<p>The big white box above is the FSM designer.&nbsp; Here's how to use it:</p>
