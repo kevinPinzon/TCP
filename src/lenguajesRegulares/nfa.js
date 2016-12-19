@@ -1,333 +1,478 @@
-  var estados = new Array();
-  var alfabeto = new Array();
-  var estadoInicial,existeInicial=false;
-  var estadosFinales = new Array();
-  var delta = new Array();
-  var deltaT;
-  var insertar;
-  var transicionEntrantes;
+var estados = new Array();
+var alfabeto = [];
+var estadoInicial = '';
+var estadosFinales = new Array();
+var transiciones = new Array();
+var pathsTOaccept = [[]];
+var paths = [];
+var input = '';
+var hayInicial = false;
 
-  function probarNFA() {
-    estados = new Array();
-    alfabeto = new Array();
-    estadosFinales = new Array();
-    delta = new Array();
-
-    get5tuplas();
-    var cadenaEntrante = document.getElementById("inputCadena").value;
-    if (cadenaEntrante != "") {
-      if (estados.length != 0) {
-        if (alfabeto.length != 0) {
-      // IMPRESION DE LAS 5TUPLAS-----------------------------------
-          console.log("PRUEBA INICIANDO--------------------------------");
-          console.log("estado inicial: "+ estadoInicial.text);
-
-          for (var i = 0; i < estados.length; i++)
-            console.log("estado["+i+"]: "+estados[i].text);
-
-          for (var i = 0; i < alfabeto.length; i++)
-            console.log("alfabeto["+i+"]: "+alfabeto[i]);
-
-          for (var i = 0; i < estadosFinales.length; i++)
-            console.log("estados Finales["+i+"]: "+estadosFinales[i].text);
-
-          for (var i = 0; i < delta.length; i++) {
-            console.log("DELTA "+i+".............");
-            console.log("estado incial: "+delta[i].getInitialState().text);
-            console.log("estado final: "+delta[i].getFinalState().text);
-            console.log("transicion: "+delta[i].getTransition());
-          }
-      // FINAL DE IMPRESION DE LAS 5TUPLAS-----------------------------------
-	            console.log("VERIFICANDO CADENA------------------------------------------------");
-            transicionEntrantes = cadenaEntrante.split("-");
-
-            for (var i = 0; i < transicionEntrantes.length; i++) {
-              console.log("transicionEntrantes: "+transicionEntrantes[i]);
-            }
-
-            if (entradaCorrecta(transicionEntrantes)) {
-              if (existeInicial) {
-                if (estadosFinales.length > 0) {
-                  estadoActual=estadoInicial;
-                  var contadorSimbolos=0;
-                  var terminar=true;
-                  console.log("total transicionEntrantes: "+transicionEntrantes.length);
-
-                  for (var i = 0; i < estados.length; i++) {
-                    estados[i].quitarMarca();
-                  }
-                  var temporal=0;
-                  do {
-
-                      console.log("estado actual: "+estadoActual.text);
-                      if( (esHoja(estadoActual) )&& (transicionEntrantes.length > contadorSimbolos) ){
-                        console.log("llego a una hoja && faltan simbolos");
-                        for (var i = 0; i < estados.length; i++) {
-                          if (comparadorDeObjetos(estados[i],estadoActual)) {
-                              estados[i].marcar();
-                          }
-                        }
-                        estadoActual=estadoInicial;
-                        contadorSimbolos=0;
-                      }else if(esHoja(estadoActual) && transicionEntrantes.length == contadorSimbolos){
-                        console.log("entro al if de esHoja(estadoActual) && transicionEntrantes.length == contadorSimbolos");
-                        if (verificadorDeAceptacion(estadoActual)) {
-                          alert("cadena aceptada");
-                          terminar=false;
-                        }else {
-                          console.log("entro al else de cadena aceptada");
-                          for (var i = 0; i < estados.length; i++) {
-                            if (comparadorDeObjetos(estados[i],estadoActual)) {
-                                estados[i].marcar();
-                            }
-                          }
-                          estadoActual=estadoInicial;
-                          contadorSimbolos=0;
-                        }
-                      }
-
-                      if ( transicionEntrantes.length == contadorSimbolos && (verificadorDeAceptacion(estadoActual)) ) {
-                          alert("Cadena aceptada");
-                          terminar=false;
-                          contadorSimbolos=transicionEntrantes+1;
-                      }
-
-                      if (transicionEntrantes.length == contadorSimbolos && ((estadosMarcados()+1) == estados.length) ) {
-                        console.log("se acabaron las transiciones");
-                        terminar=false;
-                        contadorSimbolos=transicionEntrantes+1;
-                        alert("Cadena rechazada");
-                      }
-
-                      if (terminar ) {
-                        estadoActual=getNextStateNFA(estadoActual,transicionEntrantes[contadorSimbolos]);
-                        if (estadoActual!=null) {
-                          console.log("estado actual(despues del get): "+estadoActual.text);
-                        }
-                        contadorSimbolos++;
-                      }else {
-                        terminar=false;
-                      }
-                      if (estadoActual == null) {
-                        estadoActual=estadoInicial;
-                        contadorSimbolos=0;
-                      }
-                      temporal++;
-                      if (temporal >15) {
-                        terminar=false;
-                      }
-                  } while (terminar);
-                }else
-                  alert("Por favor asigne estados finales");
-              }else
-                alert("Por favor asigne estado incial");
-            }else
-              alert("Alfabeto ingresado no reconocido");
-        }else
-          alert("Por favor asigne valores a las aristar");
-      }else
-        alert("Por favor asigne estados a los nodos");
-    }else
-      alert("Por favor digite una cadena");
-  }
-
-
-  function getInitialState(initial) {
-    estadoInicial=initial;
-    existeInicial=true;
-  }
-
-  function getState(Newstate) {
-    insertar=true;
-    if (estados.length == 0)
-      estados[0]=Newstate;
-    for (var i = 0; i < estados.length; i++) {
-      if (estados[i].text==Newstate.text || ""==Newstate.text)
-        insertar=false;
+function ProbarCadenaNFA(){
+  var valEstados = true;
+  var valTransiciones = true;
+  var valEstadoInicial = true;
+  var valEstadosFinales = true;
+  estados = nodes;
+  for (var i = 0; i < estados.length; i++) {
+    if(estados[i].text.length > 1 || estados[i].text == ' ' ||estados[i].text == ''){
+      valEstados = false;
+      window.alert("Los estados deben de contener almenos 1 caracter y no estar vacios");
+      break;
     }
-    if (insertar)
-      estados.push(Newstate);
   }
-
-  function getAlfabeto (Newsymbol) {
-    if (Newsymbol.length > 1) {
-    for (var i = 0; i < Newsymbol.length; i++) {
-      if (Newsymbol[i] !=',') {
-        var insertar=true;
-        if (alfabeto.length == 0)
-          alfabeto[0]=Newsymbol[i];
-        for (var j = 0; j < alfabeto.length; j++) {
-          if (alfabeto[j]==Newsymbol[i] || ""==Newsymbol[i])
-            insertar=false;
+  if(estados.length == 0){
+    window.alert("No hay Estados");
+    valEstados = false;
+  }
+  if(valEstados == true){
+    transiciones = links;
+    if(links.length < 2){
+      window.alert("La cantidad de transiciones no es adecuada");
+      valTransiciones =  false;
+    }
+    if(valTransiciones == true){
+      alfabeto = getAlfabeto();
+      estadoInicial = getIntialState();
+      if(hayInicial == false){
+        window.alert("No hay Estado Inicial");
+        valEstadoInicial = false;
+      }
+      if(valEstadoInicial == true){
+        estadosFinales = getFinalStates();
+        if(estadosFinales.length == 0){
+          window.alert("No hay Estados Finales");
+          valEstadosFinales = false;
         }
-        if (insertar)
-          alfabeto.push(Newsymbol[i]);
+        if(valEstadosFinales == true){
+          input = document.getElementById("inputCadena").value;
+          console.log("Va a Build el Path")
+          paths = CreacionPath();
+          console.log("BUILDED")
+          if(paths != null){
+            console.log("Va a ordenar")
+            paths = OrderNormalPaths();
+            console.log(paths);
+            pathsTOaccept = buildPathsToAccept();
+            console.log(pathsTOaccept)
+            if(RecorrerCadena() == true){
+              window.confirm("La cadena es aceptada");
+              console.log("La cadena es aceptada");
+            }else{
+              window.confirm("La cadena es RECHAZADA");
+              console.log("La cadena es rechazada");
+            }
+            console.log(paths);
+            console.log("Alfabeto "+ alfabeto);
+            console.log("Estado Incial "+ estadoInicial);
+            console.log("Estado Final "+ estadosFinales);
+          }
+        }
       }
     }
+  }
+}
+
+function RecorrerCadena(){
+  console.log("ENTRO A RECORRER "+input);
+  var IsAccepted = false;
+  var currentState = '';
+  
+  //Matriz de todos los posibles caminos para un estado final
+  console.log("pahts2accept "+pathsTOaccept.length);
+  var pathTry = 0;
+  while(pathTry < pathsTOaccept.length && IsAccepted == false){
+    currentState = estadoInicial;
+    var Fail =  false;
+    var InputCont = 0;
+    while(InputCont <= input.length && Fail == false){
+      console.log("WHILE INPUt CONT");
+      console.log(InputCont);
+      console.log("CUrrent State");
+      console.log(currentState);
+      var contErr = 0;
+      var CambioDeEstado = false;
+      for (var i = 0; i < pathsTOaccept[pathTry].length; i++) {
+        if(((pathsTOaccept[pathTry])[i])[0] == currentState && ((pathsTOaccept[pathTry])[i])[1] == input[InputCont]){
+          console.log("ACTUAL PATH");
+          console.log(((pathsTOaccept[pathTry])[i]));
+            currentState = ((pathsTOaccept[pathTry])[i])[2];
+            CambioDeEstado = true;
+            InputCont++;
+            break;
+        }else if(((pathsTOaccept[pathTry])[i])[0] == currentState && ((pathsTOaccept[pathTry])[i])[1] == ' '){
+          console.log("ACTUAL PATH EPSILOOOON");
+          console.log(((pathsTOaccept[pathTry])[i]));
+          if(((pathsTOaccept[pathTry])[i])[2] == estadoInicial && ReachedFinalState(((pathsTOaccept[pathTry])[i])[2]) == true){
+            if(input.length == 1 && input[0] == ' '){
+              IsAccepted  = true; 
+              break;
+            }else{
+              Fail = true;
+              break;
+            }
+          }else{
+            currentState = ((pathsTOaccept[pathTry])[i])[2];
+            CambioDeEstado = true;
+            break;
+          }
+        }else{
+          contErr++;
+        }
+        if(CambioDeEstado == true){
+          break;
+        }
+      }
+      if(contErr >= pathsTOaccept[pathTry].length){
+        console.log("Entro SUPER FAIL")
+        Fail =  true;
+        break;
+      }
+    }
+    console.log(InputCont)
+    console.log(currentState)
+    console.log(ReachedFinalState(currentState))
+    if(InputCont == input.length&& ReachedFinalState(currentState) == true){
+      IsAccepted = true;
+      break;
+    }
+    pathTry++;
+  }
+  return IsAccepted;
+
+}
+
+function buildPathsToAccept(){
+  var currentState = '';
+  var initialState = '';
+  var pathsToaccept = [];
+  var contador = ContadorCaminosHaciaEstadosFinales();
+  for (var i = 0; i < contador; i++) {
+    pathsToaccept[i] = [];
+  }
+  //identifica el estado inicial
+  for (var i = 0; i < estados.length; i++) {
+    if(estados[i].text == estadoInicial){
+      currentState = estados[i].text;
+      initialState = estados[i].text;
+      break;
+    }
+  }
+  var rowAcceptedPath = 0;
+  while(rowAcceptedPath < contador){
+    var current_accepted_path = [];
+    var contcurrent_accepted_path = 0;
+    var reachedFinalstate = false;
+    for(var i = 0; i < paths.length; i++){
+      if((paths[i])[0] == currentState){
+        if(rowAcceptedPath > 0){
+          if(PathCheck(pathsToaccept,paths[i]) == true){
+            current_accepted_path[contcurrent_accepted_path] = paths[i];
+            currentState = (paths[i])[2]; 
+            contcurrent_accepted_path++;
+            if(ReachedFinalState(currentState) == true){
+              reachedFinalstate = true;   
+            }
+          }
+        }else{
+          if(ReachedFinalState(currentState) == true){
+              reachedFinalstate = true;
+              current_accepted_path[contcurrent_accepted_path] = (paths[i])[0]+"   "+(paths[i])[0];
+              currentState = (paths[i])[2];
+              contcurrent_accepted_path++;
+              
+          }else{
+            current_accepted_path[contcurrent_accepted_path] = paths[i];
+            currentState = (paths[i])[2];
+            contcurrent_accepted_path++;
+            if(ReachedFinalState(currentState) == true){
+              reachedFinalstate = true;
+              
+            }
+          } 
+        }
+        if(reachedFinalstate == true){
+            break;
+        }
+      }
+      if(reachedFinalstate == true){
+        break;
+      }
+    }
+    if(reachedFinalstate == true){
+      if(ReachedFinalState(currentState) == true){
+        current_accepted_path = CheckSelfLinksinFinal(current_accepted_path,currentState);
+      }
+      for (var j = 0; j < current_accepted_path.length; j++) {
+        pathsToaccept[rowAcceptedPath][j] = current_accepted_path[j];   
+      }
+      rowAcceptedPath++;
+    }
+    currentState = initialState;
+  }
+  return pathsToaccept;
+}
+
+function CheckSelfLinksinFinal(Recievedcurrent_accepted_path,RecievedcurrentState){
+  var lengthOfcurrent_accepted_path = Recievedcurrent_accepted_path.length;
+  for (var i = 0; i < paths.length; i++) {
+    if((paths[i])[0] == RecievedcurrentState && (paths[i])[2] == RecievedcurrentState){
+      Recievedcurrent_accepted_path[lengthOfcurrent_accepted_path] = paths[i];
+      lengthOfcurrent_accepted_path++;
+    }
+  }
+  return Recievedcurrent_accepted_path;
+}
+
+function PathCheck(receivedpathsToaccept, receivedpath){
+  var AcceptedPath = false;
+  var yaExiste = false;
+  for (var i = 0; i < receivedpathsToaccept.length; i++) {
+    for (var j = 0; j < receivedpathsToaccept[i].length; j++) {
+      if((receivedpathsToaccept[i])[j] == receivedpath){
+        yaExiste = true;
+        break;
+      }
+    }
+    if(yaExiste == true){
+      break;
+    }
+  }
+  var RevisarDespues = false;
+  var encontradoDespues = false;
+
+  if(yaExiste == true){
+    for (var i = 0; i < paths.length; i++) {
+      if(RevisarDespues == true){
+        if((paths[i])[0] == receivedpath[0]){
+          encontradoDespues = true;
+          break;
+        }
+      }
+      if( paths[i] == receivedpath){
+        RevisarDespues = true;
+      }
+    }
+    if(encontradoDespues == true){
+      AcceptedPath = false;
     }else{
-      var insertar=true;
-      if (alfabeto.length == 0)
-        alfabeto[0]=Newsymbol;
-      for (var i = 0; i < alfabeto.length; i++) {
-        if (alfabeto[i]==Newsymbol || ""==Newsymbol)
-          insertar=false;
+      AcceptedPath = true;
+    }
+  }else{
+    AcceptedPath = true;
+  }
+  
+  return AcceptedPath;
+}
+
+function ContadorCaminosHaciaEstadosFinales(){
+  var contador = 0;
+  for (var i = 0; i < estadosFinales.length; i++) {
+    for (var j = 0; j < paths.length; j++) {
+      if((paths[j])[2] == estadosFinales[i] && (paths[j])[2] != (paths[j])[0]){
+        contador++;
       }
-      if (insertar)
-        alfabeto.push(Newsymbol);
     }
   }
 
-  function getFinalState(finalState) {
-    insertar=true;
-    if (estadosFinales.length == 0)
-      estadosFinales[0]=finalState;
-    for (var i = 0; i < estadosFinales.length; i++) {
-      if (estadosFinales[i].text==finalState.text || ""==finalState.text)
-        insertar=false;
+  for (var i = 0; i < estados.length; i++) {
+    if(estados[i].text == estadoInicial && estados[i].isAcceptState == true){
+      contador++;
     }
-    if (insertar)
-      estadosFinales.push(finalState);
   }
+  return contador;
+}
 
-  function llenarDelta(initialState,symbol,finalState) {
-    if (initialState == null || symbol == "" || finalState == null) {
-      // console.log("no inserta..");
+function OrderNormalPaths(){
+  var temppaths = [];
+  var tempstates = [];
+  var tempstate = '';
+  for (var i = 0; i < estados.length; i++) {
+    tempstates[i] = estados[i].text;
+  }
+  for (var i = 0; i < tempstates.length; i++) {
+    if(tempstates[i] == estadoInicial){
+      tempstate = tempstates[0];
+      tempstates[0] = tempstates[i];
+      tempstates[i] = tempstate;
+      break;
     }
-    else {
-      if (symbol.length > 1) {
-        for (var j = 0; j < symbol.length; j++) {
-          if (symbol[j] !=',') {
-            deltaT = new Delta(initialState,symbol[j],finalState);
-            insertar=true;
-            for (var i = 0; i < delta.length; i++) {
-              console.log("DELTA TRABAJANDOSE: "+deltaT.toString());
-              if (comparadorDeObjetos(deltaT,delta[i])){
-                insertar=false;
-                console.log("NO INSERTADO! "+deltaT.toString());
-              }
-            }
-            if (insertar) {
-              console.log("INSERTADO! "+deltaT.toString());
-              delta.push(deltaT);
-              // console.log("elemento insertado");
-            }
-            else {
-              // console.log("elemento NO insertado");
-            }
-          }
-        }
-      }else {
-        // console.log("entro en llenarDelta else..");
-        deltaT = new Delta(initialState,symbol,finalState);
-        insertar=true;
-        for (var i = 0; i < delta.length; i++) {
-          if (comparadorDeObjetos(deltaT,delta[i]))
-          insertar=false;
-        }
-        if (insertar) {
-          delta.push(deltaT);
-          // console.log("elemento insertado");
-        }
-        else {
-          // console.log("elemento NO insertado");
+  }
+  var contTempPaths = 0;
+  while(contTempPaths < paths.length){
+    for (var i = 0; i < tempstates.length; i++) {
+      for (var j = 0; j < paths.length; j++) {
+        if((paths[j])[0] == tempstates[i]){
+          temppaths[contTempPaths] = paths[j];
+          contTempPaths++;
         }
       }
     }
   }
-  function comparadorDeObjetos(obj1,obj2) {
-    if (JSON.stringify(obj1) === JSON.stringify(obj2))
-      return true;
-    return false;
+  currentState = estadoInicial;
+  var posIntercambio = 0;
+  var temppath = '';
+  for(var i = 0; i < temppaths.length; i++){
+    if((temppaths[i])[0] == currentState){
+      
+      if((temppaths[i])[0] == (temppaths[i])[2]){
+        temppath = temppaths[i-posIntercambio];
+        temppaths[i-posIntercambio] = temppaths[i];
+        temppaths[i] = temppath;
+      }
+      posIntercambio++;
+    }else{
+      currentState = (temppaths[i])[0];
+      posIntercambio = 0;
+      if((temppaths[i])[0] == (temppaths[i])[2]){
+        temppath = temppaths[i-posIntercambio];
+        temppaths[i-posIntercambio] = temppaths[i];
+        temppaths[i] = temppath;
+      }
+    }
   }
 
-  function entradaCorrecta(cadena) {
-    var reconocido;
-    for (var i = 0; i < cadena.length; i++) {
-      reconocido = false;
-      for (var j = 0; j < alfabeto.length; j++) {
-        if (alfabeto[j] == cadena[i])
-          reconocido=true;
+  currentState = estadoInicial;
+  posIntercambio = 0;
+  temppath = '';
+  for(var i = 0; i < temppaths.length; i++){
+    if((temppaths[i])[0] == currentState){
+      posIntercambio++;
+      if((temppaths[i])[0] == (temppaths[i])[2] && temppaths[i-posIntercambio] != null){
+        temppath = temppaths[i-posIntercambio];
+        temppaths[i-posIntercambio] = temppaths[i];
+        temppaths[i] = temppath;
       }
-      if(!reconocido)
-        return false;
+      
+    }else{
+      currentState = (temppaths[i])[0];
+      posIntercambio = 0;
+      if((temppaths[i])[0] == (temppaths[i])[2] && temppaths[i-posIntercambio] != null){
+        temppath = temppaths[i-posIntercambio];
+        temppaths[i-posIntercambio] = temppaths[i];
+        temppaths[i] = temppath;
+      }
     }
-    return true;
+  }
+  return  temppaths;
+}
+
+function ReachedFinalState(recievedState){
+  var reachedFinal = false;
+  for (var i = 0; i < estadosFinales.length; i++) {
+    if(recievedState == estadosFinales[i]){
+      reachedFinal = true;
+      break;
+    }
   }
 
-  function getNextStateNFA(initialState,symbol) {
-    console.log("simbolo entrante:"+symbol);
-    console.log("estado recivido:"+initialState.text);
-    var coincidencia=false;
-    var noHayPaso=true;
-    var foundState=null;
-    for (var i = 0; i < delta.length; i++) {
-      console.log("DELTA "+i+" actual: "+delta[i].toString());
-      if ( comparadorDeObjetos(initialState,delta[i].getInitialState()) ) {
-        if ( comparadorDeObjetos(symbol,delta[i].getTransition()) ) {
+  return reachedFinal;
+}
 
-          console.log("coincidencia encontrada");
-          coincidencia=true;
-          for (var j = 0; j < estados.length; j++) {
-            if (comparadorDeObjetos(estados[j],delta[i].getFinalState())) {
-              console.log("estado final encontrado: "+estados[j].text);
-              if (!estados[j].marcado) {
-                estados[j].marcar();
-                console.log("estado enviado");
-                foundState= estados[j];
-              }else if (estados[j].marcado && (!esHoja(delta[i].getFinalState())) ) {
-                  estados[j].quitarMarca();
-              }
-            }
-          }
+function CreacionPath(){
+  var stateANDtransition = [];
+  var visitedStates = [];
+  var cantVisitedStates = 0;
+  var nextStates = [];
+  var cantNextStates = 1;
+  var modifiedStateANDTransition = [];
+  var hayInicial = false;
+  var valTransicionCorrecta = true;
+  //empieza por el estado INICIAL
+  console.log("ESTADO INCI "+estadoInicial);
+  for (var i = 0; i < estados.length; i++) {
+    if(estados[i].text == estadoInicial){
+      hayInicial = true;
+      nextStates[0] = estados[i].text;
+      break;
+    }
+  }
+
+  for (var i = 0; i < transiciones.length; i++) {
+    if(transiciones[i].text.length != 1){
+      if(transiciones[i] instanceof Link || transiciones[i] instanceof SelfLink ){
+        valTransicionCorrecta = false;
+      }
+      break;
+    }
+  }
+  console.log("CANT TRANS PATH");
+  console.log(transiciones.length);
+  if(valTransicionCorrecta == true){
+    var pos = 0;
+    for (var i = 0; i < transiciones.length; i++) {
+      if(transiciones[i] instanceof Link){
+        modifiedStateANDTransition[pos] = transiciones[i].nodeA.text+""+transiciones[i].text[0]+""+transiciones[i].nodeB.text;
+        pos++;
+      }else if(transiciones[i] instanceof SelfLink){
+        modifiedStateANDTransition[pos] = transiciones[i].node.text+""+transiciones[i].text[0]+""+transiciones[i].node.text;
+        pos++;
+      }
+      
+    }
+    console.log("MOD SHIT")
+    console.log(modifiedStateANDTransition)
+    return modifiedStateANDTransition;
+  }else{
+    window.alert("Posee una o mas trancisiones incorrectas, estas deben de contener solamente un caracter");
+  }
+}
+
+function getAlfabeto(){
+  var newalfabeto = [];
+  var posicionAlfabeto = 0;
+  var sybmoltext='';
+
+  for (var i = 0; i <transiciones.length; i++) {
+    if(transiciones[i].text!=''){
+      sybmoltext = transiciones[i].text;
+      var symbolEqual = false;
+      for (var j = 0; j < newalfabeto.length; j++) {
+        if(newalfabeto[j] == sybmoltext[0]){
+          symbolEqual = true;
+          break;
         }
       }
-    }
-    if (foundState != null) {
-      return foundState;
-    }
-    if (coincidencia) {
-      console.log("nodo sin transiciones disponibles");
-      for (var j = 0; j < estados.length; j++) {
-        if (comparadorDeObjetos(estados[j],initialState)) {
-          console.log("nodo encontrado: "+estados[j].text);
-          if (!estados[j].marcado) {
-            console.log("estado marcado");
-            estados[j].marcar();
-          }
-        }
+      if(symbolEqual == false){
+        newalfabeto[posicionAlfabeto]=sybmoltext[0];
+        posicionAlfabeto++;
       }
     }
-    console.log("retornando null");
+  }
+  return newalfabeto;
+}
+
+function getIntialState(){
+  var newestadoInicial;
+  var contEntrada = 0;
+  console.log("Entra Inicial")
+  for (var i = 0; i < nodes.length; i++) {
+    if(nodes[i].isInitial == true && contEntrada == 0){
+      contEntrada++;
+      newestadoInicial = nodes[i].text;
+      console.log("SI HAY");
+      hayInicial = true;
+    }
+  }
+  console.log("INCIAL "+hayInicial);
+  if(contEntrada > 1){
+    hayInicial = false;
+    window.alert("No puede existir mas de un estado Inicial");
     return null;
+  }else{
+    return newestadoInicial;
   }
+  
+}
 
-  function verificadorDeAceptacion(estadoActual) {
-    for (var i = 0; i < estadosFinales.length; i++) {
-      if(comparadorDeObjetos(estadoActual,estadosFinales[i]))
-        return true;
+function getFinalStates(){
+  var newestadoFinalArray = new Array();
+  var newestadoFinal;
+  for (var i = 0; i < nodes.length; i++) {
+    if(nodes[i].isAcceptState == true){
+      newestadoFinal = nodes[i].text;
+      newestadoFinalArray.push(newestadoFinal);
     }
-    return false;
   }
-
-  function esHoja(nodo){
-    for (var i = 0; i < delta.length; i++) {
-      if ( comparadorDeObjetos(delta[i].getInitialState(),nodo) ) {
-        console.log(nodo.text+" NO es hoja");
-        return false;
-      }
-    }
-    console.log(nodo.text+"es hoja");
-    return true;
-  }
-
-  function estadosMarcados(){
-    var marcados=0;
-    for (var i = 0; i < estados.length; i++) {
-      if (estados[i].marcado) {
-        console.log(estados[i].text+" esta marcado");
-        marcados++;
-      }
-    }
-    console.log("total marcados: "+marcados);
-    return marcados;
-  }
+  return newestadoFinalArray;
+}

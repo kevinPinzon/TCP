@@ -58,14 +58,14 @@
 		cadenaEntrante[i]=='y'||cadenaEntrante[i]=='z'){
 			console.log("contEstados"+contEstados);
 			if(cadenaEntrante[i+1]=='*'){
-				delta.push(new DeltaRegex(contEstados,' ',contEstados+1));
+				delta.push(new DeltaRegex(contEstados,'ε',contEstados+1));
 				contEstados++;
 				delta.push(new DeltaRegex(contEstados,cadenaEntrante[i],contEstados+1));
-				delta.push(new DeltaRegex(contEstados+1,' ',contEstados));
+				delta.push(new DeltaRegex(contEstados+1,'ε',contEstados));
 				contEstados++;
-				delta.push(new DeltaRegex(contEstados,' ',contEstados+1));
+				delta.push(new DeltaRegex(contEstados,'ε',contEstados+1));
 				contEstados++;
-				delta.push(new DeltaRegex(contEstados-3,' ',contEstados));
+				delta.push(new DeltaRegex(contEstados-3,'ε',contEstados));
 				i++;
 			}
 			else if(cadenaEntrante[i+1]=='|'){
@@ -80,7 +80,7 @@
 			}
 		}
 		else{
-			delta.push(new DeltaRegex(contEstados,' ',contEstados+1));
+			delta.push(new DeltaRegex(contEstados,'ε',contEstados+1));
 			contEstados++;
 		}
 	}
@@ -92,6 +92,7 @@ console.log("MOSTRANDO DELTA");
             console.log("estado final: "+delta[i].getFinalState());
             console.log("transicion: "+delta[i].getTransition());
           }
+		
       //deltaT = new Delta(initialState,symbol,finalState);
 
  /*           for (var i = 0; i < transicionEntrantes.length; i++) {

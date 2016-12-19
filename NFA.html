@@ -5,7 +5,7 @@
 			<style>
 				body {
 					text-align: center;
-					background: #DFDFDF !important;
+					background: #DFDFD5 !important;
 					margin: 0 30px 100px 30px;
 					font: 14px/18px 'Lucida Grande', 'Segoe UI', sans-serif;
 				}
@@ -94,8 +94,7 @@
 			<script src="src/elements/self_link.js"></script>
 			<script src="src/elements/start_link.js"></script>
 			<script src="src/elements/temporary_link.js"></script>
-			<script src="src/lenguajesRegulares/pda.js"></script>
-			<script src="src/lenguajesRegulares/delta.js"></script>
+			<script src="src/lenguajesRegulares/nfa.js"></script>
 
 	</head>
 	<body>
@@ -121,7 +120,7 @@
 	   </ul>
 	  </div>
 	  </header>
-		<h1>PDA</h1>
+		<h1>Automata Finito No-Deterministico</h1>
 		<div class="mui--z1">
 			<canvas id="canvas" width="800" height="600">
 				<span class="error">Your browser does not support<br>the HTML5 &lt;canvas&gt; element</span>
@@ -134,9 +133,9 @@
 				<input id="inputCadena" type="text" placeholder="Digita una cadena de caracteres">
 			  </div>
 			</form>
-			<button class="mui-btn mui-btn--large mui-btn--primary" id="btnprobarCadenaPDA" onclick = "ProbarCadenaPDA()">probar cadena</button>
+			<button class="mui-btn mui-btn--large mui-btn--primary" id="btnprobarCadenaNFA" onclick = "ProbarCadenaNFA()">probar cadena</button>
 			<script>
-				document.getElementById("btnprobarCadenaPDA").onclick = function() {ProbarCadenaPDA()};
+				document.getElementById("btnprobarCadenaNFA").onclick = function() {ProbarCadenaNFA()};
 			</script>
 			<br><br><br><br>
 			<p>The big white box above is the FSM designer.&nbsp; Here's how to use it:</p>
