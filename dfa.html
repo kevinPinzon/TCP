@@ -5,9 +5,13 @@
 	<style>
 body {
 	text-align: center;
-	background: #DFDFD5 !important;
+	background: #E2FAEE !important;
 	margin: 0 30px 100px 30px;
 	font: 14px/18px 'Lucida Grande', 'Segoe UI', sans-serif;
+}
+.nav{
+	font-weight: bold !important;
+	color: white !important;
 }
 h1 {
 	font: bold italic 50px Georgia, serif;
@@ -28,11 +32,6 @@ div {
 	text-align: left;
 	max-width: 800px;
 }
-.nav{
-	font-weight: bold !important;
-	color: white !important;
-}
-
 .error {
 	display: block;
 	color: red;
@@ -96,18 +95,18 @@ if (typeof btoa == 'undefined') {
 	<link rel="stylesheet" href="https://code.getmdl.io/1.2.1/material.indigo-pink.min.css">
 	<script defer src="https://code.getmdl.io/1.2.1/material.min.js"></script>
 
-  <script src="src/draw/fsm.js"></script>
-  <script src="src/elements/link.js"></script>
-  <script src="src/elements/node.js"></script>
-  <script src="src/elements/self_link.js"></script>
-  <script src="src/elements/start_link.js"></script>
-  <script src="src/elements/temporary_link.js"></script>
-	<script src="src/lenguajesRegulares/dfa.js"></script>
-	<script src="src/lenguajesRegulares/nfa.js"></script>
-	<script src="src/lenguajesRegulares/delta.js"></script>
+  <script src="srcDFA/draw/fsm.js"></script>
+  <script src="srcDFA/elements/link.js"></script>
+  <script src="srcDFA/elements/node.js"></script>
+  <script src="srcDFA/elements/self_link.js"></script>
+  <script src="srcDFA/elements/start_link.js"></script>
+  <script src="srcDFA/elements/temporary_link.js"></script>
+	<script src="srcDFA/lenguajesRegulares/dfa.js"></script>
+	<script src="srcDFA/lenguajesRegulares/nfa.js"></script>
+	<script src="srcDFA/lenguajesRegulares/delta.js"></script>
 
 </head>
-<body>
+<body >
 	<header class="mdl-layout__header mdl-layout__header--scroll mdl-color--primary">
    <div class="mdl-layout--large-screen-only mdl-layout__header-row">
    </div>
@@ -121,12 +120,12 @@ if (typeof btoa == 'undefined') {
    <div class="mdl-layout__tab-bar mdl-js-ripple-effect mdl-color--primary-dark">
      <ul class="mui-tabs__bar">
       <li></li>
-     <li><a class="nav" href="main.html" class="mdl-layout__tab is-active"><img src="imagenes/machine.png"/> DFA</a></li>
+     <li><a class="nav" href="dfa.html" class="mdl-layout__tab is-active"><img src="imagenes/machine.png"/> DFA</a></li>
      <li><a class="nav" href="NFA.html" class="mdl-layout__tab is-active"><img src="imagenes/machine.png"/> NFA</a></li>
+		 <li><a class="nav" href="regex.html" class="mdl-layout__tab is-active"><img src="imagenes/machine.png"/> REGEX</a></li>
      <li><a class="nav" href="PDA.html" class="mdl-layout__tab is-active"><img src="imagenes/machine.png"/> PDA</a></li>
      <li><a class="nav" href="mainCFL.html" class="mdl-layout__tab is-active"><img src="imagenes/machine.png"/> CFL</a></li>
-     <li><a class="nav" href="turing.html" class="mdl-layout__tab is-active"><img src="imagenes/machine.png"/> TM</a></li>
-
+     <li><a class="nav" href="mainCFL.html" class="mdl-layout__tab is-active"><img src="imagenes/machine.png"/> TM</a></li>
    </ul>
   </div>
   </header>
@@ -143,7 +142,8 @@ if (typeof btoa == 'undefined') {
 		    <input id="inputCadena" type="text" placeholder="Digita una cadena de caracteres">
 		  </div>
 		</form>
-		<button class="mui-btn mui-btn--large mui-btn--primary" id="btnprobarCadenaDFA" >probar cadena</button>
+		<button class="mui-btn mui-btn--large mui-btn--primary" id="btnprobarCadenaDFA" >probar cadena con DFA</button>
+		<button class="mui-btn mui-btn--large mui-btn--accent" id="btnprobarCadenaNFA" >probar cadena con NFA</button>
 		<br><br><br><br>
 		<p>The big white box above is the FSM designer.&nbsp; Here's how to use it:</p>
 		<ul>
