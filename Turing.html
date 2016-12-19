@@ -79,11 +79,11 @@
 			<script src="src/draw/fsm_turing.js"></script>	
 			<script src="src/draw/math.js"></script>
 			<script src="src/elements/link.js"></script>
-			<script src="src/elements/node.js"></script>
+			<script src="src/elements/node_tm.js"></script>
 			<script src="src/elements/self_link.js"></script>
 			<script src="src/elements/start_link.js"></script>
 			<script src="src/elements/temporary_link.js"></script>
-			<script src="src/lenguajesRegulares/turing.js"></script>
+			<script src="src/lenguajesRegulares/tm.js"></script>
 			<script src="src/lenguajesRegulares/delta.js"></script>
 
 	</head>
@@ -103,7 +103,7 @@
 			</form>
 			<button class="mui-btn mui-btn--large mui-btn--primary" id="btnprobarCadenaTuring" onclick = "ProbarCadenaTuring()">probar cadena</button>
 			<script>
-				document.getElementById("btnprobarCadenaTuring").onclick = function() {ProbarCadenaTuring()};
+				document.getElementById("btnprobarCadenaTM").onclick = function() {ProbarCadenaTuring()};
 			</script>
 			<br><br><br><br>
 			<p>The big white box above is the FSM designer.&nbsp; Here's how to use it:</p>
