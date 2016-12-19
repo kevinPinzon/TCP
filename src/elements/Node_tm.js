@@ -4,20 +4,9 @@ function Node(x, y) {
 	this.mouseOffsetX = 0;
 	this.mouseOffsetY = 0;
 	this.isAcceptState = false;
-	this.isInitial=false;
+	this.isRejectState = false;
 	this.text = '';
-	this.marcado=false;
 }
-
-Node.prototype.marcar = function() {
-	console.log("marcando a "+ this.text);
-	this.marcado=true;
-};
-
-Node.prototype.quitarMarca = function() {
-	console.log("desmarcando a "+ this.text);
-	this.marcado=false;
-};
 
 Node.prototype.setMouseStart = function(x, y) {
 	this.mouseOffsetX = this.x - x;
@@ -28,26 +17,34 @@ Node.prototype.setAnchorPoint = function(x, y) {
 	this.x = x + this.mouseOffsetX;
 	this.y = y + this.mouseOffsetY;
 };
-
+Node.prototype.animate  = function(color,nodeRadius){
+	this.strokeStyle = color;
+	this.nodeRadius = nodeRadius;
+}
 Node.prototype.draw = function(c) {
 	// draw the circle
+
+	if(this.nodeRadius){
+		nodeRadius = this.nodeRadius;
+	}
 	c.beginPath();
 	c.arc(this.x, this.y, nodeRadius, 0, 2 * Math.PI, false);
+	c.strokeStyle = this.strokeStyle?this.strokeStyle:'white';
 	c.stroke();
 
 	// draw the text
 	drawText(c, this.text, this.x, this.y, null, selectedObject == this);
-	if (this.text != "") {
-		// getState(this.text);
-	}
+
 	// draw a double circle for an accept state
 	if(this.isAcceptState) {
 		c.beginPath();
 		c.arc(this.x, this.y, nodeRadius - 6, 0, 2 * Math.PI, false);
 		c.stroke();
-		if (this.text!="") {
-			// getFinalState(this.text);
-		}
+	} else if (this.isRejectState) {
+		c.beginPath();
+		c.arc(this.x, this.y, nodeRadius - 6, 0, 2 * Math.PI, false);
+		c.arc(this.x, this.y, nodeRadius - 12, 0, 2 * Math.PI, false);
+		c.stroke();
 	}
 };
 
