@@ -77,20 +77,18 @@ function Cfg(noTerminales,terminales,reglas,inicial) {
             reglaTemporal.final += inputR[i];
           }
       }
-      console.log( reglaTemporal.toString() );
       if ( (reglaTemporal.final != "" || reglaTemporal.final != null)
         && (reglaTemporal.inicial != "" || reglaTemporal.inicial != null ) ) {
-        console.log( reglaTemporal.toString() );
         this.reglas.push(reglaTemporal);
         swal("Regla agregada", reglaTemporal.toString(), "success");
         for (var i = 0; i < this.reglas.length; i++) {
           console.log( this.reglas[i].toString() );
         }
       }else {
-        swal("Regla NO agregada", "formato de regla incorrecto", "error");
+        swal("Regla NO agregada", "formato de regla incorrecto", "warning");
       }
     }else {
-      swal("Regla NO agregada", "formato de regla incorrecto", "error");
+      swal("Regla NO agregada", "formato de regla incorrecto", "warning");
     }
 
   }
